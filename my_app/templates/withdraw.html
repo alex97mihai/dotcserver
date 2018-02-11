@@ -1,0 +1,9 @@
+{% block content %}
+  <h2>Withdraw</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Withdraw</button>
+  </form>
+{% endblock %}
+
