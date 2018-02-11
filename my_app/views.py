@@ -39,11 +39,12 @@ def topup(request):
     if request.method == 'POST':
         form = TopUpForm(request.POST)
         if form.is_valid():
-            
-            user.profile.USD = user.profile.USD + form.cleaned_data.get('USD')
-            user.save()
-            user.profile.EUR = user.profile.EUR + form.cleaned_data.get('EUR')
-            user.save()
+            if (form.cleaned_data.get('USD') > 0):
+                user.profile.USD = user.profile.USD + form.cleaned_data.get('USD')
+                user.save()
+            if (form.cleaned_data.get('EUR') > 0):
+                user.profile.EUR = user.profile.EUR + form.cleaned_data.get('EUR')
+                user.save()
             return redirect('/hello/')
     else:
         form = TopUpForm()
@@ -54,11 +55,12 @@ def withdraw(request):
     if request.method == 'POST':
         form = WithdrawForm(request.POST)
         if form.is_valid():
-            
-            user.profile.USD = user.profile.USD - form.cleaned_data.get('USD')
-            user.save()
-            user.profile.EUR = user.profile.EUR - form.cleaned_data.get('EUR')
-            user.save()
+            if (form.cleaned_data.get('USD') > 0):
+                user.profile.USD = user.profile.USD - form.cleaned_data.get('USD')
+                user.save()
+            if (form.cleaned_data.get('EUR') > 0):
+                user.profile.EUR = user.profile.EUR - form.cleaned_data.get('EUR')
+                user.save()
             return redirect('/hello/')
     else:
         form = WithdrawForm()
