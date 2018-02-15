@@ -19,6 +19,7 @@ from my_app.views import HomeView
 from my_app.views import signup
 from my_app.views import topup
 from my_app.views import withdraw
+from my_app.views import transfer
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^signup/$', signup, name='signup'),
@@ -28,4 +29,5 @@ urlpatterns = [
     url(r'^hello/', HomeView.as_view()),
     url(r'^topup/', topup, name='topup'),
     url(r'^withdraw/', withdraw, name='withdraw'),
+    url(r'^transfer/', transfer, name='transfer'),
 ]

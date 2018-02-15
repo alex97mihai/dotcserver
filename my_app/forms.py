@@ -24,3 +24,12 @@ class WithdrawForm(ModelForm):
     class Meta:
         model = User
         fields = ('USD', 'EUR')
+
+class TransferForm(ModelForm):
+    USD = forms.IntegerField(label='USD:')
+    EUR = forms.IntegerField(label='EUR:')
+    username = forms.CharField(label='User:')
+    class Meta:
+        model = User
+        fields = ('USD', 'EUR')
+

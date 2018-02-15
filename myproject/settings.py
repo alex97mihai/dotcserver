@@ -25,7 +25,7 @@ SECRET_KEY = '2p)c=r!%#aoi$7c&nz6xe1l9sugm0p*6%nh8)nc0r2zyopr4mx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["52.212.150.143"]
+ALLOWED_HOSTS = ["52.49.82.58"]
 
 
 # Application definition
@@ -124,3 +124,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 # LOGIN SETTINGS
 
 LOGIN_REDIRECT_URL = '/hello/' 
+LOGIN_URL = '/login/'

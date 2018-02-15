@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import os
 from django.shortcuts import render
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from my_app.forms import SignUpForm, TopUpForm, WithdrawForm
-
+from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm
+from models import Profile as DjProfile
+from django.contrib.auth.models import User as dbUser
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 from django.views.generic import TemplateView
@@ -65,3 +67,38 @@ def withdraw(request):
     else:
         form = WithdrawForm()
     return render(request, 'withdraw.html', {'form': form})
+
+@login_required
+def transfer(request):
+    user = request.user
+    if request.method == 'POST':
+        form = TransferForm(request.POST)
+	#out2 = open(os.path.join('/home/ubuntu/myproject/my_app/out', 'out.txt'), 'w')
+        #out2.write('ahaha')
+        #out2.close()
+        if form.is_valid():
+            # get user by username
+            uid = dbUser.objects.get(username=form.cleaned_data.get('username'))
+            
+            EURtr = form.cleaned_data.get('EUR')
+            USDtr = form.cleaned_data.get('USD')
+            
+	    # if user has enough EUR to transfer
+            if user.profile.EUR >= EURtr:
+                uid.profile.EUR = uid.profile.EUR + EURtr
+                user.profile.EUR = user.profile.EUR - EURtr
+
+            if user.profile.USD >= USDtr:
+                uid.profile.USD = uid.profile.USD + USDtr
+                user.profile.USD = user.profile.USD - USDtr
+            user.save()
+            uid.save()
+            out = open(os.path.join('/home/ubuntu/myproject/my_app/out', 'out.txt'), 'w')
+            out.write(str(uid.profile.EUR))
+            out.write('\n')
+            out.write(str(uid.profile.USD))
+            out.close()
+        return redirect('/hello/')
+    else:
+        form = TransferForm()
+    return render(request, 'transfer.html', {'form': form})
