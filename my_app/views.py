@@ -10,6 +10,11 @@ from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm
 from models import Profile as DjProfile
 from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+
+# Non-django imports
+from lib import converter
+
 # Create your views here.
 
 from django.views.generic import TemplateView
@@ -102,3 +107,11 @@ def transfer(request):
     else:
         form = TransferForm()
     return render(request, 'transfer.html', {'form': form})
+
+def viewRates(request):
+    c = converter.CurrencyRates()
+    eurrate  = c.get_rate('EUR', 'USD')
+    usdrate  = c.get_rate('USD', 'EUR')
+    context_dict = {'eurrate': eurrate, 'usdrate': usdrate}
+    return render(request, 'rates.html', context_dict)
+

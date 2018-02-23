@@ -20,6 +20,8 @@ from my_app.views import signup
 from my_app.views import topup
 from my_app.views import withdraw
 from my_app.views import transfer
+from my_app.views import viewRates
+
 from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^signup/$', signup, name='signup'),
@@ -30,4 +32,5 @@ urlpatterns = [
     url(r'^topup/', topup, name='topup'),
     url(r'^withdraw/', withdraw, name='withdraw'),
     url(r'^transfer/', transfer, name='transfer'),
+    url(r'^view/', viewRates, name='viewRates'),
 ]
