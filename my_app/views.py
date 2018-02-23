@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 # Non-django imports
 from lib import converter
-
+from .tasks import test_celery
 # Create your views here.
 
 from django.views.generic import TemplateView
