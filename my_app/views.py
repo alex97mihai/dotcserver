@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
+import decimal
+import datetime
 from django.shortcuts import render
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm
+from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
 from models import Profile as DjProfile
+from models import Order
 from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -114,4 +117,28 @@ def viewRates(request):
     usdrate  = c.get_rate('USD', 'EUR')
     context_dict = {'eurrate': eurrate, 'usdrate': usdrate}
     return render(request, 'rates.html', context_dict)
+
+def exchange(request):
+    if request.method == 'POST':
+        user = request.user
+        c = converter.CurrencyRates()
+        form = ExchangeForm(request.POST)
+        if form.is_valid():
+            home_currency = form.cleaned_data.get('home_currency')
+            target_currency = form.cleaned_data.get('target_currency')
+            home_currency_amount = decimal.Decimal(form.cleaned_data.get('home_currency_amount'))
+            username = user.username
+            date = datetime.date.today()
+            time = datetime.datetime.now().strftime('%H:%M:%S')  
+            rate = decimal.Decimal(c.get_rate(home_currency, target_currency))
+            target_currency_amount = home_currency_amount*rate
+
+            order = Order(date = date, time = time, user = username, home_currency=home_currency, home_currency_amount=home_currency_amount, rate=rate, target_currency=target_currency, target_currency_amount=target_currency_amount, status='pending')
+            order.save()
+
+        return redirect('/exchange/')
+    else:
+        form = ExchangeForm()
+    return render(request, 'exchange.html', {'form': form})
+
 

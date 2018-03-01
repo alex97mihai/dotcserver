@@ -21,6 +21,7 @@ from my_app.views import topup
 from my_app.views import withdraw
 from my_app.views import transfer
 from my_app.views import viewRates
+from my_app.views import exchange
 
 from django.contrib.auth import views as auth_views
 urlpatterns = [
@@ -33,4 +34,5 @@ urlpatterns = [
     url(r'^withdraw/', withdraw, name='withdraw'),
     url(r'^transfer/', transfer, name='transfer'),
     url(r'^view/', viewRates, name='viewRates'),
+    url(r'^exchange/', exchange, name='exchange'),
 ]
