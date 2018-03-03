@@ -136,7 +136,7 @@ def exchange(request):
             order = Order(date = date, time = time, user = username, home_currency=home_currency, home_currency_amount=home_currency_amount, rate=rate, target_currency=target_currency, target_currency_amount=target_currency_amount, status='pending')
             order.save()
 
-        return redirect('/exchange/')
+        return redirect('/hello/')
     else:
         form = ExchangeForm()
     return render(request, 'exchange.html', {'form': form})

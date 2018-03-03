@@ -1,3 +1,2 @@
-# start celery worker
-celery -A myproject worker -l info
+celery -A myproject worker -l info -B
 
