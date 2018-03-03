@@ -1,8 +1,18 @@
 {% block content %}
   <h2>Exchange</h2>
+  
+  {% if error %}
+    <p style="color: red;">
+    You do not have enough {{ currency }}
+    </p>
+  {% endif %}
+
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit"> Exchange </button>
   </form>
-{% endblock %}
+    
+    <a href="/hello">Go Back</a>
+
+  {% endblock %}

@@ -120,6 +120,7 @@ def viewRates(request):
 
 def exchange(request):
     if request.method == 'POST':
+        error = False
         user = request.user
         c = converter.CurrencyRates()
         form = ExchangeForm(request.POST)
@@ -132,6 +133,11 @@ def exchange(request):
             time = datetime.datetime.now().strftime('%H:%M:%S')  
             rate = decimal.Decimal(c.get_rate(home_currency, target_currency))
             target_currency_amount = home_currency_amount*rate
+            
+            balance = {"EUR":user.profile.EUR, "USD":user.profile.USD}
+            if home_currency_amount > balance[home_currency]:
+                error = True
+                return render(request, 'exchange.html', {'form': form, 'error':error, 'currency': home_currency})
 
             order = Order(date = date, time = time, user = username, home_currency=home_currency, home_currency_amount=home_currency_amount, rate=rate, target_currency=target_currency, target_currency_amount=target_currency_amount, status='pending')
             order.save()
