@@ -17,6 +17,7 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     USD = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     EUR = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    RON = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:

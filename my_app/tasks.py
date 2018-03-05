@@ -23,13 +23,14 @@ def test_celery():
 
             print(user)
             
-            balance = { "EUR":0, "USD":0}
+            balance = { "EUR":0, "USD":0, "RON":0}
 
             balance[str(order.home_currency)] = order.home_currency_amount * -1
             balance[str(order.target_currency)] = order.target_currency_amount 
 
             user.profile.USD = user.profile.USD + balance["USD"]
             user.profile.EUR = user.profile.EUR + balance["EUR"]
+	    user.profile.RON = user.profile.RON + balance["RON"]
             user.save()
 
             print(balance)

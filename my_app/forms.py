@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from models import Profile
 from models import Order
 
-currencies = [('EUR','EUR'),('USD','USD'),]
+currencies = [('EUR','EUR'),('USD','USD'),('RON','RON'),]
 class ExchangeForm(ModelForm):
     home_currency = forms.CharField(label='From: ', widget=forms.Select(choices=currencies))
     target_currency = forms.CharField(label='To: ', widget=forms.Select(choices=currencies))
@@ -24,22 +24,25 @@ class SignUpForm(UserCreationForm):
 class TopUpForm(ModelForm):
     USD = forms.DecimalField(label='USD:')
     EUR = forms.DecimalField(label='EUR:')
+    RON = forms.DecimalField(label='RON:')
     class Meta:
         model = User
-        fields = ('USD', 'EUR')
+        fields = ('USD', 'EUR', 'RON')
 
 class WithdrawForm(ModelForm):
     USD = forms.DecimalField(label='USD:')
     EUR = forms.DecimalField(label='EUR:')
+    RON = forms.DecimalField(label='RON:')
     class Meta:
         model = User
-        fields = ('USD', 'EUR')
+        fields = ('USD', 'EUR', 'RON')
 
 class TransferForm(ModelForm):
     USD = forms.DecimalField(label='USD:')
     EUR = forms.DecimalField(label='EUR:')
+    RON = forms.DecimalField(label='RON:')
     username = forms.CharField(label='User:')
     class Meta:
         model = User
-        fields = ('USD', 'EUR')
+        fields = ('USD', 'EUR', 'RON')
 

@@ -65,6 +65,9 @@ def topup(request):
             if (form.cleaned_data.get('EUR') > 0):
                 user.profile.EUR = user.profile.EUR + form.cleaned_data.get('EUR')
                 user.save()
+	    if (form.cleaned_data.get('RON') > 0):
+		user.profile.RON = user.profile.RON + form.cleaned_data.get('RON')
+		user.save()
             return redirect('/hello/')
     else:
         form = TopUpForm()
@@ -82,6 +85,9 @@ def withdraw(request):
             if (form.cleaned_data.get('EUR') > 0):
                 user.profile.EUR = user.profile.EUR - form.cleaned_data.get('EUR')
                 user.save()
+	    if (form.cleaned_data.get('RON') > 0):
+		user.profile.RON = user.profile.RON - form.cleaned_data.get('RON')
+		user.save()
             return redirect('/hello/')
     else:
         form = WithdrawForm()
@@ -98,7 +104,7 @@ def transfer(request):
             
             EURtr = form.cleaned_data.get('EUR')
             USDtr = form.cleaned_data.get('USD')
-            
+            RONtr = form.cleaned_data.get('RON')
 	    # if user has enough EUR to transfer
             if user.profile.EUR >= EURtr:
                 uid.profile.EUR = uid.profile.EUR + EURtr
@@ -107,6 +113,11 @@ def transfer(request):
             if user.profile.USD >= USDtr:
                 uid.profile.USD = uid.profile.USD + USDtr
                 user.profile.USD = user.profile.USD - USDtr
+	  
+ 	    if user.profile.RON >= RONtr:
+		uid.profile.RON = uid.profile.RON + RONtr
+                user.profile.RON = user.profile.RON - RONtr
+ 
             user.save()
             uid.save()
         
@@ -143,7 +154,7 @@ def exchange(request):
             target_currency_amount = home_currency_amount*rate
             
             # dictionary linking string to variable
-            balance = {"EUR":user.profile.EUR, "USD":user.profile.USD}
+            balance = {"EUR":user.profile.EUR, "USD":user.profile.USD, "RON":user.profile.RON}
             # check if user has enough funds to exchange and return error if not
             if home_currency_amount > balance[home_currency]:
                 error = True
@@ -163,7 +174,7 @@ def exchange(request):
                 if order.status is not 'complete':
                     user2 = dbUser.objects.get(username=order2.user)
                     out.write('user 1 is %s and user 2 is %s' % (str(user),str(user2)))
-                    balance2 = {"EUR":user2.profile.EUR, "USD":user2.profile.USD}
+                    balance2 = {"EUR":user2.profile.EUR, "USD":user2.profile.USD, "RON":user2.profile.RON}
                     out.write('\n before the transaction, user 1 had %s EUR and %s USD' % (str(balance['EUR']), str(balance['USD'])))
                     out.write('\n before the transaction, user 2 had %s EUR and %s USD' % (str(balance2['EUR']), str(balance2['USD'])))
                     out.write('\nuser 1 is looking to exchange %s%s for %s%s' % (str(order.home_currency_amount), str(order.home_currency), str(order.target_currency_amount),str(order.target_currency)))
@@ -233,10 +244,12 @@ def exchange(request):
                     # saving changes to user profiles
                     user.profile.USD = balance['USD']
                     user.profile.EUR = balance['EUR']
+		    user.profile.RON = balance['RON']
                     user.save()
                             
                     user2.profile.USD = balance2['USD']    
                     user2.profile.EUR = balance2['EUR']
+		    user2.profile.RON = balance2['RON']
                     user2.save()
                         
                     # saving changes to orders
