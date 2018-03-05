@@ -106,15 +106,15 @@ def transfer(request):
             USDtr = form.cleaned_data.get('USD')
             RONtr = form.cleaned_data.get('RON')
 	    # if user has enough EUR to transfer
-            if user.profile.EUR >= EURtr:
+            if EURtr >= 0 and user.profile.EUR >= EURtr:
                 uid.profile.EUR = uid.profile.EUR + EURtr
                 user.profile.EUR = user.profile.EUR - EURtr
 
-            if user.profile.USD >= USDtr:
+            if USDtr >= 0 and user.profile.USD >= USDtr:
                 uid.profile.USD = uid.profile.USD + USDtr
                 user.profile.USD = user.profile.USD - USDtr
 	  
- 	    if user.profile.RON >= RONtr:
+ 	    if RONtr >= 0 and user.profile.RON >= RONtr:
 		uid.profile.RON = uid.profile.RON + RONtr
                 user.profile.RON = user.profile.RON - RONtr
  
