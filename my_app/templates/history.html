@@ -18,34 +18,44 @@ h1 {letter-spacing: 6px}
 
 <!-- Header -->
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px 0px">
-  <h1 class="w3-xlarge">TRANSFER</h1>
-  <h1>{{ user.get_full_name }}</h1>
-  
-  <div class="w3-padding-32">
-    <div class="w3-bar w3-border">
-      <a href="/hello" class="w3-bar-item w3-button">Wallet</a>
-      <a href="/topup" class="w3-bar-item w3-button">Topup</a>
-      <a href="/withdraw" class="w3-bar-item w3-button w3-light-grey">Withdraw</a>
-      <a href="/rates" class="w3-bar-item w3-button">Rates</a>
-      <a href="/transfer" class="w3-bar-item w3-button w3-hide-small">Transfer</a>
-      <a href="/exchange" class="w3-bar-item w3-button w3-hide-small">Exchange</a>
-      <a href="/history" class="w3-bar-item w3-button w3-hide-small">History</a>
-    </div>
-  </div>
-</header>
-
+  <h1 class="w3-xlarge">ACTIVE ORDERS</h1>
+  <h2 class="w3-large"><a href="/">GO BACK</a></h2>
 <!-- Top Up Form -->
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128px">
-  <div class="w3-xlarge">
-    
-{% block content %}
-  <form class="w3-large" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="w3-border w3-button" type="submit"> Transfer</button>
-  </form>
-{% endblock %}
+  <div class="w3-small">
 
+    {% block content %}
+
+      <table class="w3-table">
+
+        <tr>
+            <th> Name </th>
+            <th> From </th>
+            <th> To </th>
+            <th> Amount left to exchange </th>
+            <th> Status </th>
+            <th> Date </th>
+            <th> Time </th>
+        </tr>
+
+      {% for order in orders %}
+
+        <tr>
+          <td>{{ order.user }}</td>
+          <td>{{ order.home_currency }}</td>
+          <td>{{ order.target_currency }}</td>
+          <td>{{ order.home_currency_amount }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.date }}</td>
+          <td>{{ order.time }}</td>
+        </tr>
+      {% endfor %}
+
+
+      </table>
+
+
+    {% endblock %}
     
   </div>
 

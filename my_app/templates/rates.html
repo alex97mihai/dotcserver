@@ -29,20 +29,28 @@ h1 {letter-spacing: 6px}
       <a href="/rates" class="w3-bar-item w3-button">Rates</a>
       <a href="/transfer" class="w3-bar-item w3-button w3-hide-small">Transfer</a>
       <a href="/exchange" class="w3-bar-item w3-button w3-hide-small">Exchange</a>
+      <a href="/history" class="w3-bar-item w3-button w3-hide-small">History</a>
     </div>
   </div>
 </header>
 
 <!-- Top Up Form -->
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128px">
-  <div class="w3-xlarge">
+  <div class="w3-large">
     
 {% block content %}
+<table class="w3-table">
 
-        <h1 class="w3-large">EUR rate is: {{ eurrate }} </h1>
-        <br>
-        <h1 class="w3-large">USD rate is: {{ usdrate }} </h1>
+        <tr>
+            <th> EUR </th>
+	    <th> USD </th>
+        </tr>
 
+	<tr>
+	    <td> {{ eurrate }} </td>
+	    <td> {{ usdrate }} </td>
+        </tr>
+</table>
 {% endblock %}
 
 

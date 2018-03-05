@@ -1,5 +1,6 @@
 from celery import task
 from my_app.models import Order as OrderList
+from my_app.models import CompleteOrders
 from datetime import date, time, datetime, timedelta
 from django.contrib.auth.models import User as dbUser
 
@@ -35,6 +36,9 @@ def test_celery():
 
             # save order to external record and delete from db
             out.write('%s;%s;%s;%s;%s;%s;%s;%s\n' % (user.username, str(order.date), str(order.time), order.home_currency, str(order.home_currency_amount), str(order.rate), order.target_currency, str(order.target_currency_amount)) )
+            
+            CompleteOrder = CompleteOrders(user=order.user, date=order.date, time=order.time, home_currency=order.home_currency, home_currency_amount=order.home_currency_amount, rate=order.rate, target_currency=order.target_currency, target_currency_amount=order.target_currency_amount, status='complete')
+            CompleteOrder.save()
             order.delete()
     
     out.close

@@ -5,9 +5,10 @@ from django.contrib.auth.models import User
 from models import Profile
 from models import Order
 
+currencies = [('EUR','EUR'),('USD','USD'),]
 class ExchangeForm(ModelForm):
-    home_currency = forms.CharField(label='From: ')
-    target_currency = forms.CharField(label='To: ' )
+    home_currency = forms.CharField(label='From: ', widget=forms.Select(choices=currencies))
+    target_currency = forms.CharField(label='To: ', widget=forms.Select(choices=currencies))
     home_currency_amount = forms.DecimalField(label='Amount: ')
     class Meta:
         model = Order

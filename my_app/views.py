@@ -254,7 +254,13 @@ def exchange(request):
         form = ExchangeForm()
     return render(request, 'exchange.html', {'form': form})
 
-
+@login_required
+def historyView(request):
+    user = request.user
+    orders = Order.objects.filter(user=user.username, status='pending')
+    context_dict = {'orders':orders}
+    return render(request, 'history.html', context_dict)
+                    
 
 
 
