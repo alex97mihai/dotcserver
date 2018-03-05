@@ -22,17 +22,19 @@ from my_app.views import withdraw
 from my_app.views import transfer
 from my_app.views import viewRates
 from my_app.views import exchange
+from my_app.views import logoutView
 
 from django.contrib.auth import views as auth_views
 urlpatterns = [
+    url(r'^$', HomeView.as_view()),
     url(r'^signup/$', signup, name='signup'),
     url(r'^login/', auth_views.login, name='login'),
-    url(r'^logout/', auth_views.logout, name='logout'),
+    url(r'^logout/', logoutView, name='logout'),
     url(r'^admin/', admin.site.urls),
     url(r'^hello/', HomeView.as_view()),
     url(r'^topup/', topup, name='topup'),
     url(r'^withdraw/', withdraw, name='withdraw'),
     url(r'^transfer/', transfer, name='transfer'),
-    url(r'^view/', viewRates, name='viewRates'),
+    url(r'^rates/', viewRates, name='viewRates'),
     url(r'^exchange/', exchange, name='exchange'),
 ]

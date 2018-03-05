@@ -6,7 +6,7 @@ import decimal
 import datetime
 from django.shortcuts import render
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout 
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
@@ -23,8 +23,17 @@ from lib import converter
 
 from django.views.generic import TemplateView
 
+
+
 class HomeView(TemplateView):
 	template_name = 'index.html'
+
+
+def logoutView(request):
+    logout(request)
+    return redirect('/hello/')
+
+
 
 def signup(request):
     if request.method == 'POST':
@@ -106,6 +115,7 @@ def transfer(request):
         form = TransferForm()
     return render(request, 'transfer.html', {'form': form})
 
+@login_required
 def viewRates(request):
     c = converter.CurrencyRates()
     eurrate  = c.get_rate('EUR', 'USD')

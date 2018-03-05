@@ -1,10 +1,10 @@
 user 1 is aaaa2 and user 2 is aaaa
- before the transaction, user 1 had 162 EUR and 47 USD
- before the transaction, user 2 had 88 EUR and 166 USD
-user 1 is looking to exchange 2EUR for 2.462400000000000144240175359USD
-user 2 is looking to exchange 12.000USD for 9.747EUR
- we are now inside the else: user 1 is selling less of his currency than user 2 is looking to buy
- after the transaction, user 1 has 160EUR and 49.46240000000000014424017536USD
- after the transaction, user 2 has 163.5375999999999998557598246USD and 90EUR
- user 1 order still has 0EUR to exchange for 0USD
- user2 order still has 9.537599999999999855759824641USD to exchange for 7.747EUR
+ before the transaction, user 1 had 347 EUR and 292 USD
+ before the transaction, user 2 had 10 EUR and 10 USD
+user 1 is looking to exchange 10EUR for 12.31200000000000072120087680USD
+user 2 is looking to exchange 10.000USD for 8.122EUR
+ we are now inside the if: user 1 is selling more of his currency than user 2 is looking to buy
+ after the transaction, user 1 has 338.878EUR and 302.000USD
+ after the transaction, user 2 has 0.000USD and 18.122EUR
+ user 1 order still has 1.878EUR to exchange for 2.31200000000000072120087680USD
+ user2 order still has 0USD to exchange for 0EUR
