@@ -37,14 +37,14 @@ h1 {letter-spacing: 6px}
 {% if user.is_authenticated %}
 <!-- Wallet Information -->
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128px">
-  <div class="w3-xlarge">
+  <div class="w3-large">
     
     Username: {{ user.username }} <br>
     Location: {{ user.profile.location }}<br>
     Birth Date: {{ user.profile.birth_date }}<br>
     EUR: {{ user.profile.EUR }}<br>
     USD: {{ user.profile.USD }}<br>
-    <div class="w3-border">
+    <div class="w3-border" style="margin-top:32px">
   	<a href="/logout" class="w3-button w3-hide-small">Logout</a>
     </div
   </div>

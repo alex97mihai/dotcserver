@@ -34,8 +34,10 @@ class Order(models.Model):
     target_currency = models.CharField(max_length=30, blank=True)
     target_currency_amount = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
     status = models.CharField(max_length=30, blank=True, default='pending')
+    target_backup = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
+    home_backup = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
 
-class CompleteOrders(models.Model):   
+class CompleteOrders(models.Model): 
     user = models.CharField(max_length=30, blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)

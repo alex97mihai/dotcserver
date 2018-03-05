@@ -11,7 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
 from models import Profile as DjProfile
-from models import Order
+from models import Order, CompleteOrders
 from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -150,7 +150,7 @@ def exchange(request):
                 return render(request, 'exchange.html', {'form': form, 'error':error, 'currency': home_currency})
 
             # create Order object from user input
-            order = Order(date = date, time = time, user = username, home_currency=home_currency, home_currency_amount=home_currency_amount, rate=rate, target_currency=target_currency, target_currency_amount=target_currency_amount, status='pending')
+            order = Order(date = date, time = time, user = username, home_currency=home_currency, home_currency_amount=home_currency_amount, rate=rate, target_currency=target_currency, target_currency_amount=target_currency_amount, status='pending', home_backup=home_currency_amount, target_backup=target_currency_amount)
             
             order.save()
             out = open('/home/ubuntu/myproject/log.txt', 'w')
@@ -258,7 +258,8 @@ def exchange(request):
 def historyView(request):
     user = request.user
     orders = Order.objects.filter(user=user.username, status='pending')
-    context_dict = {'orders':orders}
+    completed_orders = CompleteOrders.objects.filter(user=user.username)
+    context_dict = {'orders':orders, 'completed_orders':completed_orders}
     return render(request, 'history.html', context_dict)
                     
 
