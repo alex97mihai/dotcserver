@@ -15,8 +15,8 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    USD = models.IntegerField(max_length=30, blank=True, null=True, default=0)
-    EUR = models.IntegerField(max_length=30, blank=True, null=True, default=0)
+    USD = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    EUR = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
