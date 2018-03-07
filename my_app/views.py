@@ -11,7 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
 from models import Profile as DjProfile
-from models import Order, CompleteOrders
+from models import Order, CompleteOrders, Friendship
 from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -283,4 +283,20 @@ def historyView(request):
                     
 
 
+@login_required
+def addFriend(request):
+    creator = request.user
+    friend_name = request.GET.get('friend', '')
+    friend = dbUser.objects.get(username=friend_name)
+    if not Friendship.objects.filter(creator=creator, friend=friend):
+        if Friendship.objects.filter(creator = friend, friend = creator).exists():
+            friendship1 = Friendship.objects.get(creator=friend, friend=creator)
+            friendship1.status = 'accepted'
+            friendship2 = Friendship(creator=creator, friend=friend, status='accepted')
+            friendship1.save()
+        else:
+            friendship2 = Friendship(creator=creator, friend=friend)
+        friendship2.save()
+    
+    return render(request, 'reqfriend.html')
 

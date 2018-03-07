@@ -1,0 +1,11 @@
+ <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+
+<script type='text/javascript' language='javascript' src='Path to your external js file'/>
+<ul id="myUL">
+    {% for user in user_list %}
+
+    <li> {{ user.username }} </li>
+
+    {% endfor %}
+</ul> 
+
