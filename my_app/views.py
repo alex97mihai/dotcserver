@@ -134,6 +134,12 @@ def viewRates(request):
     context_dict = {'eurrate': eurrate, 'usdrate': usdrate}
     return render(request, 'rates.html', context_dict)
 
+def users(request):
+    user_list = dbUser.objects.all()
+    context_dict = {'user_list':user_list}
+    return render(request, 'users.html', context_dict)
+
+
 @login_required
 def exchange(request):
     if request.method == 'POST':

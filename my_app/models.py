@@ -25,6 +25,14 @@ def update_user_profile(sender, instance, created, **kwargs):
     instance.profile.save()
 
 
+class Friendship(models.Model):
+    creator = models.ForeignKey(User, related_name="friendship_creator_set")
+    friend = models.ForeignKey(User, related_name="friend_set")
+    status = models.CharField(max_length=30, blank=True, default='sent')
+
+
+
+
 class Order(models.Model):
     user = models.CharField(max_length=30, blank=True)
     date = models.DateField(null=True, blank=True)

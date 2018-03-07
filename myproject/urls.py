@@ -24,6 +24,7 @@ from my_app.views import viewRates
 from my_app.views import exchange
 from my_app.views import logoutView
 from my_app.views import historyView
+from my_app.views import users
 
 from django.contrib.auth import views as auth_views
 urlpatterns = [
@@ -39,4 +40,5 @@ urlpatterns = [
     url(r'^rates/', viewRates, name='viewRates'),
     url(r'^exchange/', exchange, name='exchange'),
     url(r'^history/', historyView, name='history'),
+    url(r'^add-friends/', users, name='users'),
 ]
