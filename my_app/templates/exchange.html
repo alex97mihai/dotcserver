@@ -34,25 +34,21 @@ h1 {letter-spacing: 6px}
   </div>
 </header>
 
-<!-- Top Up Form -->
+<!-- Exchange -->
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128px">
   <div class="w3-xlarge">
-{% block content %}
+    {% block content %}
 
-{% if error %}
-  <p class = "w3-small" style="color: red;">
-    You do not have enough {{ currency }} </p>
-{% endif %}
-
+      {% if error %}
+        <p class = "w3-small" style="color: red;"> You do not have enough {{ currency }} </p>
+      {% endif %}
     
-  <form class="w3-large" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="w3-border w3-button" type="submit"> Exchange</button>
-  </form>
-{% endblock %}
-
-    
+      <form class="w3-large" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+          <button class="w3-border w3-button" type="submit"> Exchange</button>
+      </form>
+    {% endblock %}
   </div>
 
   

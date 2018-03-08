@@ -1,39 +1,33 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-import os
-import decimal
-import datetime
 from django.shortcuts import render
-
 from django.contrib.auth import login, authenticate, logout 
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
-from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship
 from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-
-# Non-django imports
-from .tasks import test_celery
-from lib import converter
-# Create your views here.
-
 from django.views.generic import TemplateView
+from models import Profile as DjProfile
+from models import Order, CompleteOrders, Friendship
+from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
+# Non-django imports
+import os
+import datetime
+import decimal
+from .tasks import exchange_celery
+from lib import converter
 
 
+# Views start here
 
 class HomeView(TemplateView):
 	template_name = 'index.html'
 
-
 def logoutView(request):
     logout(request)
     return redirect('/hello/')
-
-
 
 def signup(request):
     if request.method == 'POST':
@@ -134,11 +128,11 @@ def viewRates(request):
     context_dict = {'eurrate': eurrate, 'usdrate': usdrate}
     return render(request, 'rates.html', context_dict)
 
+@login_required
 def users(request):
     user_list = dbUser.objects.all()
     context_dict = {'user_list':user_list}
     return render(request, 'users.html', context_dict)
-
 
 @login_required
 def exchange(request):
@@ -168,9 +162,7 @@ def exchange(request):
 
             # create Order object from user input
             order = Order(date = date, time = time, user = username, home_currency=home_currency, home_currency_amount=home_currency_amount, rate=rate, target_currency=target_currency, target_currency_amount=target_currency_amount, status='pending', home_backup=home_currency_amount, target_backup=target_currency_amount)
-            
             order.save()
-            out = open('/home/ubuntu/myproject/log.txt', 'w')
 
             # check if order can be matched to other users
             orderlist = Order.objects.filter(home_currency = order.target_currency, target_currency = order.home_currency)
@@ -179,15 +171,9 @@ def exchange(request):
 
                 if order.status is not 'complete':
                     user2 = dbUser.objects.get(username=order2.user)
-                    out.write('user 1 is %s and user 2 is %s' % (str(user),str(user2)))
                     balance2 = {"EUR":user2.profile.EUR, "USD":user2.profile.USD, "RON":user2.profile.RON}
-                    out.write('\n before the transaction, user 1 had %s EUR and %s USD' % (str(balance['EUR']), str(balance['USD'])))
-                    out.write('\n before the transaction, user 2 had %s EUR and %s USD' % (str(balance2['EUR']), str(balance2['USD'])))
-                    out.write('\nuser 1 is looking to exchange %s%s for %s%s' % (str(order.home_currency_amount), str(order.home_currency), str(order.target_currency_amount),str(order.target_currency)))
-                    out.write('\nuser 2 is looking to exchange %s%s for %s%s' % (str(order2.home_currency_amount), str(order2.home_currency), str(order2.target_currency_amount), str(order2.target_currency)))
 
                     if order.home_currency_amount >= order2.target_currency_amount:
-                        out.write('\n we are now inside the if: user 1 is selling more of his currency than user 2 is looking to buy')
                         
                         # user 1 is selling more currency than user 2, so the .home field of his profile will be updated to .home-how much 2 is buying
                         # using order1.home as reference
@@ -209,13 +195,8 @@ def exchange(request):
                         # updating the order of user2
                         order2.home_currency_amount = 0
               
-                        out.write('\n after the transaction, user 1 has %s%s and %s%s' % (balance[str(order.home_currency)], str(order.home_currency), balance[str(order.target_currency)], str(order.target_currency)))
-                        out.write('\n after the transaction, user 2 has %s%s and %s%s' % (balance2[str(order2.home_currency)], str(order2.home_currency), balance2[str(order2.target_currency)], str(order2.target_currency)))
-                        out.write('\n user 1 order still has %s%s to exchange for %s%s' % (str(order.home_currency_amount), str(order.home_currency), str(order.target_currency_amount), str(order.target_currency)))
-                        out.write('\n user2 order still has %s%s to exchange for %s%s' % (str(order2.home_currency_amount), str(order2.home_currency), str(order2.target_currency_amount), str(order2.target_currency)))
         
 	            else:
-                        out.write('\n we are now inside the else: user 1 is selling less of his currency than user 2 is looking to buy')
 
                         # using order1.home as reference
                         # updating the profile of user 1
@@ -240,12 +221,6 @@ def exchange(request):
                         #updating the order of user 1
                         order.target_currency_amount = 0
 
-                        out.write('\n after the transaction, user 1 has %s%s and %s%s' % (balance[str(order.home_currency)], str(order.home_currency), balance[str(order.target_currency)], str(order.target_currency)))
-                        out.write('\n after the transaction, user 2 has %s%s and %s%s' % (balance2[str(order2.home_currency)], str(order2.home_currency), balance2[str(order2.target_currency)], str(order2.target_currency)))
-                        out.write('\n user 1 order still has %s%s to exchange for %s%s' % (str(order.home_currency_amount), str(order.home_currency), str(order.target_currency_amount), str(order.target_currency)))
-                        out.write('\n user2 order still has %s%s to exchange for %s%s' % (str(order2.home_currency_amount), str(order2.home_currency), str(order2.target_currency_amount), str(order2.target_currency)))
-
-
 
                     # saving changes to user profiles
                     user.profile.USD = balance['USD']
@@ -266,8 +241,6 @@ def exchange(request):
                     order.save()
                     order2.save()
 
-        out.close()
-
         return redirect('/hello/')
     else:
         form = ExchangeForm()
@@ -281,8 +254,6 @@ def historyView(request):
     context_dict = {'orders':orders, 'completed_orders':completed_orders}
     return render(request, 'history.html', context_dict)
                     
-
-
 @login_required
 def addFriend(request):
     creator = request.user

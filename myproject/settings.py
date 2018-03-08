@@ -123,7 +123,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # LOGIN SETTINGS
 
-LOGIN_REDIRECT_URL = '/hello/' 
+LOGIN_REDIRECT_URL = '/' 
 LOGIN_URL = '/login/'
 
 
@@ -131,8 +131,8 @@ LOGIN_URL = '/login/'
 CELERY_BROKER_URL = 'amqp://localhost'
 
 CELERY_TIMEZONE = 'Europe/London'
-CELERY_BEAT_SCHEDULE = { 'test_celery': {
-        'task': 'my_app.tasks.test_celery',
+CELERY_BEAT_SCHEDULE = { 'exchange_celery': {
+        'task': 'my_app.tasks.exchange_celery',
         'schedule': crontab(minute='*')
     }
 

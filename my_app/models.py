@@ -2,13 +2,12 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
-# Create your models here.
-
-
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+# Models below
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -31,8 +30,6 @@ class Friendship(models.Model):
     status = models.CharField(max_length=30, blank=True, default='sent')
 
 
-
-
 class Order(models.Model):
     user = models.CharField(max_length=30, blank=True)
     date = models.DateField(null=True, blank=True)
@@ -45,6 +42,7 @@ class Order(models.Model):
     status = models.CharField(max_length=30, blank=True, default='pending')
     target_backup = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
     home_backup = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
+
 
 class CompleteOrders(models.Model): 
     user = models.CharField(max_length=30, blank=True)

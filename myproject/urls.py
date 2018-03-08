@@ -15,19 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from my_app.views import HomeView
-from my_app.views import signup
-from my_app.views import topup
-from my_app.views import withdraw
-from my_app.views import transfer
-from my_app.views import viewRates
-from my_app.views import exchange
-from my_app.views import logoutView
-from my_app.views import historyView
-from my_app.views import users
-from my_app.views import addFriend
-from my_app.views import friends
 from django.contrib.auth import views as auth_views
+# import all views in my_app
+from my_app.views import *
+
 
 urlpatterns = [
     url(r'^$', HomeView.as_view()),

@@ -2,9 +2,9 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from models import Profile
-from models import Order
+from models import Profile, Order
 
+# used for the currency selection widget
 currencies = [('EUR','EUR'),('USD','USD'),('RON','RON'),]
 class ExchangeForm(ModelForm):
     home_currency = forms.CharField(label='From: ', widget=forms.Select(choices=currencies))
