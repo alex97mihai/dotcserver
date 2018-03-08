@@ -297,8 +297,9 @@ def addFriend(request):
         else:
             friendship2 = Friendship(creator=creator, friend=friend)
         friendship2.save()
-    
-    return render(request, 'reqfriend.html')
+    sent = True    
+    context_dict = {'sent':sent}
+    return render(request, 'users.html', context_dict)
 
 @login_required
 def friends(request):
