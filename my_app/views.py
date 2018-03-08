@@ -300,3 +300,10 @@ def addFriend(request):
     
     return render(request, 'reqfriend.html')
 
+@login_required
+def friends(request):
+    user = request.user
+    friend_list = Friendship.objects.filter(creator=user, status='accepted')
+    context_dict = {'friend_list':friend_list}
+    return render(request, 'friends.html', context_dict)
+

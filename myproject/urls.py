@@ -25,8 +25,10 @@ from my_app.views import exchange
 from my_app.views import logoutView
 from my_app.views import historyView
 from my_app.views import users
-
+from my_app.views import addFriend
+from my_app.views import friends
 from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     url(r'^$', HomeView.as_view()),
     url(r'^signup/$', signup, name='signup'),
@@ -40,5 +42,7 @@ urlpatterns = [
     url(r'^rates/', viewRates, name='viewRates'),
     url(r'^exchange/', exchange, name='exchange'),
     url(r'^history/', historyView, name='history'),
-    url(r'^add-friends/', users, name='users'),
+    url(r'^search-friends/', users, name='users'),
+    url(r'^add-friend/', addFriend, name='add-friend'),
+    url(r'^friends/', friends, name='friends'),
 ]
