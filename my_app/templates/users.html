@@ -67,6 +67,10 @@ h1 {letter-spacing: 6px}
 
 <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
 
+{% if sent %}
+<h3 style="color: red">Invitation sent!</h3>
+{% endif %}
+
 <ul id="myUL">
 
 {% for user in user_list %}
