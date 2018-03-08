@@ -28,7 +28,7 @@ from lib import converter
 def HomeView(request):
     user=request.user
     notif=0
-    if Notification.objects.filter(user=user):
+    if user.is_authenticated() and Notification.objects.filter(user=user):
         notif=1
     context_dict={'notif':notif}
     return render(request, 'index.html', context_dict)
@@ -273,9 +273,16 @@ def addFriend(request):
             friendship1.status = 'accepted'
             friendship2 = Friendship(creator=creator, friend=friend, status='accepted')
             friendship1.save()
+            notification1 = Notification(user=friend, notification="You are now friends with %s" % creator.username)
+            notification2 = Notification(user=creator, notification="You are now friends with %s" % friend.username)
+            notification1.save()
+            notification2.save()
         else:
             friendship2 = Friendship(creator=creator, friend=friend)
+            notification = Notification(user=friend, notification="You have a friend request from %s" % creator.username)
+            notification.save()
         friendship2.save()
+
     sent = True    
     context_dict = {'sent':sent}
     return render(request, 'users.html', context_dict)
