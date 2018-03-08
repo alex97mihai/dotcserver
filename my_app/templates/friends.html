@@ -36,14 +36,14 @@ h1 {letter-spacing: 6px}
 </header>
 
 <div class="w3-center">
-  <h1 class="w3-large"><a href="/search-friends">Search for friends</a></h1>
+  <h1 class="w3-large"><a href="/search-friends" style="text-decoration:none">Search for friends</a></h1>
 
 <!-- Display Friend List -->
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128px">
   <div class="w3-large">
   
     {% for friend in friend_list %}                                                                              
-    {{ friend.friend.username }}                                                                                
+    {{ friend.friend.username }} <br>                                                                                
     {% endfor %} 
 
   </div>
