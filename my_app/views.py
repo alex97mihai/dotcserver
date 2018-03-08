@@ -305,6 +305,7 @@ def addFriend(request):
 def friends(request):
     user = request.user
     friend_list = Friendship.objects.filter(creator=user, status='accepted')
-    context_dict = {'friend_list':friend_list}
+    request_list = Friendship.objects.filter(creator=user, status='sent')
+    context_dict = {'friend_list':friend_list, 'request_list':request_list}
     return render(request, 'friends.html', context_dict)
 

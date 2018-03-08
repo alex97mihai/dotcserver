@@ -35,14 +35,14 @@ h1 {letter-spacing: 6px}
     text-decoration: none; /* Remove default text underline */
     font-size: 18px; /* Increase the font-size */
     color: black; /* Add a black text color */
-    display: block; /* Make it into a block element to fill the whole list */
+    display: block;
 }
 #myUL li a:hover:not(.header) {
     background-color: #eee; /* Add a hover effect to all links, except for headers */
 }
 
 </style>
-<body>
+<body onload="hideUsers()">
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-content" style="max-width:1500px">
@@ -51,7 +51,7 @@ h1 {letter-spacing: 6px}
 <header class="w3-panel w3-center w3-opacity" style="padding:128px 16px 0px">
   <h1 class="w3-xlarge">Click on a user to add them to your friend list!</h1>
 
-<!-- Top Up Form -->
+
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128p">
  
    <div class="w3-padding-32">
@@ -65,7 +65,7 @@ h1 {letter-spacing: 6px}
       <a href="/history" class="w3-bar-item w3-button w3-hide-small">History</a>
 </div> 
 
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+<input type="text" id="myInput" onkeyup="searchUser()" placeholder="Search for names..">
 
 {% if sent %}
 <h3 style="color: red">Invitation sent!</h3>
@@ -80,18 +80,30 @@ h1 {letter-spacing: 6px}
 </ul> 
 
  <script>
-function myFunction() {
+function hideUsers() {
+    var ul, li, a, i;
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName('li');
+    for (i = 0; i < li.length; i++) {
+        li[i].style.display = "none";
+    }
+}
+
+
+function searchUser() {
     // Declare variables
     var input, filter, ul, li, a, i;
     input = document.getElementById('myInput');
     filter = input.value.toUpperCase();
     ul = document.getElementById("myUL");
     li = ul.getElementsByTagName('li');
+    
     // Loop through all list items, and hide those who don't match the search query
     for (i = 0; i < li.length; i++) {
         a = li[i].getElementsByTagName("a")[0];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
+        li[i].style.display = "none";
+        if (filter.length > 3 && a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "block";
         } else {
             li[i].style.display = "none";
         }
