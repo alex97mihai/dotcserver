@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship
+from models import Order, CompleteOrders, Friendship, Notification
 from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
 # Non-django imports
 import os
@@ -22,8 +22,16 @@ from lib import converter
 
 # Views start here
 
-class HomeView(TemplateView):
-	template_name = 'index.html'
+#class HomeView(TemplateView):
+#	template_name = 'index.html'
+
+def HomeView(request):
+    user=request.user
+    notif=0
+    if Notification.objects.filter(user=user):
+        notif=1
+    context_dict={'notif':notif}
+    return render(request, 'index.html', context_dict)
 
 def logoutView(request):
     logout(request)
@@ -279,4 +287,13 @@ def friends(request):
     request_list = Friendship.objects.filter(creator=user, status='sent')
     context_dict = {'friend_list':friend_list, 'request_list':request_list}
     return render(request, 'friends.html', context_dict)
+
+@login_required
+def viewNotifications(request):
+    user = request.user
+    notifications = Notification.objects.filter(user = user)
+    context_dict = {'notifications':notifications}
+    response = render(request, 'notifications.html', context_dict) 
+    Notification.objects.filter(user = user).delete()
+    return render(request, 'notifications.html', context_dict)
 

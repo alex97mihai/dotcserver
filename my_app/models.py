@@ -55,4 +55,7 @@ class CompleteOrders(models.Model):
     target_currency_amount = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True)
     status = models.CharField(max_length=30, blank=True, default='complete')
  
+class Notification(models.Model):
+    user = models.ForeignKey(User, related_name="notification_set")
+    notification = models.CharField(max_length=30, blank=True)
 
