@@ -1,5 +1,16 @@
 <!DOCTYPE html>
+<html>
+<title>Your Wallet</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+body,h1 {font-family: "Raleway", Arial, sans-serif}
+h1 {letter-spacing: 6px}
+.w3-row-padding img {margin-bottom: 12px}
+
 #myInput {
     background-image: url('/css/searchicon.png'); /* Add a search icon to input */
     background-position: 10px 12px; /* Position the search icon */
@@ -10,14 +21,12 @@
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
 }
-
 #myUL {
     /* Remove default list styling */
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
-
 #myUL li a {
     border: 1px solid #ddd; /* Add a border to all links */
     margin-top: -1px; /* Prevent double borders */
@@ -28,13 +37,33 @@
     color: black; /* Add a black text color */
     display: block; /* Make it into a block element to fill the whole list */
 }
-
 #myUL li a:hover:not(.header) {
     background-color: #eee; /* Add a hover effect to all links, except for headers */
 }
+
 </style>
+<body>
 
+<!-- !PAGE CONTENT! -->
+<div class="w3-content" style="max-width:1500px">
 
+<!-- Header -->
+<header class="w3-panel w3-center w3-opacity" style="padding:128px 16px 0px">
+  <h1 class="w3-xlarge">Click on a user to add them to your friend list!</h1>
+
+<!-- Top Up Form -->
+<div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128p">
+ 
+   <div class="w3-padding-32">
+    <div class="w3-bar w3-border">
+      <a href="/hello" class="w3-bar-item w3-button">Wallet</a>
+      <a href="/topup" class="w3-bar-item w3-button">Topup</a>
+      <a href="/withdraw" class="w3-bar-item w3-button w3-light-grey">Withdraw</a>
+      <a href="/rates" class="w3-bar-item w3-button">Rates</a>
+      <a href="/transfer" class="w3-bar-item w3-button w3-hide-small">Transfer</a>
+      <a href="/exchange" class="w3-bar-item w3-button w3-hide-small">Exchange</a>
+      <a href="/history" class="w3-bar-item w3-button w3-hide-small">History</a>
+</div> 
 
 <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
 
@@ -54,7 +83,6 @@ function myFunction() {
     filter = input.value.toUpperCase();
     ul = document.getElementById("myUL");
     li = ul.getElementsByTagName('li');
-
     // Loop through all list items, and hide those who don't match the search query
     for (i = 0; i < li.length; i++) {
         a = li[i].getElementsByTagName("a")[0];
@@ -66,3 +94,28 @@ function myFunction() {
     }
 }
 </script>
+
+    
+  </div>
+
+
+
+  
+
+  
+<!-- End Page Content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large"> 
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-instagram w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+</footer>
+
+</body>
+</html>
+
