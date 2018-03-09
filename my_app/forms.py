@@ -21,24 +21,17 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'birth_date', 'password1', 'password2', 'location')
 
-class TopUpForm(ModelForm):
-    USD = forms.DecimalField(label='USD:')
-    EUR = forms.DecimalField(label='EUR:')
-    RON = forms.DecimalField(label='RON:')
-    class Meta:
-        model = User
-        fields = ('USD', 'EUR', 'RON')
+class TopUpForm(forms.Form):
+    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
+    amount = forms.DecimalField(label='Amount: ')
 
-class WithdrawForm(ModelForm):
-    USD = forms.DecimalField(label='USD:')
-    EUR = forms.DecimalField(label='EUR:')
-    RON = forms.DecimalField(label='RON:')
-    class Meta:
-        model = User
-        fields = ('USD', 'EUR', 'RON')
+class WithdrawForm(forms.Form):
+    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
+    amount = forms.DecimalField(label='Amount: ')
 
 class TransferForm(forms.Form):
     currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies)) 
     amount = forms.DecimalField(label='Amount: ')
     username = forms.CharField(label='User:')
+
 

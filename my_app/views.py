@@ -61,15 +61,15 @@ def topup(request):
     if request.method == 'POST':
         form = TopUpForm(request.POST)
         if form.is_valid():
-            if (form.cleaned_data.get('USD') > 0):
-                user.profile.USD = user.profile.USD + form.cleaned_data.get('USD')
-                user.save()
-            if (form.cleaned_data.get('EUR') > 0):
-                user.profile.EUR = user.profile.EUR + form.cleaned_data.get('EUR')
-                user.save()
-	    if (form.cleaned_data.get('RON') > 0):
-		user.profile.RON = user.profile.RON + form.cleaned_data.get('RON')
-		user.save()
+            balance = {'EUR': user.profile.EUR, 'RON': user.profile.RON, 'USD': user.profile.USD}
+            currency = form.cleaned_data.get('currency')
+            amount = form.cleaned_data.get('amount')
+            if (amount > 0):
+                balance[currency]=balance[currency] + amount
+            user.profile.USD = balance['USD']
+            user.profile.EUR = balance['EUR']
+            user.profile.RON = balance['RON']
+            user.save()
             return redirect('/hello/')
     else:
         form = TopUpForm()
@@ -81,15 +81,15 @@ def withdraw(request):
     if request.method == 'POST':
         form = WithdrawForm(request.POST)
         if form.is_valid():
-            if (form.cleaned_data.get('USD') > 0):
-                user.profile.USD = user.profile.USD - form.cleaned_data.get('USD')
-                user.save()
-            if (form.cleaned_data.get('EUR') > 0):
-                user.profile.EUR = user.profile.EUR - form.cleaned_data.get('EUR')
-                user.save()
-	    if (form.cleaned_data.get('RON') > 0):
-		user.profile.RON = user.profile.RON - form.cleaned_data.get('RON')
-		user.save()
+            balance = {'EUR': user.profile.EUR, 'RON': user.profile.RON, 'USD': user.profile.USD}
+            currency = form.cleaned_data.get('currency')
+            amount = form.cleaned_data.get('amount')
+            if (amount > 0 and amount < balance[currency]):
+                balance[currency]=balance[currency] - amount
+            user.profile.USD = balance['USD']
+            user.profile.EUR = balance['EUR']
+            user.profile.RON = balance['RON']
+            user.save()
             return redirect('/hello/')
     else:
         form = WithdrawForm()
