@@ -37,12 +37,8 @@ class WithdrawForm(ModelForm):
         model = User
         fields = ('USD', 'EUR', 'RON')
 
-class TransferForm(ModelForm):
-    USD = forms.DecimalField(label='USD:')
-    EUR = forms.DecimalField(label='EUR:')
-    RON = forms.DecimalField(label='RON:')
+class TransferForm(forms.Form):
+    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies)) 
+    amount = forms.DecimalField(label='Amount: ')
     username = forms.CharField(label='User:')
-    class Meta:
-        model = User
-        fields = ('USD', 'EUR', 'RON')
 

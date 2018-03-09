@@ -34,7 +34,7 @@ h1 {letter-spacing: 6px}
             <th> Time </th>
         </tr>
 
-      {% for order in orders %}
+      {% for order in orders reversed %}
         <tr>
           <td>{{ order.user }}</td>
           <td>{{ order.home_currency }}</td>
@@ -67,7 +67,7 @@ h1 {letter-spacing: 6px}
             <th> Time </th>
         </tr>
 
-      {% for order in completed_orders %}
+      {% for order in completed_orders reversed %}
 
         <tr>
           <td>{{ order.user }}</td>

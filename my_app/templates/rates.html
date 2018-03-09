@@ -36,26 +36,53 @@ h1 {letter-spacing: 6px}
 
 <!-- Top Up Form -->
 <div class="w3-row-padding w3-grayscale w3-center" style="margin-bottom:128px">
-  <div class="w3-large">
     
 {% block content %}
-<table class="w3-table">
 
+<h1 class="w3-large"> EUR </h1>
+  <div class="w3-center">
+    <table align="center" class="w3-medium">
         <tr>
-            <th> EUR </th>
-	    <th> USD </th>
+            <td>RON</td>
+            <td>{{ eurron }}</td>
         </tr>
-
-	<tr>
-	    <td> {{ eurrate }} </td>
-	    <td> {{ usdrate }} </td>
+        <tr>
+            <td>USD</td>
+            <td>{{ eurusd }}</td>
         </tr>
-</table>
-{% endblock %}
-
-
-    
+    </table>
   </div>
+
+<h1 class="w3-large"> USD </h1>
+  <div class="w3-center">
+    <table align="center" class="w3-medium">
+        <tr>
+            <td>RON</td>
+            <td>{{ usdron }}</td>
+        </tr>
+        <tr>
+            <td>EUR</td>
+            <td>{{ usdeur }}</td>
+        </tr>
+    </table>
+  </div>
+
+<h1 class="w3-large"> RON </h1>
+  <div class="w3-center">
+    <table align="center" class="w3-medium">
+        <tr>
+            <td>USD</td>
+            <td>{{ ronusd }}</td>
+        </tr>
+        <tr>
+            <td>EUR</td>
+            <td>{{ roneur }}</td>
+        </tr>
+    </table>
+  </div>
+
+{% endblock %}
+    
 
   
 <!-- End Page Content -->
