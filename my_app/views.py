@@ -19,11 +19,7 @@ import decimal
 from .tasks import exchange_celery
 from lib import converter
 
-
 # Views start here
-
-#class HomeView(TemplateView):
-#	template_name = 'index.html'
 
 def HomeView(request):
     user=request.user
@@ -300,4 +296,6 @@ def viewNotifications(request):
     response = render(request, 'notifications.html', context_dict) 
     Notification.objects.filter(user = user).delete()
     return render(request, 'notifications.html', context_dict)
+
+
 
