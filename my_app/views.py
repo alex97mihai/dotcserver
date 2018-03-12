@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 from django.shortcuts import render
-from django.contrib.auth import login, authenticate, logout 
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as dbUser
@@ -21,12 +21,11 @@ from lib import converter
 
 # Views start here
 
+@login_required
 def HomeView(request):
     user=request.user
-    notif=0
-    if user.is_authenticated() and Notification.objects.filter(user=user):
-        notif=1
-    context_dict={'notif':notif}
+    notifications=Notification.objects.filter(user=user)
+    context_dict={'notifications':notifications}
     return render(request, 'index.html', context_dict)
 
 def logoutView(request):
@@ -108,20 +107,20 @@ def transfer(request):
             if amount >= 0 and balance[currency] >= amount:
                 balance2[currency] = balance2[currency] + amount
                 balance[currency] = balance[currency] - amount
-            # update profiles using values saved in dictionary 
+            # update profiles using values saved in dictionary
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
             user.profile.USD = balance['USD']
             uid.profile.EUR = balance2['EUR']
             uid.profile.RON = balance2['RON']
             uid.profile.USD = balance2['USD']
-            # save changes to database 
+            # save changes to database
             user.save()
             uid.save()
             # pop notification for user 2
-            notification = Notification(user = uid, notification = "You have received %s%s from %s" % (currency, str(amount), user.username))
+            notification = Notification(user = uid, user2 = user, notification_type = 'transfer-complete', date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification = "You have received %s%s from %s" % (currency, str(amount), user.username))
             notification.save()
-            
+
         return redirect('/hello/')
     else:
         form = TransferForm()
@@ -154,16 +153,16 @@ def exchange(request):
         form = ExchangeForm(request.POST)
         if form.is_valid():
 
-            # get user input 
+            # get user input
             home_currency = form.cleaned_data.get('home_currency')
             target_currency = form.cleaned_data.get('target_currency')
             home_currency_amount = decimal.Decimal(form.cleaned_data.get('home_currency_amount'))
             username = user.username
             date = datetime.date.today()
-            time = datetime.datetime.now().strftime('%H:%M:%S')  
+            time = datetime.datetime.now().strftime('%H:%M:%S')
             rate = decimal.Decimal(c.get_rate(home_currency, target_currency))
             target_currency_amount = home_currency_amount*rate
-            
+
             # dictionary linking user profile to string values
             balance = {"EUR":user.profile.EUR, "USD":user.profile.USD, "RON":user.profile.RON}
             # check if user has enough funds to exchange and redirect back with error if not
@@ -183,7 +182,7 @@ def exchange(request):
                     user2 = dbUser.objects.get(username=order2.user)
                     balance2 = {"EUR":user2.profile.EUR, "USD":user2.profile.USD, "RON":user2.profile.RON}
                     if order.home_currency_amount >= order2.target_currency_amount:
-                        
+
                         # user 1 is selling more currency than user 2, so the .home field of his profile will be updated to .home-how much 2 is buying
                         # using order1.home as reference
                         # updating the profile of user1
@@ -228,14 +227,14 @@ def exchange(request):
                     user.profile.EUR = balance['EUR']
 		    user.profile.RON = balance['RON']
                     user.save()
-                            
-                    user2.profile.USD = balance2['USD']    
+
+                    user2.profile.USD = balance2['USD']
                     user2.profile.EUR = balance2['EUR']
 		    user2.profile.RON = balance2['RON']
                     user2.save()
-                        
+
                     # saving changes to orders
-                    if order.home_currency_amount == 0: 
+                    if order.home_currency_amount == 0:
                         order.status = 'complete'
                     if order2.home_currency_amount == 0:
                         order2.status = 'complete'
@@ -254,7 +253,7 @@ def historyView(request):
     completed_orders = CompleteOrders.objects.filter(user=user.username)
     context_dict = {'orders':orders, 'completed_orders':completed_orders}
     return render(request, 'history.html', context_dict)
-                    
+
 @login_required
 def addFriend(request):
     creator = request.user
@@ -266,17 +265,17 @@ def addFriend(request):
             friendship1.status = 'accepted'
             friendship2 = Friendship(creator=creator, friend=friend, status='accepted')
             friendship1.save()
-            notification1 = Notification(user=friend, notification="You are now friends with %s" % creator.username)
-            notification2 = Notification(user=creator, notification="You are now friends with %s" % friend.username)
+            notification1 = Notification(user=friend, user2 = creator, notification_type = "friend-accept", date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification="You are now friends with %s" % creator.username)
+            notification2 = Notification(user=creator, user2 = friend, notification_type = "friend-accept", date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification="You are now friends with %s" % friend.username)
             notification1.save()
             notification2.save()
         else:
             friendship2 = Friendship(creator=creator, friend=friend)
-            notification = Notification(user=friend, notification="You have a friend request from %s" % creator.username)
+            notification = Notification(user=friend, user2 = creator, notification_type = "friend-accept", date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification="You have a friend request from %s" % creator.username)
             notification.save()
         friendship2.save()
 
-    sent = True    
+    sent = True
     context_dict = {'sent':sent}
     return render(request, 'users.html', context_dict)
 
@@ -293,9 +292,28 @@ def viewNotifications(request):
     user = request.user
     notifications = Notification.objects.filter(user = user)
     context_dict = {'notifications':notifications}
-    response = render(request, 'notifications.html', context_dict) 
+    response = render(request, 'notifications.html', context_dict)
     Notification.objects.filter(user = user).delete()
     return render(request, 'notifications.html', context_dict)
 
 
 
+
+
+### AJAX VIEWS ###
+
+def get_notifications(request):
+    if request.is_ajax():
+        user = request.user
+        notifications = Notification.objects.filter(user = user)
+        return render(request, 'ajax/get_notifications.html', {'notifications': notifications})
+    else:
+        return redirect ('/')
+
+def notiflength(request):
+    if request.is_ajax():
+        user = request.user
+        notifications = Notification.objects.filter(user = user)
+        return render(request, 'ajax/notiflength.html', {'notifications': notifications})
+    else:
+        return redirect ('/')

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Dot.</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="/static/custom.css">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <div class="navbar navbar-fixed-top navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- LOGO -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Dot.</a>
+      </div>
+      <!-- BUTTONS -->
+      <div class="collapse navbar-collapse">
+        <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                                        <i class="glyphicon glyphicon-align-left"></i>
+                                        <span>Toggle Sidebar</span>
+                                    </button>
+        <ul class="nav navbar-nav navbar-right">
+
+          <li><a href="/logout">Logout</a></li>
+          <li><a href="#contact">Settings</a></li>
+          <li><a href="#contact">Messages</a></li>
+<!-- NOTIFICATIONS -->
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <div id="notiflength">Notifications (<b>{{ notifications|length }}</b>)</div></a>
+          <ul class="dropdown-menu notify-drop">
+            <div class="notify-drop-title">
+            	<div class="row">
+            		<div class="col-md-6 col-sm-6 col-xs-6">Notifications</div>
+            		<div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="" class="rIcon allRead" data-tooltip="tooltip" data-placement="bottom" title="tümü okundu."><i class="fa fa-dot-circle-o"></i></a></div>
+            	</div>
+            </div>
+            <!-- end notify title -->
+            <!-- notify content -->
+            <div class="drop-content" id="_appendHere">
+              {% if notifications %}
+              {% for notification in notifications reversed%}
+
+            	<li>
+            		<div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+            		<div class="col-md-9 col-sm-9 col-xs-9 pd-l0">{{ notification.notification }}
+                <p> Placeholder notification 2 here</p>
+            		<hr>
+            		<p class="time">18:39</p>
+            		</div>
+            	</li>
+              {% endfor %}
+              {% endif %}
+
+            </div>
+
+            <div class="notify-drop-footer text-center">
+            	<a href=""><i class="fa fa-eye"></i> Show all </a>
+            </div>
+          </ul>
+        </li>
+<!-- END NOTIFICATIONS -->
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Wallet</h3>
+        <strong>$</strong>
+      </div>
+      <ul class="list-unstyled components">
+        <li>
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+            <i class="glyphicon glyphicon-home"></i>Home</a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li><a href="#">Settings</a></li>
+          </ul>
+        </li>
+        <li {% if request.get_full_path == "/" %} class="active" {% endif %}>
+          <a href="/"><i class="glyphicon glyphicon-usd"></i>Wallet</a>
+        </li>
+        <li {% if request.get_full_path == "/topup/" %} class="active" {% endif %}>
+          <a href="/topup"><i class="glyphicon glyphicon-chevron-up"></i>Topup</a>
+        </li>
+        <li {% if request.get_full_path == "/withdraw/" %} class="active" {% endif %}>
+          <a href="/withdraw"><i class="glyphicon glyphicon-chevron-down"></i>Withdraw</a>
+        </li>
+        <li {% if request.get_full_path == "/exchange/" %} class="active" {% endif %}>
+          <a href="/exchange"><i class="glyphicon glyphicon-retweet"></i>Exchange</a>
+        </li>
+        <li {% if request.get_full_path == "/transfer/" %} class="active" {% endif %}>
+          <a href="/transfer"><i class="glyphicon glyphicon-transfer"></i>Transfer</a>
+        </li>
+        <li {% if request.get_full_path == "/history/" %} class="active" {% endif %}>
+          <a href="/history"><i class="glyphicon glyphicon-hourglass"></i>History</a>
+        </li>
+        <li {% if request.get_full_path == "/rates/" %} class="active" {% endif %}>
+          <a href="/rates"><i class="glyphicon glyphicon-stats"></i>Rates</a>
+        </li>
+        <li {% if request.get_full_path == "/friends/" %} class="active" {% endif %}>
+          <a href="/friends"><i class="glyphicon glyphicon-user"></i>Friends</a>
+        </li>
+      </ul>
+
+      <ul class="list-unstyled CTAs">
+        <li><a href="https://github.com/alex97mihai/dotcserver/issues" class="bug">Report a bug</a></li>
+      </ul>
+    </nav>
+
+
+    <!-- Page Content Holder -->
+    <div id="content">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="navbar navbar-fixed-bottom navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/terms">© Dot Enterprises 2018 | London | Bucharest | T&Cs </a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+          <li><a href="/about">Learn More</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- END FOOTER -->
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <!-- Bootstrap Js CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#sidebarCollapse').on('click', function() {
+        $('#sidebar').toggleClass('active');
+      });
+    });
+  </script>
+
+<!-- AJAX -->
+  <script>
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: {% url 'get_notifications' %},  // URL to your view that serves new info
+        })
+        .done(function(response) {
+            $('#_appendHere').empty().append(response);
+        });
+    }, 1000)
+</script>
+
+<script>
+  setInterval(function() {
+      $.ajax({
+          type: "GET",
+          url: {% url 'notiflength' %},  // URL to your view that serves new info
+      })
+      .done(function(response) {
+          $('#notiflength').empty().append(response);
+      });
+  }, 1000)
+</script>
+
+  }
+
+</body>
+
+</html>

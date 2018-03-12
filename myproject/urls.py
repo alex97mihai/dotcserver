@@ -39,4 +39,7 @@ urlpatterns = [
     url(r'^add-friend/', addFriend, name='add-friend'),
     url(r'^friends/', friends, name='friends'),
     url(r'^notifications/', viewNotifications, name='notifications'),
+    url(r'^get_notifications/', get_notifications, name='get_notifications'),
+    url(r'^notiflength/', notiflength, name='notiflength'),
+
 ]
