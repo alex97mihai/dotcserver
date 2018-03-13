@@ -41,5 +41,6 @@ urlpatterns = [
     url(r'^notifications/', viewNotifications, name='notifications'),
     url(r'^get_notifications/', get_notifications, name='get_notifications'),
     url(r'^notiflength/', notiflength, name='notiflength'),
+    url(r'^mark_as_clear/', mark_as_clear, name='mark_as_clear'),
 
 ]

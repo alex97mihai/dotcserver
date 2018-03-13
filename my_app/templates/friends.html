@@ -5,14 +5,20 @@
 <h1 class="header-standard"> Friends <a href="/search-friends"><i class="small glyphicon glyphicon-plus"></i></a> </h1>
 
     {% for friend in friend_list %}
-    <p>{{ friend.friend.username }}</p>
+    <p>{{ friend.friend.username }} </p>
     {% endfor %}
 
   <!-- Pending Requests -->
-<h1 class="header-standard"> Pending </h1>
+<h1 class="header-standard"> Requests </h1>
 
     {% for request in request_list %}
-    <p>{{ request.friend.username }}</p>
+    <p>{{ request.creator.username }} <a href="/add-friend/?friend={{ request.creator.username }}&accepted=true"><i class="glyphicon glyphicon-ok-sign icon-green"></i></a> <a href=#><i class="glyphicon glyphicon-ok-sign icon-red"></i></a> </p>
+    {% endfor %}
+
+<h1 class="header-standard"> Pending </h1>
+
+    {% for pending in pending_list %}
+    <p>{{ pending.friend.username }} </p>
     {% endfor %}
 
   {% endblock %}

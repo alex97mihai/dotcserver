@@ -38,30 +38,18 @@
           <li><a href="#contact">Messages</a></li>
 <!-- NOTIFICATIONS -->
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <div id="notiflength">Notifications (<b>{{ notifications|length }}</b>)</div></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <div id="notiflength">Notifications2</div></a>
           <ul class="dropdown-menu notify-drop">
             <div class="notify-drop-title">
             	<div class="row">
-            		<div class="col-md-6 col-sm-6 col-xs-6">Notifications</div>
-            		<div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="" class="rIcon allRead" data-tooltip="tooltip" data-placement="bottom" title="tümü okundu."><i class="fa fa-dot-circle-o"></i></a></div>
+            		<div class="col-md-6 col-sm-6 col-xs-6">Notifications </div>
+            		<div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="#" id="clickingEvent" class="pop">(mark as read)</a></div>
             	</div>
             </div>
             <!-- end notify title -->
             <!-- notify content -->
             <div class="drop-content" id="_appendHere">
-              {% if notifications %}
-              {% for notification in notifications reversed%}
 
-            	<li>
-            		<div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
-            		<div class="col-md-9 col-sm-9 col-xs-9 pd-l0">{{ notification.notification }}
-                <p> Placeholder notification 2 here</p>
-            		<hr>
-            		<p class="time">18:39</p>
-            		</div>
-            	</li>
-              {% endfor %}
-              {% endif %}
 
             </div>
 
@@ -190,6 +178,18 @@
       });
   }, 1000)
 </script>
+
+<script>
+$(document).ready(function(){
+  $('a.pop').click(function() {
+      $.ajax({
+          type: "GET",
+          url: {% url 'mark_as_clear' %},  // URL to your view that serves new info
+      });
+  });
+});
+</script>
+
 
   }
 

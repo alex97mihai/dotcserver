@@ -5,6 +5,14 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 /* NOTIFICATION MENU */
 
+.icon-green{
+  color: #5CB85C;
+}
+
+.icon-red{
+  color: #e70c0c;
+}
+
 .navbar-default .dropdown-menu.notify-drop {
   min-width: 330px;
   background-color: #fff;
@@ -65,8 +73,13 @@
   margin: 0px 0px 8px 0px;
 }
 
+
 .navbar-default .dropdown-menu.notify-drop .allRead {
   margin-right: 7px;
+}
+
+.pop{
+  background-color: #fff;
 }
 
 .navbar-default .dropdown-menu.notify-drop .rIcon {
@@ -120,6 +133,9 @@
   color: #B97745;
 }
 
+#bg{
+  background-color: #fff;
+}
 .navbar-default .dropdown-menu.notify-drop .drop-content>li p.time:hover {
   background-image: linear-gradient(#fff, #fff);
 }

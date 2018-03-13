@@ -5,13 +5,14 @@
 </head>
 <body onload="hideUsers()">
           {% if sent %}
-          <h3 style="color: red">Invitation sent!</h3> {% endif %}
+          <h3 style="color: red">Invitation sent! <a href=/search-friends>Click here to add more friends!</a></h3>
+          {% else %}
           <input type="text" id="myInput" onkeyup="searchUser()" placeholder="Search for names..">
           <ul id="myUL">
             {% for user in user_list %}
             <li><a href="/add-friend/?friend={{ user.username }}"> {{ user.username }} </a></li>
             {% endfor %}
           </ul>
-
+          {% endif %}
 </body>
 {% endblock %}

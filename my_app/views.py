@@ -52,6 +52,7 @@ def signup(request):
 
 @login_required
 def topup(request):
+
     user = request.user
     if request.method == 'POST':
         form = TopUpForm(request.POST)
@@ -65,10 +66,12 @@ def topup(request):
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
             user.save()
-            return redirect('/hello/')
+            return redirect('/')
     else:
         form = TopUpForm()
-    return render(request, 'topup.html', {'form': form})
+    notifications=Notification.objects.filter(user=user)
+    context_dict={'notifications':notifications, 'form': form}
+    return render(request, 'topup.html', context_dict)
 
 @login_required
 def withdraw(request):
@@ -85,10 +88,12 @@ def withdraw(request):
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
             user.save()
-            return redirect('/hello/')
+            return redirect('/')
     else:
         form = WithdrawForm()
-    return render(request, 'withdraw.html', {'form': form})
+    notifications=Notification.objects.filter(user=user)
+    context_dict={'notifications':notifications, 'form': form}
+    return render(request, 'withdraw.html', context_dict)
 
 @login_required
 def transfer(request):
@@ -121,13 +126,16 @@ def transfer(request):
             notification = Notification(user = uid, user2 = user, notification_type = 'transfer-complete', date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification = "You have received %s%s from %s" % (currency, str(amount), user.username))
             notification.save()
 
-        return redirect('/hello/')
+        return redirect('/')
     else:
         form = TransferForm()
-    return render(request, 'transfer.html', {'form': form})
+    notifications=Notification.objects.filter(user=user)
+    context_dict={'notifications':notifications, 'form': form}
+    return render(request, 'transfer.html', context_dict)
 
 @login_required
 def viewRates(request):
+    user = request.user
     c = converter.CurrencyRates()
     eurusd = c.get_rate('EUR', 'USD')
     eurron = c.get_rate('EUR', 'RON')
@@ -135,20 +143,23 @@ def viewRates(request):
     roneur = c.get_rate('RON', 'EUR')
     usdron = c.get_rate('USD', 'RON')
     usdeur = c.get_rate('USD', 'EUR')
-    context_dict = {'eurusd':eurusd, 'eurron':eurron, 'ronusd':ronusd, 'roneur':roneur, 'usdron':usdron, 'usdeur':usdeur}
+    notifications=Notification.objects.filter(user=user)
+    context_dict = {'eurusd':eurusd, 'eurron':eurron, 'ronusd':ronusd, 'roneur':roneur, 'usdron':usdron, 'usdeur':usdeur, 'notifications':notifications}
     return render(request, 'rates.html', context_dict)
 
 @login_required
 def users(request):
+    user = request.user
     user_list = dbUser.objects.all()
-    context_dict = {'user_list':user_list}
+    notifications=Notification.objects.filter(user=user)
+    context_dict = {'user_list':user_list, 'notifications':notifications}
     return render(request, 'users.html', context_dict)
 
 @login_required
 def exchange(request):
+    user = request.user
     if request.method == 'POST':
         error = False
-        user = request.user
         c = converter.CurrencyRates()
         form = ExchangeForm(request.POST)
         if form.is_valid():
@@ -241,17 +252,20 @@ def exchange(request):
                     order.save()
                     order2.save()
 
-        return redirect('/hello/')
+        return redirect('/')
     else:
         form = ExchangeForm()
-    return render(request, 'exchange.html', {'form': form})
+    notifications=Notification.objects.filter(user=user)
+    context_dict={'notifications':notifications, 'form':form}
+    return render(request, 'exchange.html', context_dict)
 
 @login_required
 def historyView(request):
     user = request.user
     orders = Order.objects.filter(user=user.username, status='pending')
     completed_orders = CompleteOrders.objects.filter(user=user.username)
-    context_dict = {'orders':orders, 'completed_orders':completed_orders}
+    notifications=Notification.objects.filter(user=user)
+    context_dict = {'orders':orders, 'completed_orders':completed_orders, 'notifications':notifications}
     return render(request, 'history.html', context_dict)
 
 @login_required
@@ -271,20 +285,22 @@ def addFriend(request):
             notification2.save()
         else:
             friendship2 = Friendship(creator=creator, friend=friend)
-            notification = Notification(user=friend, user2 = creator, notification_type = "friend-accept", date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification="You have a friend request from %s" % creator.username)
+            notification = Notification(user=friend, user2 = creator, notification_type = "friend-request", date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification="You have a friend request from %s" % creator.username)
             notification.save()
         friendship2.save()
 
     sent = True
     context_dict = {'sent':sent}
-    return render(request, 'users.html', context_dict)
+    return redirect('/friends/')
 
 @login_required
 def friends(request):
     user = request.user
     friend_list = Friendship.objects.filter(creator=user, status='accepted')
-    request_list = Friendship.objects.filter(creator=user, status='sent')
-    context_dict = {'friend_list':friend_list, 'request_list':request_list}
+    request_list = Friendship.objects.filter(friend=user, status='sent')
+    pending_list = Friendship.objects.filter(creator=user, status='sent')
+    notifications=Notification.objects.filter(user=user)
+    context_dict = {'friend_list':friend_list, 'request_list':request_list, 'pending_list':pending_list, 'notifications':notifications}
     return render(request, 'friends.html', context_dict)
 
 @login_required
@@ -313,7 +329,17 @@ def get_notifications(request):
 def notiflength(request):
     if request.is_ajax():
         user = request.user
-        notifications = Notification.objects.filter(user = user)
+        notifications = Notification.objects.filter(user = user, status='unseen')
         return render(request, 'ajax/notiflength.html', {'notifications': notifications})
+    else:
+        return redirect ('/')
+
+def mark_as_clear(request):
+    if request.is_ajax():
+        user = request.user
+        notifications = Notification.objects.filter(user = user, status='unseen')
+        for notification in notifications:
+            notification.status='seen'
+            notification.save()
     else:
         return redirect ('/')
