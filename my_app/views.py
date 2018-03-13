@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
 from models import Order, CompleteOrders, Friendship, Notification
-from my_app.forms import SignUpForm, TopUpForm, WithdrawForm, TransferForm, ExchangeForm
+from my_app.forms import *
 # Non-django imports
 import os
 import datetime
@@ -325,7 +325,20 @@ def viewNotifications(request):
     return render(request, 'notifications.html', context_dict)
 
 
-
+@login_required
+def uploadPic(request):
+    user = request.user
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            user.profile.avatar=form.cleaned_data['image']
+            user.save()
+        return redirect('/wallet/')
+    else:
+        form = ImageUploadForm()
+        notifications=Notification.objects.filter(user=user)
+        context_dict={'notifications':notifications, 'form':form}
+        return render(request, 'uploadPic.html', context_dict)
 
 
 ### AJAX VIEWS ###

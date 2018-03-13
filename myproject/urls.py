@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 # import all views in my_app
 from my_app.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -41,6 +43,5 @@ urlpatterns = [
     url(r'^notiflength/', notiflength, name='notiflength'),
     url(r'^mark_as_clear/', mark_as_clear, name='mark_as_clear'),
     url(r'^profile/', profileView, name='profile'),
-
-
-]
+    url(r'^uploadpic/', uploadPic, name='uploadPic'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

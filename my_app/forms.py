@@ -16,7 +16,7 @@ class ExchangeForm(ModelForm):
 
 class SignUpForm(UserCreationForm):
     birth_date = forms.DateField(help_text='Required. Format: YYYY-MM-DD')
-    location = forms.CharField(label='Location:' )	
+    location = forms.CharField(label='Location:' )
     class Meta:
         model = User
         fields = ('username', 'birth_date', 'password1', 'password2', 'location')
@@ -30,8 +30,9 @@ class WithdrawForm(forms.Form):
     amount = forms.DecimalField(label='Amount: ')
 
 class TransferForm(forms.Form):
-    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies)) 
+    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
     amount = forms.DecimalField(label='Amount: ')
     username = forms.CharField(label='User:')
 
-
+class ImageUploadForm(forms.Form):
+    image = forms.ImageField()

@@ -14,6 +14,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+    avatar = models.ImageField(upload_to='documents', default='media/avatar.jpg')
     USD = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     EUR = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     RON = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
