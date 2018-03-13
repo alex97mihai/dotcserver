@@ -23,14 +23,11 @@
     <div class="container-fluid">
       <!-- LOGO -->
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">Dot.</a>
+        <a class="navbar-brand" href="#" id="sidebarCollapse">Dot.</a>
       </div>
       <!-- BUTTONS -->
       <div class="collapse navbar-collapse">
-        <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
-                                        <i class="glyphicon glyphicon-align-left"></i>
-                                        <span>Toggle Sidebar</span>
-                                    </button>
+
         <ul class="nav navbar-nav navbar-right">
 
           <li><a href="/logout">Logout</a></li>
@@ -72,7 +69,7 @@
     <!-- Sidebar Holder -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <img src="{{ user.profile.avatar.url }}" class="img-thumbnail">
+        <img src="{{ user.profile.avatar.url }}" class="img-thumbnail" id="avatar">
         <h3>Wallet</h3>
         <strong>$</strong>
       </div>
@@ -82,7 +79,7 @@
             <i class="glyphicon glyphicon-home"></i>Home</a>
           <ul class="collapse list-unstyled" id="homeSubmenu">
             <li><a href="/">Profile</a></li>
-            <li><a href="#">Settings</a></li>
+            <li><a href="/uploadpic">Settings</a></li>
           </ul>
         </li>
         <li {% if request.get_full_path == "/wallet/" %} class="active" {% endif %}>
@@ -152,6 +149,7 @@
     $(document).ready(function() {
       $('#sidebarCollapse').on('click', function() {
         $('#sidebar').toggleClass('active');
+        $('#avatar').toggleClass('hidden');
       });
     });
   </script>
