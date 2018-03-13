@@ -26,11 +26,23 @@ def HomeView(request):
     user=request.user
     notifications=Notification.objects.filter(user=user)
     context_dict={'notifications':notifications}
-    return render(request, 'index.html', context_dict)
+    return render(request, 'profile.html', context_dict)
+
+@login_required
+def walletView(request):
+    user=request.user
+    context_dict={'user':user}
+    return render(request, 'wallet.html', context_dict)
+
+@login_required
+def profileView(request):
+    user=request.user
+    context_dict={'user':user}
+    return render(request, 'profile.html', context_dict)
 
 def logoutView(request):
     logout(request)
-    return redirect('/hello/')
+    return redirect('/')
 
 def signup(request):
     if request.method == 'POST':
@@ -45,7 +57,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('/hello/')
+            return redirect('/')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -66,7 +78,7 @@ def topup(request):
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
             user.save()
-            return redirect('/')
+            return redirect('/wallet/')
     else:
         form = TopUpForm()
     notifications=Notification.objects.filter(user=user)
@@ -88,7 +100,7 @@ def withdraw(request):
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
             user.save()
-            return redirect('/')
+            return redirect('/wallet/')
     else:
         form = WithdrawForm()
     notifications=Notification.objects.filter(user=user)
@@ -126,7 +138,7 @@ def transfer(request):
             notification = Notification(user = uid, user2 = user, notification_type = 'transfer-complete', date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'), notification = "You have received %s%s from %s" % (currency, str(amount), user.username))
             notification.save()
 
-        return redirect('/')
+        return redirect('/wallet/')
     else:
         form = TransferForm()
     notifications=Notification.objects.filter(user=user)
@@ -252,7 +264,7 @@ def exchange(request):
                     order.save()
                     order2.save()
 
-        return redirect('/')
+        return redirect('/wallet/')
     else:
         form = ExchangeForm()
     notifications=Notification.objects.filter(user=user)

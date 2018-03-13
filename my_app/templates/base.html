@@ -76,15 +76,16 @@
         <strong>$</strong>
       </div>
       <ul class="list-unstyled components">
-        <li>
+        <li {% if request.get_full_path == "/" or request.get_full_path == "/profile/" %} class="active" {% endif %}>
           <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
             <i class="glyphicon glyphicon-home"></i>Home</a>
           <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li><a href="/">Profile</a></li>
             <li><a href="#">Settings</a></li>
           </ul>
         </li>
-        <li {% if request.get_full_path == "/" %} class="active" {% endif %}>
-          <a href="/"><i class="glyphicon glyphicon-usd"></i>Wallet</a>
+        <li {% if request.get_full_path == "/wallet/" %} class="active" {% endif %}>
+          <a href="/wallet"><i class="glyphicon glyphicon-usd"></i>Wallet</a>
         </li>
         <li {% if request.get_full_path == "/topup/" %} class="active" {% endif %}>
           <a href="/topup"><i class="glyphicon glyphicon-chevron-up"></i>Topup</a>

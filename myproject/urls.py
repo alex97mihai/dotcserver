@@ -21,14 +21,12 @@ from my_app.views import *
 
 
 urlpatterns = [
-   # url(r'^$', HomeView.as_view()),
     url(r'^$', HomeView, name='home'),
+    url(r'^wallet/', walletView, name='wallet'),
     url(r'^signup/$', signup, name='signup'),
     url(r'^login/', auth_views.login, name='login'),
     url(r'^logout/', logoutView, name='logout'),
     url(r'^admin/', admin.site.urls),
- #   url(r'^hello/', HomeView.as_view()),
-    url(r'^hello/', HomeView, name='helloHome'),
     url(r'^topup/', topup, name='topup'),
     url(r'^withdraw/', withdraw, name='withdraw'),
     url(r'^transfer/', transfer, name='transfer'),
@@ -42,5 +40,7 @@ urlpatterns = [
     url(r'^get_notifications/', get_notifications, name='get_notifications'),
     url(r'^notiflength/', notiflength, name='notiflength'),
     url(r'^mark_as_clear/', mark_as_clear, name='mark_as_clear'),
+    url(r'^profile/', profileView, name='profile'),
+
 
 ]

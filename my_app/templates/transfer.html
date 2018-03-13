@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <form class="w3-large" method="post">
 
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class=header-standard> <h1> Transfer money to someone! </h1> </div>
 
-    <button class="w3-border w3-button" type="submit">Transfer</button>
-  </form>
+<div class="col-md-6">
+  <div class="container-fluid" id="login-form">
+    <form class="form-horizontal" method="post">{% csrf_token %}
+      <fieldset>
+        {% for field in form %}
+        <div class="control-group">
+          <label class="control-label">{{ field.label }}</label>
+          <div class="controls">{{ field }} {% if field.help_text %}
+            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </fieldset>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-space">Transfer</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

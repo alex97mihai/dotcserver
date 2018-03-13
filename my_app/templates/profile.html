@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+  <div class="jumbotron" id="profile">
+
+    <h1 class="page-header"><small>Profile</small></h1>
+    <p>Username: {{ user.username }}</p>
+    <p>Location: {{ user.profile.location }}</p>
+    <p>Birthdate: {{ user.profile.birth_date }}</p>
+
+  </div>
+
+  {% endif %}
+
+{% endblock %}

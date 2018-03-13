@@ -2,11 +2,26 @@
 
 {% block content %}
 
-  <form class="w3-large" method="post">
+<div class=header-standard> <h1> Withdraw money here! </h1> </div>
 
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <button class="w3-border w3-button" type="submit"> Withdraw</button>
-  </form>
+<div class="col-md-6">
+  <div class="container-fluid" id="login-form">
+    <form class="form-horizontal" method="post">{% csrf_token %}
+      <fieldset>
+        {% for field in form %}
+        <div class="control-group">
+          <label class="control-label">{{ field.label }}</label>
+          <div class="controls">{{ field }} {% if field.help_text %}
+            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </fieldset>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-space">Withdraw</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}
