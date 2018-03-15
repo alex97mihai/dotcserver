@@ -44,4 +44,6 @@ urlpatterns = [
     url(r'^mark_as_clear/', mark_as_clear, name='mark_as_clear'),
     url(r'^profile/', profileView, name='profile'),
     url(r'^uploadpic/', uploadPic, name='uploadPic'),
+    url(r'^cards/', addCard, name='addCard'),
+    url(r'^settings/', Settings, name='settings'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

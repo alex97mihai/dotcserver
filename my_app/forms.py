@@ -15,11 +15,17 @@ class ExchangeForm(ModelForm):
         fields = ('home_currency', 'target_currency', 'home_currency_amount')
 
 class SignUpForm(UserCreationForm):
-    birth_date = forms.DateField(help_text='Required. Format: YYYY-MM-DD')
-    location = forms.CharField(label='Location:' )
+
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        self.fields['username'].help_text = ''
+        self.fields['password2'].help_text = ''
+        self.fields['password1'].help_text = 'At least 8 characters'
+
     class Meta:
         model = User
-        fields = ('username', 'birth_date', 'password1', 'password2', 'location')
+        fields = ('username', 'password1', 'password2')
+
 
 class TopUpForm(forms.Form):
     currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
@@ -36,3 +42,11 @@ class TransferForm(forms.Form):
 
 class ImageUploadForm(forms.Form):
     image = forms.ImageField()
+
+class AddCardForm(forms.Form):
+    number = forms.CharField(label='Card Number: ')
+    csv = forms.CharField(label='CSV')
+    exp_date = forms.DateField(label='Expiration Date:')
+    name = forms.CharField(label='Name:')
+    address = forms.CharField(label='Address:')
+    phone = forms.CharField(label='Phone:')

@@ -12,7 +12,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=30, blank=True)
+    location = models.CharField(max_length=30, blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
     avatar = models.ImageField(upload_to='documents', default='media/avatar.jpg')
     USD = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -23,6 +23,16 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+
+class Card(models.Model):
+    user = models.ForeignKey(User, related_name="card_set")
+    number = models.CharField(max_length=15, blank=True)
+    csv = models.CharField(max_length=3, blank=True)
+    exp_date = models.DateField(null=True, blank=True)
+    name = models.CharField(max_length=50, blank=True)
+    address = models.TextField(blank=True)
+    phone = models.CharField(max_length=15)
 
 
 class Friendship(models.Model):

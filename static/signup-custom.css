@@ -5,21 +5,48 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 /* NOTIFICATION MENU */
 
+.label-etc{
+  margin-bottom: 5px;
+}
+.help-inline{
+  color: #ee4c06;
+  display: block;
+}
 
-.settings-link{
+.controls{
   color: #000;
 }
 
-.settings-link:hover{
-  color: #ec7930;
+.form-actions{
+  padding-top: 10px;
+  margin: 0;
+  text-align: center;
 }
 
-.icon-green{
-  color: #5CB85C;
+.btn-primary{
+  background-color: #d67400;
 }
 
-.icon-red{
-  color: #e70c0c;
+.control-label{
+  color: #000;
+}
+
+.jumbotron{
+  display:flex;
+}
+
+a.signup-message:link{
+  color: #252552;
+  text-align: center;
+  margin: auto;
+}
+
+a.signup-message:visited{
+  color: #252552;
+}
+
+a.signup-message:hover{
+  color: #d67400;
 }
 
 .navbar-default .dropdown-menu.notify-drop {
@@ -82,13 +109,8 @@
   margin: 0px 0px 8px 0px;
 }
 
-
 .navbar-default .dropdown-menu.notify-drop .allRead {
   margin-right: 7px;
-}
-
-.pop{
-  background-color: #fff;
 }
 
 .navbar-default .dropdown-menu.notify-drop .rIcon {
@@ -142,9 +164,6 @@
   color: #B97745;
 }
 
-#bg{
-  background-color: #fff;
-}
 .navbar-default .dropdown-menu.notify-drop .drop-content>li p.time:hover {
   background-image: linear-gradient(#fff, #fff);
 }
@@ -218,6 +237,7 @@ a, a:hover, a:focus {
   font-size: 2.2em;
 }
 
+
 .navbar-btn {
   box-shadow: none;
   outline: none !important;
@@ -245,39 +265,19 @@ i, span {
 }
 
 /* ---------------------------------------------------
-    FORMS css
------------------------------------------------------ */
-
-
-.control-label{
-  color: #000;
-}
-.controls{
-  color: #000;
-}
-
-.btn-space{
-  margin-top: 10px;
-}
-
-.alert-space{
-  margin-top:20px;
-  margin-bottom: 20px;
-}
-/* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
 .wrapper {
   display: flex;
   align-items: stretch;
-  background-color: #fff ;
+  background-color: #252552 ;
 }
 
 #sidebar {
   min-width: 250px;
   max-width: 250px;
-  background: #252552;
+  background: #4b0049;
   color: #fff;
   transition: all 0.3s;
 }
@@ -328,7 +328,7 @@ i, span {
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #252552;
+  background: #4b0049;
   margin-top: 80px;
   margin-bottom: -20px;
   font-family: 'Poppins';
@@ -420,81 +420,11 @@ a.bug, a.bug:hover {
 ----------------------------------------------------- */
 
 #content {
-  margin-top: 100px;
-  margin-left: 100px;
   min-height: 100vh;
   transition: all 0.3s;
   color: #fff;
 }
 
-.header-standard{
-  color: #000;
-}
-
-.header-standard p {
-  color: #fff;
-}
-
-.table tr {
-  color: #000;
-}
-
-#profile {
-  color: #000;
-  background-color: #fff;
-  padding: 10px;
-}
-
-#profile-header{
-  color: #000;
-}
-
-#myInput {
-  background-image: url('/css/searchicon.png');
-  /* Add a search icon to input */
-  background-position: 10px 12px;
-  /* Position the search icon */
-  background-repeat: no-repeat;
-  /* Do not repeat the icon image */
-  width: 100%;
-  /* Full-width */
-  font-size: 16px;
-  /* Increase font-size */
-  padding: 12px 20px 12px 40px;
-  /* Add some padding */
-  border: 1px solid #ddd;
-  /* Add a grey border */
-  margin-bottom: 12px;
-  /* Add some space below the input */
-  color: #000;
-}
-#myUL {
-  /* Remove default list styling */
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-#myUL li a {
-  border: 1px solid #ddd;
-  /* Add a border to all links */
-  margin-top: -1px;
-  /* Prevent double borders */
-  background-color: #f6f6f6;
-  /* Grey background color */
-  padding: 12px;
-  /* Add some padding */
-  text-decoration: none;
-  /* Remove default text underline */
-  font-size: 18px;
-  /* Increase the font-size */
-  color: black;
-  /* Add a black text color */
-  display: block;
-}
-#myUL li a:hover:not(.header) {
-  background-color: #eee;
-  /* Add a hover effect to all links, except for headers */
-}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

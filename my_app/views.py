@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship, Notification
+from models import Order, CompleteOrders, Friendship, Notification, Card
 from my_app.forms import *
 # Non-django imports
 import os
@@ -341,6 +341,35 @@ def uploadPic(request):
         return render(request, 'uploadPic.html', context_dict)
 
 
+@login_required
+def addCard(request):
+    user = request.user
+    if request.method == 'POST':
+        form = AddCardForm(request.POST)
+        if form.is_valid():
+            card = Card()
+            card.user = user
+            card.number = form.cleaned_data.get('number')
+            card.csv = form.cleaned_data.get('csv')
+            card.exp_date = form.cleaned_data.get('exp_date')
+            card.name = form.cleaned_data.get('name')
+            card.address = form.cleaned_data.get('address')
+            card.phone = form.cleaned_data.get('phone')
+            card.save()
+        return redirect('/cards/')
+    else:
+        form = AddCardForm()
+        notifications=Notification.objects.filter(user=user)
+        context_dict={'notifications':notifications, 'form':form}
+        return render(request, 'cards.html', context_dict)
+
+
+@login_required
+def Settings(request):
+    user = request.user
+    notifications=Notification.objects.filter(user=user)
+    context_dict={'notifications':notifications}
+    return render(request, 'settings.html', context_dict)
 ### AJAX VIEWS ###
 
 def get_notifications(request):
