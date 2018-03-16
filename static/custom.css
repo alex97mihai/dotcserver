@@ -5,8 +5,16 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 /* NOTIFICATION MENU */
 
+.top-buffer {
+  margin-top:20px;
+}
+
+.link-box{
+  margin: 10px;
+}
 
 .settings-link{
+  font-size: large;
   color: #000;
 }
 
@@ -247,6 +255,11 @@ i, span {
 /* ---------------------------------------------------
     FORMS css
 ----------------------------------------------------- */
+.flex-full {
+  align-self:stretch;
+  width: 100%;
+  height: auto;
+}
 
 
 .control-label{
@@ -272,6 +285,17 @@ i, span {
   display: flex;
   align-items: stretch;
   background-color: #fff ;
+}
+
+#content {
+  padding-top: 100px;
+  padding-left: 100px;
+  padding-right: 100px;
+  min-height: 100vh;
+  transition: all 0.3s;
+  color: #fff;
+  background-color: #fff;
+  width: 100%;
 }
 
 #sidebar {
@@ -419,12 +443,35 @@ a.bug, a.bug:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 
-#content {
-  margin-top: 100px;
-  margin-left: 100px;
-  min-height: 100vh;
-  transition: all 0.3s;
-  color: #fff;
+#col1{
+  border-right: 1px solid #000;
+}
+
+.default-card{
+  font-weight: 600;
+  border: 3px dashed #157ffb;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.other-card{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-sizing{
+  padding: 10px;
+}
+
+.card-jumbo{
+  background-color: #fff;
+}
+.card-details{
+  color: #000;
+  font-size: 1em;
 }
 
 .header-standard{

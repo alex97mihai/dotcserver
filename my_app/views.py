@@ -358,9 +358,21 @@ def addCard(request):
             card.save()
         return redirect('/cards/')
     else:
+        if(request.GET.get('card', '')):
+            default_new = request.GET.get('card', '')
+            user.profile.default_payment = int(default_new)
+            user.save()
         form = AddCardForm()
+        cards = Card.objects.filter(user=user)
+        for available_card in cards:
+            available_card.number = available_card.number[-4:]
         notifications=Notification.objects.filter(user=user)
-        context_dict={'notifications':notifications, 'form':form}
+        if (request.GET.get('rm', '')):
+            rm = request.GET.get('rm', '')
+            if (Card.objects.get(pk=int(rm), user=user)):
+                Card.objects.get(pk=int(rm)).delete()
+                cards = Card.objects.filter(user=user)
+        context_dict={'notifications':notifications, 'form':form, 'cards':cards}
         return render(request, 'cards.html', context_dict)
 
 

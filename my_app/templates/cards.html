@@ -1,27 +1,96 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+<div class="container-fluid">
+  <div class="row">
 
-<div class=header-standard> <h1> Add a payment method below! </h1> </div>
+    {% if cards %}
+    <!-- AVAILABLE PAYMENT METHODS -->
+        <div class="col-xs-6" id="col1">
+          <div class="jumbotron card-jumbo">
 
-<div class="col-md-6">
-  <div class="container-fluid" id="login-form">
-    <form class="form-horizontal" method="post">{% csrf_token %}
-      <fieldset>
-        {% for field in form %}
-        <div class="control-group">
-          <label class="control-label">{{ field.label }}</label>
-          <div class="controls">{{ field }} {% if field.help_text %}
-            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+            <div class="row">
+              <div class=header-standard>
+                <h2> Your Cards </h2>
+              </div>
+            </div>
+
+            {% for card in cards %}
+
+            {% if card.pk == user.profile.default_payment %}
+              <div class="row top-buffer default-card">
+                <div class="col-xs-4 img-sizing">
+                  <img src="/static/cardplaceholder.png" class="img-responsive float-left">
+                </div>
+                <div class="col-xs-8 default-payment">
+                      <div class="card-details"> XXXX-XXXX-XXXX-{{ card.number }} </div>
+                      <div class="card-details"> {{ card.name }} </div>
+                      <div class="card-details"> {{ card.exp_date }} </div>
+                      <div>
+                        <a href="/cards/?rm={{ card.pk }}" class="card-details" style="color: #fc0000">Remove</a>
+                      </div>
+               </div>
+              </div>
             {% endif %}
+
+            {% endfor %}
+
+          {% for card in cards %}
+          {%if card.pk != user.profile.default_payment %}
+
+            <div class="row top-buffer other-card">
+              <div class="col-xs-4 img-sizing">
+                <img src="/static/cardplaceholder.png" class="img-responsive float-left">
+              </div>
+              <div class="col-xs-8">
+                <div class="card-details"> XXXX-XXXX-XXXX-{{ card.number }} </div>
+                <div class="card-details"> {{ card.name }} </div>
+                <div class="card-details"> {{ card.exp_date }} </div>
+                <div>
+                  <a href="/cards/?card={{ card.pk }}" class="card-details" style="color: #2ddf39">Make Default</a>
+                </div>
+                <div>
+                  <a href="/cards/?rm={{ card.pk }}" class="card-details" style="color: #fc0000">Remove</a>
+                </div>
+              </div>
+            </div>
+
+            {% endif %}
+          {% endfor %}
+
           </div>
         </div>
-        {% endfor %}
-      </fieldset>
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary btn-space">Add</button>
+    <!-- END AVAILABLE PAYMENT -->
+    {% endif %}
+
+   <!-- NEW CARD -->
+    <div class="col-xs-6">
+      <div class="jumbotron text-center card-jumbo">
+         <button class="btn btn-primary btn-space" data-toggle="collapse" data-target="#add">Add a new payment method</button>
+
+        <div id="add" class="collapse">
+          <br>
+        <div class="container-fluid" id="login-form">
+          <form class="form-horizontal" method="post">{% csrf_token %}
+            <fieldset>
+              {% for field in form %}
+              <div class="control-group">
+                <label class="control-label">{{ field.label }}</label>
+                <div class="controls">{{ field }} {% if field.help_text %}
+                  <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </fieldset>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-space">Add</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}

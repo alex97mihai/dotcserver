@@ -32,6 +32,21 @@
   display:flex;
 }
 
+a.company-signup-message:link{
+  color: #e21313;
+  text-align: center;
+  margin: auto;
+}
+
+a.company-signup-message:visited{
+  color: #e21313;
+}
+
+a.company-signup-message:hover{
+  color: #d67400;
+}
+
+
 a.signup-message:link{
   color: #252552;
   text-align: center;
