@@ -1,23 +1,14 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
   {% if user.is_authenticated %}
-
-  <div class="jumbotron" id="profile">
-
-    <h1 class="page-header"><small>Upload a cool profile picture</small></h1>
-
-    <form action="/uploadpic/" method="post" enctype="multipart/form-data">{% csrf_token %}
-    <p>
-        <input id="id_image" type="file" class="" name="image">
-    </p>
-    <input type="submit" value="Submit" />
-</form>
-
-  </div>
-
-
+    <div class="jumbotron" id="profile">
+      <h1 class="page-header"><small>Upload a cool profile picture</small></h1>
+      <form action="/uploadpic/" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <p>
+          <input id="id_image" type="file" class="" name="image">
+        </p>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
   {% endif %}
-
 {% endblock %}

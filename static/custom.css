@@ -5,6 +5,10 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 /* NOTIFICATION MENU */
 
+#error-alert{
+  color: #e70c0c;
+}
+
 .top-buffer {
   margin-top:20px;
 }

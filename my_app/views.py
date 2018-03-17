@@ -369,7 +369,7 @@ def addCard(request):
         notifications=Notification.objects.filter(user=user)
         if (request.GET.get('rm', '')):
             rm = request.GET.get('rm', '')
-            if (Card.objects.get(pk=int(rm), user=user)):
+            if (Card.objects.filter(pk=int(rm), user=user).exists()):
                 Card.objects.get(pk=int(rm)).delete()
                 cards = Card.objects.filter(user=user)
         context_dict={'notifications':notifications, 'form':form, 'cards':cards}
