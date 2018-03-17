@@ -154,6 +154,8 @@
   color: #B97745;
 }
 
+
+
 #bg{
   background-color: #fff;
 }
@@ -265,6 +267,9 @@ i, span {
   height: auto;
 }
 
+.fieldset{
+  min-width: unset;
+}
 
 .control-label{
   color: #000;
@@ -281,6 +286,8 @@ i, span {
   margin-top:20px;
   margin-bottom: 20px;
 }
+
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -447,9 +454,7 @@ a.bug, a.bug:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 
-#col1{
-  border-right: 1px solid #000;
-}
+
 
 .default-card{
   font-weight: 600;
@@ -596,4 +601,12 @@ a.bug, a.bug:hover {
   #sidebarCollapse span {
     display: none;
   }
+}
+
+@media(min-width: 1200px){
+
+  #col1 {
+  border-right: 1px solid #000;
+  }
+
 }

@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from models import Profile, Order
 
+import datetime
+
 # used for the currency selection widget
 currencies = [('EUR','EUR'),('USD','USD'),('RON','RON'),]
 class ExchangeForm(ModelForm):
@@ -43,10 +45,14 @@ class TransferForm(forms.Form):
 class ImageUploadForm(forms.Form):
     image = forms.ImageField()
 
+def last_years():
+    first_year = datetime.datetime.now().year - 6
+    return list(range(first_year + 7, first_year, -1))
+
 class AddCardForm(forms.Form):
-    number = forms.CharField(label='Card Number: ')
-    csv = forms.CharField(label='CSV')
-    exp_date = forms.DateField(label='Expiration Date:')
-    name = forms.CharField(label='Name:')
-    address = forms.CharField(label='Address:')
-    phone = forms.CharField(label='Phone:')
+    number = forms.CharField(label='Card Number: ', widget=forms.TextInput(attrs={'placeholder': '4111-1111-1111-1111'}))
+    csv = forms.CharField(label='CSV', widget=forms.TextInput(attrs={'placeholder': '123'}))
+    exp_date = forms.CharField(label='Expiration Date:', widget=forms.TextInput(attrs={'placeholder': '01/20'}))
+    name = forms.CharField(label='Name:', widget=forms.TextInput(attrs={'placeholder': 'Captain Awesome'}))
+    address = forms.CharField(label='Address:', widget=forms.TextInput(attrs={'placeholder': '123 Awesome Street'}))
+    phone = forms.CharField(label='Phone:', widget=forms.TextInput(attrs={'placeholder': '+44 123456789'}))

@@ -30,10 +30,11 @@ class Card(models.Model):
     user = models.ForeignKey(User, related_name="card_set")
     number = models.CharField(max_length=15, blank=True)
     csv = models.CharField(max_length=3, blank=True)
-    exp_date = models.DateField(null=True, blank=True)
+    exp_date = models.CharField(max_length=5, null=True, blank=True)
     name = models.CharField(max_length=50, blank=True)
     address = models.TextField(blank=True)
     phone = models.CharField(max_length=15)
+    provider = models.CharField(max_length=20, blank=True)
 
 
 class Friendship(models.Model):

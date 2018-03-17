@@ -355,6 +355,14 @@ def addCard(request):
             card.name = form.cleaned_data.get('name')
             card.address = form.cleaned_data.get('address')
             card.phone = form.cleaned_data.get('phone')
+            if (card.number[0]=='4'):
+                card.provider = 'Visa'
+            elif (card.number[0]=='5'):
+                card.provider = 'MasterCard'
+            elif (card.number[0]=='3'):
+                card.provider = 'American Express'
+            else:
+                card.provider = 'Unknown'
             card.save()
         return redirect('/cards/')
     else:

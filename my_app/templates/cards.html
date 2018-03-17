@@ -5,7 +5,7 @@
 
     {% if cards %}
     <!-- AVAILABLE PAYMENT METHODS -->
-        <div class="col-xs-6" id="col1">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" id="col1">
           <div class="jumbotron card-jumbo">
 
             <div class="row">
@@ -19,7 +19,19 @@
             {% if card.pk == user.profile.default_payment %}
               <div class="row top-buffer default-card">
                 <div class="col-xs-4 img-sizing">
-                  <img src="/static/cardplaceholder.png" class="img-responsive float-left">
+                  {% ifequal card.provider|stringformat:"s" 'MasterCard' %}
+                  <img src="/static/mastercard.png" class="img-responsive float-left">
+                  {% endifequal %}
+
+                  {% ifequal card.provider|stringformat:"s" 'Visa' %}
+                  <img src="/static/visa.png" class="img-responsive float-left">
+                  {% endifequal %}
+                  
+                  {% ifnotequal card.provider|stringformat:"s" 'MasterCard' %}
+                    {% ifnotequal card.provider|stringformat:"s" 'Visa' %}
+                      <img src="/static/blank.png" class="img-responsive float-left">
+                    {% endifnotequal %}
+                  {% endifnotequal %}
                 </div>
                 <div class="col-xs-8 default-payment">
                       <div class="card-details"> XXXX-XXXX-XXXX-{{ card.number }} </div>
@@ -39,7 +51,19 @@
 
             <div class="row top-buffer other-card">
               <div class="col-xs-4 img-sizing">
-                <img src="/static/cardplaceholder.png" class="img-responsive float-left">
+                  {% ifequal card.provider|stringformat:"s" 'MasterCard' %}
+                  <img src="/static/mastercard.png" class="img-responsive float-left">
+                  {% endifequal %}
+                  
+                  {% ifequal card.provider|stringformat:"s" 'Visa' %}
+                  <img src="/static/visa.png" class="img-responsive float-left">
+                  {% endifequal %}
+                  
+                  {% ifnotequal card.provider|stringformat:"s" 'MasterCard' %}
+                    {% ifnotequal card.provider|stringformat:"s" 'Visa' %}
+                      <img src="/static/blank.png" class="img-responsive float-left">
+                    {% endifnotequal %}
+                  {% endifnotequal %}
               </div>
               <div class="col-xs-8">
                 <div class="card-details"> XXXX-XXXX-XXXX-{{ card.number }} </div>
@@ -63,7 +87,7 @@
     {% endif %}
 
    <!-- NEW CARD -->
-    <div class="col-xs-6">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
       <div class="jumbotron text-center card-jumbo">
          <button class="btn btn-primary btn-space" data-toggle="collapse" data-target="#add">Add a new payment method</button>
 
@@ -71,7 +95,7 @@
           <br>
         <div class="container-fluid" id="login-form" onsubmit="return validateForm()">
           <form class="form-horizontal" method="post" name="card-form">{% csrf_token %}
-            <fieldset>
+            <fieldset class="fieldset">
               {% for field in form %}
               <div class="control-group">
                 <label class="control-label">{{ field.label }}</label>
@@ -123,15 +147,26 @@
 
    function validateForm() {
     document.getElementById('error-alert').innerHTML ='';
+    
+    
     var x = document.forms["card-form"]["number"].value;
     if (!mod10_check(x)) {
     document.getElementById('error-alert').innerHTML += '<span class="help-inline">Please enter a valid credit card.</span> </br>';
     }
+    
     var y = document.forms["card-form"]["csv"].value;
     var strlen = y.length;
     if (strlen>3) {
     document.getElementById('error-alert').innerHTML += '<span class="help-inline">CSV not valid.</span>';
     }
+    
+    var z = document.forms["card-form"]["exp_date"].value;
+    var month = parseInt(z.substring(0,2))
+    var year = parseInt(z.substring(3,5))
+    if(month<1 || month >12 || year < 18){
+      document.getElementById('error-alert').innerHTML += '<span class="help-inline">Date not valid. Use format MM/YY </span>';
+    }
+
     if(document.getElementById('error-alert').innerHTML != '') {
     return false;
     }
