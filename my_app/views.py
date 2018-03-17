@@ -305,6 +305,15 @@ def addFriend(request):
     context_dict = {'sent':sent}
     return redirect('/friends/')
 
+
+@login_required
+def terms(request):
+    user = request.user
+    notifications=Notification.objects.filter(user=user)
+    context_dict = {'notifications':notifications}
+    return render(request, 'terms.html', context_dict)
+
+
 @login_required
 def friends(request):
     user = request.user
@@ -355,6 +364,7 @@ def addCard(request):
             card.name = form.cleaned_data.get('name')
             card.address = form.cleaned_data.get('address')
             card.phone = form.cleaned_data.get('phone')
+            card.c_currency = form.cleaned_data.get('c_currency')
             if (card.number[0]=='4'):
                 card.provider = 'Visa'
             elif (card.number[0]=='5'):

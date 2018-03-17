@@ -46,4 +46,5 @@ urlpatterns = [
     url(r'^uploadpic/', uploadPic, name='uploadPic'),
     url(r'^cards/', addCard, name='addCard'),
     url(r'^settings/', Settings, name='settings'),
+    url(r'^terms/', terms, name='terms'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

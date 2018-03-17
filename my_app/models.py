@@ -35,6 +35,7 @@ class Card(models.Model):
     address = models.TextField(blank=True)
     phone = models.CharField(max_length=15)
     provider = models.CharField(max_length=20, blank=True)
+    c_currency = models.CharField(max_length=10, blank=True, null=True)
 
 
 class Friendship(models.Model):

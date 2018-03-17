@@ -185,6 +185,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   background: #fafafa;
+  overflow: hidden;
 }
 
 p {
@@ -258,9 +259,24 @@ i, span {
   display: inline-block;
 }
 
+
+#terms{
+  max-height: 600px;
+  color: #000;
+}
+
 /* ---------------------------------------------------
     FORMS css
 ----------------------------------------------------- */
+
+
+
+#id_c_currency{
+  min-width: 53%;
+  text-align: center;
+
+}
+
 .flex-full {
   align-self:stretch;
   width: 100%;

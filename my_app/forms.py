@@ -8,6 +8,7 @@ import datetime
 
 # used for the currency selection widget
 currencies = [('EUR','EUR'),('USD','USD'),('RON','RON'),]
+
 class ExchangeForm(ModelForm):
     home_currency = forms.CharField(label='From: ', widget=forms.Select(choices=currencies))
     target_currency = forms.CharField(label='To: ', widget=forms.Select(choices=currencies))
@@ -53,6 +54,7 @@ class AddCardForm(forms.Form):
     number = forms.CharField(label='Card Number: ', widget=forms.TextInput(attrs={'placeholder': '4111-1111-1111-1111'}))
     csv = forms.CharField(label='CSV', widget=forms.TextInput(attrs={'placeholder': '123'}))
     exp_date = forms.CharField(label='Expiration Date:', widget=forms.TextInput(attrs={'placeholder': '01/20'}))
+    c_currency = forms.CharField(label='Currency:', widget=forms.Select(choices=currencies))
     name = forms.CharField(label='Name:', widget=forms.TextInput(attrs={'placeholder': 'Captain Awesome'}))
     address = forms.CharField(label='Address:', widget=forms.TextInput(attrs={'placeholder': '123 Awesome Street'}))
     phone = forms.CharField(label='Phone:', widget=forms.TextInput(attrs={'placeholder': '+44 123456789'}))

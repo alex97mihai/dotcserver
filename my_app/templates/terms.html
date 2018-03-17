@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Dot.</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="/static/terms-custom.css">
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <div class="navbar navbar-fixed-top navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- LOGO -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#" id="sidebarCollapse">Dot.</a>
+      </div>
+      <!-- BUTTONS -->
+      <div class="collapse navbar-collapse">
+
+        <ul class="nav navbar-nav navbar-right">
+
+          <li><a href="/logout">Logout</a></li>
+          <li><a href="/settings">Settings</a></li>
+          <li><a href="#contact">Messages</a></li>
+<!-- NOTIFICATIONS -->
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <div id="notiflength">Notifications2</div></a>
+          <ul class="dropdown-menu notify-drop">
+            <div class="notify-drop-title">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">Notifications </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="#" id="clickingEvent" class="pop">(mark as read)</a></div>
+                </div>
+            </div>
+            <!-- end notify title -->
+            <!-- notify content -->
+            <div class="drop-content" id="_appendHere">
+
+
+            </div>
+
+            <div class="notify-drop-footer text-center">
+                <a href=""><i class="fa fa-eye"></i> Show all </a>
+            </div>
+          </ul>
+        </li>
+<!-- END NOTIFICATIONS -->
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <img src="{{ user.profile.avatar.url }}" class="img-thumbnail" id="avatar">
+        <h3>Wallet</h3>
+        <strong>$</strong>
+      </div>
+      <ul class="list-unstyled components">
+        <li {% if request.get_full_path == "/" or request.get_full_path == "/profile/" %} class="active" {% endif %}>
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+            <i class="glyphicon glyphicon-home"></i>Home</a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li><a href="/">Profile</a></li>
+            <li><a href="/settings">Settings</a></li>
+          </ul>
+        </li>
+        <li {% if request.get_full_path == "/wallet/" %} class="active" {% endif %}>
+          <a href="/wallet"><i class="glyphicon glyphicon-usd"></i>Wallet</a>
+        </li>
+        <li {% if request.get_full_path == "/topup/" %} class="active" {% endif %}>
+          <a href="/topup"><i class="glyphicon glyphicon-chevron-up"></i>Topup</a>
+        </li>
+        <li {% if request.get_full_path == "/withdraw/" %} class="active" {% endif %}>
+          <a href="/withdraw"><i class="glyphicon glyphicon-chevron-down"></i>Withdraw</a>
+        </li>
+        <li {% if request.get_full_path == "/exchange/" %} class="active" {% endif %}>
+          <a href="/exchange"><i class="glyphicon glyphicon-retweet"></i>Exchange</a>
+        </li>
+        <li {% if request.get_full_path == "/transfer/" %} class="active" {% endif %}>
+          <a href="/transfer"><i class="glyphicon glyphicon-transfer"></i>Transfer</a>
+        </li>
+        <li {% if request.get_full_path == "/history/" %} class="active" {% endif %}>
+          <a href="/history"><i class="glyphicon glyphicon-hourglass"></i>History</a>
+        </li>
+        <li {% if request.get_full_path == "/rates/" %} class="active" {% endif %}>
+          <a href="/rates"><i class="glyphicon glyphicon-stats"></i>Rates</a>
+        </li>
+        <li {% if request.get_full_path == "/friends/" %} class="active" {% endif %}>
+          <a href="/friends"><i class="glyphicon glyphicon-user"></i>Friends</a>
+        </li>
+      </ul>
+
+      <ul cglass="list-unstyled CTAs">
+        <li><a href="https://github.com/alex97mihai/dotcserver/issues" class="bug">Report a bug</a></li>
+      </ul>
+    </nav>
+
+
+    <!-- Page Content Holder -->
+
+    <div id="content">
+
+        <div id="terms">
+        <h1>TERMS AND CONDITIONS</h1>
+
+        <h2>1.Introduction</h2>
+
+        These Website Standard Terms and Conditions written on this webpage shall manage your use of this website. These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed to accept all terms and conditions written in here. You must not use this Website if you disagree with any of these Website Standard Terms and Conditions.
+
+        Minors or people below 18 years old are not allowed to use this Website.
+
+        <h2>2.Intellectual Property Rights</h2>
+
+        Other than the content you own, under these Terms, Dot Enterprises and/or its licensors own all the intellectual property rights and materials contained in this Website.
+
+        You are granted limited license only for purposes of viewing the material contained on this Website.
+
+        <h2>3.Restrictions</h2>
+
+        You are specifically restricted from all of the following: 
+
+        <ul>
+            <li>publishing any Website material in any other media;</li>
+            <li>selling, sublicensing and/or otherwise commercializing any Website material;</li>
+            <li>publicly performing and/or showing any Website material;</li>
+            <li>using this Website in any way that is or may be damaging to this Website;</li>
+            <li>using this Website in any way that impacts user access to this Website;</li>
+            <li>using this Website contrary to applicable laws and regulations, or in any way may cause harm to the Website, or to any person or business entity;</li>
+            <li>engaging in any data mining, data harvesting, data extracting or any other similar activity in relation to this Website;</li>
+            <li>using this Website to engage in any advertising or marketing.</li>
+        </ul>
+        Certain areas of this Website are restricted from being access by you and Dot Enterprises may further restrict access by you to any areas of this Website, at any time, in absolute discretion. Any user ID and password you may have for this Website are confidential and you must maintain confidentiality as well.
+
+        <h2>4.Your Content</h2>
+
+        In these Website Standard Terms and Conditions, “Your Content” shall mean any audio, video text, images or other material you choose to display on this Website. By displaying Your Content, you grant Dot Enterprises a non-exclusive, worldwide irrevocable, sub licensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.
+
+        Your Content must be your own and must not be invading any third-party’s rights. Dot Enterprises reserves the right to remove any of Your Content from this Website at any time without notice.
+
+        <h2>5.No warranties</h2>
+
+        This Website is provided “as is,” with all faults, and Dot Enterprises express no representations or warranties, of any kind related to this Website or the materials contained on this Website. Also, nothing contained on this Website shall be interpreted as advising you.
+
+        <h2>6.Limitation of liability</h2>
+
+        In no event shall Dot Enterprises, nor any of its officers, directors and employees, shall be held liable for anything arising out of or in any way connected with your use of this Website whether such liability is under contract.  Dot Enterprises, including its officers, directors and employees shall not be held liable for any indirect, consequential or special liability arising out of or in any way related to your use of this Website.
+
+        <h2>7.Indemnification</h2>
+
+        You hereby indemnify to the fullest extent Dot Enterprises from and against any and/or all liabilities, costs, demands, causes of action, damages and expenses arising in any way related to your breach of any of the provisions of these Terms.
+
+        <h2>8.Severability</h2>
+
+        If any provision of these Terms is found to be invalid under any applicable law, such provisions shall be deleted without affecting the remaining provisions herein.
+
+        <h2>9.Variation of Terms</h2>
+
+        Dot Enterprises is permitted to revise these Terms at any time as it sees fit, and by using this Website you are expected to review these Terms on a regular basis.
+
+        <h2>10.Assignment</h2>
+
+        The Dot Enterprises is allowed to assign, transfer, and subcontract its rights and/or obligations under these Terms without any notification. However, you are not allowed to assign, transfer, or subcontract any of your rights and/or obligations under these Terms.
+
+        <h2>11.Entire Agreement</h2>
+
+        These Terms constitute the entire agreement between Dot Enterprises and you in relation to your use of this Website, and supersede all prior agreements and understandings.
+
+        <h2>12.Governing Law & Jurisdiction</h2>
+
+        These Terms will be governed by and interpreted in accordance with the laws of the State of United Kingdom, and you submit to the non-exclusive jurisdiction of the state and federal courts located in United Kingdom for the resolution of any disputes.
+
+        These terms and conditions have been generated at Terms And Conditions Sample.com.
+        </div>
+
+    </div>
+
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="navbar navbar-fixed-bottom navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/terms">© Dot Enterprises 2018 | London | Bucharest | T&Cs </a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+          <li><a href="/about">Learn More</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- END FOOTER -->
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <!-- Bootstrap Js CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#sidebarCollapse').on('click', function() {
+        $('#sidebar').toggleClass('active');
+        $('#avatar').toggleClass('hidden');
+      });
+    });
+  </script>
+
+<!-- AJAX -->
+  <script>
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: {% url 'get_notifications' %},  // URL to your view that serves new info
+        })
+        .done(function(response) {
+            $('#_appendHere').empty().append(response);
+        });
+    }, 1000)
+</script>
+
+<script>
+  setInterval(function() {
+      $.ajax({
+          type: "GET",
+          url: {% url 'notiflength' %},  // URL to your view that serves new info
+      })
+      .done(function(response) {
+          $('#notiflength').empty().append(response);
+      });
+  }, 1000)
+</script>
+
+<script>
+$(document).ready(function(){
+  $('a.pop').click(function() {
+      $.ajax({
+          type: "GET",
+          url: {% url 'mark_as_clear' %},  // URL to your view that serves new info
+      });
+  });
+});
+</script>
+
+
+  }
+
+</body>
+
+</html>
