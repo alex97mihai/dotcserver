@@ -186,7 +186,6 @@ body {
   font-family: 'Poppins', sans-serif;
   background: #fafafa;
   overflow: auto;
-  
 }
 
 p {
@@ -261,10 +260,6 @@ i, span {
 }
 
 
-#terms{
-  max-height: 600px;
-  color: #000;
-}
 
 /* ---------------------------------------------------
     FORMS css
@@ -272,7 +267,7 @@ i, span {
 
 
 
-#id_c_currency{
+#id_currency{
   min-width: 53%;
   text-align: center;
 
@@ -309,6 +304,9 @@ i, span {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
+#terms{
+  padding-bottom: 50px;
+}
 .wrapper {
   display: flex;
   align-items: stretch;
@@ -316,15 +314,19 @@ i, span {
 }
 
 #content {
-  padding-top: 100px;
+  max-height: 500px;
+  min-height: 500px;
+  margin:200px 300px 200px 300px;
   padding-left: 100px;
   padding-right: 100px;
-  min-height: 100vh;
   transition: all 0.3s;
-  color: #fff;
+  color: #000;
   background-color: #fff;
   width: 100%;
-}
+  overflow: scroll;
+  overflow-x: hidden;
+  text-align: justify;
+} 
 
 #sidebar {
   min-width: 250px;
@@ -427,7 +429,7 @@ i, span {
   font-weight: 400;
 }
 
-#sidebar a[data-toggle="collapse"] {
+a[data-toggle="collapse"] {
   position: relative;
 }
 

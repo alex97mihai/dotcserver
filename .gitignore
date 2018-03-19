@@ -1,5 +1,4 @@
 myprojectenv/*
-static/*
 media/*
-static
 media
+static/*.png
