@@ -47,4 +47,7 @@ urlpatterns = [
     url(r'^cards/', addCard, name='addCard'),
     url(r'^settings/', Settings, name='settings'),
     url(r'^terms/', terms, name='terms'),
+    url(r'^messages/', SendMessage, name='message'),
+    url(r'^send_message/', send_message, name='message AJAX'),
+    url(r'^get_messages/', get_messages, name='get_messages'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

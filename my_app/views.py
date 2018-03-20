@@ -10,9 +10,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship, Notification, Card
+from models import Order, CompleteOrders, Friendship, Notification, Card, Message
 from my_app.forms import *
 # Non-django imports
+import json
 import os
 import datetime
 import decimal
@@ -400,7 +401,98 @@ def Settings(request):
     notifications=Notification.objects.filter(user=user)
     context_dict={'notifications':notifications}
     return render(request, 'settings.html', context_dict)
+
+
+@login_required
+def SendMessage(request):
+
+    if (request.GET.get('friend', '')):
+        user = request.user
+        user_to_usrname = request.GET.get('friend', '')
+        if User.objects.filter(username=user_to_usrname).exists():
+                user_to = User.objects.get(username=user_to_usrname)
+                messages=Message.objects.filter(user_from=user, user_to=user_to) | Message.objects.filter(user_from=user_to, user_to=user)
+                messages=messages.order_by('pk')
+                notifications = Notification.objects.filter(user=user)
+                form=SendMessageForm()
+                context_dict={'notifications':notifications, 'messages':messages, 'form':form, 'user2':user_to_usrname}
+
+                return render(request, 'chat.html', context_dict)
+        else:
+            return redirect('/friends/')
+
+
+    user = request.user
+    if request.method == 'POST':
+        form = SendMessageForm(request.POST)
+        if form.is_valid():
+            error = False
+            message = Message()
+            message.user_from = user
+            if User.objects.filter(username=form.cleaned_data.get('user_to')).exists():
+                message.user_to = User.objects.get(username=form.cleaned_data.get('user_to'))
+            else:
+                notifications = Notification.objects.filter(user=user)
+                messages_from = Message.objects.filter(user_from=user)
+                messages_to = Message.objects.filter(user_to=user)
+                error = True
+                context_dict={'notifications':notifications, 'form':form, 'messages_from':messages_from, 'messages_to':messages_to, 'error':error}
+                return render(request, 'messages.html', context_dict)
+            message.message = form.cleaned_data.get('message')
+            message.date = datetime.date.today()
+            message.time = datetime.datetime.now().strftime('%H:%M:%S')
+            message.status = "sent"
+            message.save()
+        return redirect('/messages/')
+    else:
+        form = SendMessageForm()
+        notifications = Notification.objects.filter(user=user)
+        
+        messages_from = Message.objects.filter(user_from=user)
+        messages_to = Message.objects.filter(user_to=user)
+        user_list = Friendship.objects.filter(creator=user)
+        context_dict={'notifications':notifications, 'form':form, 'messages_from':messages_from, 'messages_to':messages_to, 'user_list':user_list}
+        return render(request, 'messages.html', context_dict)
+
+
+
 ### AJAX VIEWS ###
+
+def send_message(request):
+    if request.method == 'POST':
+        message_text = request.POST.get('the_message')
+        user2=request.POST.get('user2')
+        response_data = {}
+        message = Message(message=message_text, user_from=request.user, user_to=User.objects.get(username=user2))
+        message.date = datetime.date.today()
+        message.time = datetime.datetime.now().strftime('%H:%M:%S')
+
+        message.save()
+
+        response_data['result'] = 'Create post successful!'
+        response_data['postpk'] = message.pk
+        response_data['text'] = message.message
+        response_data['author'] = message.user_from.username
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
+def get_messages(request):
+    user = request.user
+    user_to_usrname = request.GET.get('user2')
+    if User.objects.filter(username=user_to_usrname).exists():
+        user_to = User.objects.get(username=user_to_usrname)
+        messages=Message.objects.filter(user_from=user, user_to=user_to) | Message.objects.filter(user_from=user_to, user_to=user)
+        messages=messages.order_by('pk')
+    return render(request, 'ajax/message_list.html', {'messages': messages})
+
 
 def get_notifications(request):
     if request.is_ajax():
@@ -427,3 +519,5 @@ def mark_as_clear(request):
             notification.save()
     else:
         return redirect ('/')
+
+

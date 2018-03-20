@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class=header-standard> <h1> Send a message! </h1> </div>
+
+<script type="text/javascript" src="/static/lookup.js"></script>
+<div onload="hideUsers()">
+          <input type="text" id="myInput" onkeyup="searchUser()" placeholder="Search for names..">
+          <ul id="myUL">
+            {% for user in user_list %}
+            <li><a href="/messages/?friend={{ user.friend.username }}"> {{ user.friend.username }} </a></li>
+            {% endfor %}
+          </ul>
+</div>
+
+{% endblock %}

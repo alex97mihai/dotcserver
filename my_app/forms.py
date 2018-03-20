@@ -58,3 +58,6 @@ class AddCardForm(forms.Form):
     name = forms.CharField(label='Name:', widget=forms.TextInput(attrs={'placeholder': 'Captain Awesome'}))
     address = forms.CharField(label='Address:', widget=forms.TextInput(attrs={'placeholder': '123 Awesome Street'}))
     phone = forms.CharField(label='Phone:', widget=forms.TextInput(attrs={'placeholder': '+44 123456789'}))
+
+class SendMessageForm(forms.Form):
+    message = forms.CharField(label='Message:', widget=forms.TextInput(attrs={'id': 'post-message'}))

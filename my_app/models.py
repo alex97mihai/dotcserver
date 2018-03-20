@@ -77,3 +77,16 @@ class Notification(models.Model):
     time = models.TimeField(null=True, blank=True)
     user2 = models.ForeignKey(User, related_name="notification_friend", blank=True, null=True)
     status = models.CharField(max_length=30, default="unseen")
+
+
+class Message(models.Model):
+    user_from = models.ForeignKey(User, related_name="users_from")
+    user_to = models.ForeignKey(User, related_name="users_to")
+    message = models.CharField(max_length=140, blank=True, null=True)
+    date = models.DateField(null=True, blank=True) 
+    time = models.TimeField(null=True, blank=True)
+    date_seen = models.DateField(null=True, blank=True)
+    time_seen = models.TimeField(null=True, blank=True)
+    status = models.CharField(max_length=10, default="sending")
+
+

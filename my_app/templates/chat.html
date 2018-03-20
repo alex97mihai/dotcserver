@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="color: red">Chatting with {{ user2 }}<br></div>
+
+
+
+<div id="message-list">
+
+</div>
+
+
+  <div class="container-fluid" id="login-form">
+    <form class="form-horizontal" method="post" id='message-form'>
+
+      {% csrf_token %}
+      <fieldset>
+        {% for field in form %}
+        <div class="control-group">
+          <label class="control-label">{{ field.label }}</label>
+          <div class="controls">{{ field }} {% if field.help_text %}
+            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+
+      </fieldset>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-space">Send Message</button>
+      </div>
+      
+    </form>
+
+  </div>
+
+
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+<script>
+  // Submit message on submit
+$('#message-form').on('submit', function(event){
+    event.preventDefault();
+    console.log("message submitted!")  // sanity check
+    create_message();
+});
+
+function create_message() {
+  console.log("create message is working!") // sanity check
+  $.ajax({
+      url : "/send_message/", // the endpoint
+      type : "POST", // http method
+      data : { 
+                'the_message' : $('#post-message').val(), 
+                'user2' : "{{ user2 }}",
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+              }, // data sent with the post request
+
+      // handle a successful response
+      success : function(json) {
+          $('#post-message').val(''); // remove the value from the input
+          console.log(json); // log the returned json to the console
+          console.log("success"); // another sanity check
+      },
+
+      // handle a non-successful response
+      error : function(xhr,errmsg,err) {
+          $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+              " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+  });
+};
+
+ // refresh messages every 1/4 sec
+setInterval(function() {
+    $.ajax({
+        type: "GET",
+        url: {% url 'get_messages' %},  // URL to your view that serves new info
+        data: {
+                'user2' : '{{ user2 }}',
+        },
+    })
+    .done(function(response) {
+        $('#message-list').empty().append(response);
+    });
+}, 250)
+</script>
+
+
+{% endblock %}
