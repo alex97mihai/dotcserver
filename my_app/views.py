@@ -489,8 +489,11 @@ def get_messages(request):
     user_to_usrname = request.GET.get('user2')
     if User.objects.filter(username=user_to_usrname).exists():
         user_to = User.objects.get(username=user_to_usrname)
-        messages=Message.objects.filter(user_from=user, user_to=user_to) | Message.objects.filter(user_from=user_to, user_to=user)
+        messages=Message.objects.filter(user_from=user, user_to=user_to, status="sending") | Message.objects.filter(user_from=user_to, user_to=user, status="sending")
         messages=messages.order_by('pk')
+        for message in messages:
+            message.status = 'seen'
+            message.save()
     return render(request, 'ajax/message_list.html', {'messages': messages})
 
 

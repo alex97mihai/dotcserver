@@ -1,5 +1,17 @@
-{% for message in messages %}
 
-<div style="color: #000">{{ message.user_from }}: {{ message.message }}<br></div>
+
+{% if messages %}
+{% for message in messages %}
+<li class="full-message">
+    <div class="row">
+    <div class="col-xs-1">
+        <img src="{{ message.user_from.profile.avatar.url }}" height="70" width="70" alt="">    
+    </div>
+    <div class="col-xs-11 closer">
+        <div class="message">{{ message.message }}</div>
+    </div>
+    </div>
+</li>
 
 {% endfor %}
+{% endif %}
