@@ -32,11 +32,10 @@
 
           <li><a href="/logout">Logout</a></li>
           <li><a href="/settings">Settings</a></li>
-          <li><a href="/messages">Messages</a></li>
+          <li><a href="/messages"><div id="messlength">Messages (<b>&#8194</b>)</div></a></li>
 <!-- NOTIFICATIONS -->
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <div id="notiflength">Notifications (<b>-</b>)
-</div></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <div id="notiflength">Notifications (<b>&#8194</b>)</div></a>
           <ul class="dropdown-menu notify-drop">
             <div class="notify-drop-title">
             	<div class="row">
@@ -109,8 +108,8 @@
         </li>
       </ul>
 
-      <ul class="list-unstyled CTAs">
-        <li><a href="https://github.com/alex97mihai/dotcserver/issues" class="bug">Report a bug</a></li>
+      <ul class="list-unstyled CTAs" >
+        <li id="bug-id"><a href="https://github.com/alex97mihai/dotcserver/issues" class="bug" >Report a bug</a></li>
       </ul>
     </nav>
 
@@ -127,7 +126,7 @@
   </div>
 
   <!-- FOOTER -->
-  <div class="navbar navbar-fixed-bottom navbar-default" role="navigation">
+  <div class="navbar navbar-static-bottom navbar-default" role="navigation">
     <div class="container-fluid">
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -180,6 +179,19 @@
       });
   }, 1000)
 </script>
+
+<script>
+  setInterval(function() {
+      $.ajax({
+          type: "GET",
+          url: {% url 'messlength' %},  // URL to your view that serves new info
+      })
+      .done(function(response) {
+          $('#messlength').empty().append(response);
+      });
+  }, 1000)
+</script>
+
 
 <script>
 $(document).ready(function(){

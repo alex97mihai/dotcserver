@@ -88,5 +88,7 @@ class Message(models.Model):
     date_seen = models.DateField(null=True, blank=True)
     time_seen = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=10, default="sending")
+    status_back = models.CharField(max_length=10, default="sending")
+    status_final = models.CharField(max_length=10, default="sending")
 
 

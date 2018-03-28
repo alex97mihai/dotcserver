@@ -5,35 +5,51 @@
 
 
 
-<div class="container-fluid message-list" id="id-message">
+<div class="container-fluid message-list col-xs-12" id="id-message">
+
+<!-- THIS IS REPLACED BY AJAX WITH MESSAGE_LIST.HTML -->
 {% if messages %}
 <ul id="new-message">
-{% for message in messages %}
-<li class="full-message">
-    <div class="row">
-    <div class="col-xs-1">
-        <img src="{{ message.user_from.profile.avatar.url }}" height="70" width="70" alt="">    
-    </div>
-    <div class="col-xs-11 closer">
-        <div class="message">{{ message.message }}</div>
-    </div>
-    </div>
-</li>
 
+{% for message in messages %}
+  <li class="full-message">
+      <div class="row">
+      {% if message.user_from == request.user %}
+        <div class="col-xs-1 picture-container">
+          <img src="{{ message.user_from.profile.avatar.url }}" class="message-picture" alt="">    
+        </div>
+        <div class="col-xs-11 closer">
+          <div class="message-me">{{ message.message }}</div>
+        </div>
+      {% else %}
+        <div class="col-xs-11 closer" id="friend-container">
+          <div class="message-friend">{{ message.message }}</div>
+        </div>          
+        <div class="col-xs-1 picture-container">
+          <img src="{{ message.user_from.profile.avatar.url }}" class="message-picture" alt="">    
+        </div>
+
+      {% endif %}  
+      </div>
+  </li>
 {% endfor %}
 
 </ul>
-
 {% else %}
-
 <div class="message">No messages yet!</div>
 {% endif %}
 
+<!-- THIS IS REPLACED BY AJAX WITH MESSAGE_LIST.HTML -->
+
+
+  <script type="text/javascript">
+    var objDiv = document.getElementById("id-message");
+    objDiv.scrollTop = objDiv.scrollHeight;    
+  </script>
+
 </div>
 
-
-
-  <div class="container-fluid" id="login-form">
+ <div class="container-fluid" id="login-form">
     <form class="form-horizontal input-group" method="post" id='message-form'>
 
       {% csrf_token %}
@@ -49,16 +65,30 @@
         {% endfor %}
 
       </fieldset>
-      <span class="form-actions input-group-btn" style="visibility: hidden;">
-        <button type="submit" class="btn btn-primary btn-space">Send Message</button>
+            <span class="form-actions input-group-btn" >
+        <button type="submit" class="btn btn-primary btn-space" id="message-button">Send Message</button>
       </span>
-      
+
     </form>
 
   </div>
 
 
+
+ 
+
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(
+    function()
+    {
+      document.getElementById("post-message").setAttribute( "autocomplete", "off" );   
+    }
+);
+</script>
+
 
 <script>
   // Submit message on submit

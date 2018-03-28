@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^notifications/', viewNotifications, name='notifications'),
     url(r'^get_notifications/', get_notifications, name='get_notifications'),
     url(r'^notiflength/', notiflength, name='notiflength'),
+    url(r'^messlength/', messlength, name='messlength'),    
     url(r'^mark_as_clear/', mark_as_clear, name='mark_as_clear'),
     url(r'^profile/', profileView, name='profile'),
     url(r'^uploadpic/', uploadPic, name='uploadPic'),

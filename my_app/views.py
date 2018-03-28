@@ -489,11 +489,16 @@ def get_messages(request):
     user_to_usrname = request.GET.get('user2')
     if User.objects.filter(username=user_to_usrname).exists():
         user_to = User.objects.get(username=user_to_usrname)
-        messages=Message.objects.filter(user_from=user, user_to=user_to, status="sending") | Message.objects.filter(user_from=user_to, user_to=user, status="sending")
+        messages=Message.objects.filter(user_from=user, user_to=user_to, status_back="sending") | Message.objects.filter(user_from=user_to, user_to=user, status="sending")
         messages=messages.order_by('pk')
         for message in messages:
-            message.status = 'seen'
-            message.save()
+            if (user == message.user_to):
+                message.status = 'seen'
+                message.save()
+            else:
+                message.status_back = 'seen'
+                message.save()
+                
     return render(request, 'ajax/message_list.html', {'messages': messages})
 
 
@@ -512,6 +517,15 @@ def notiflength(request):
         return render(request, 'ajax/notiflength.html', {'notifications': notifications})
     else:
         return redirect ('/')
+
+def messlength(request):
+    if request.is_ajax():
+        user = request.user
+        messages = Message.objects.filter(user_to=user, status='sending')
+        return render(request, 'ajax/messlength.html', {'messages': messages})
+    else:
+        return redirect ('/')
+
 
 def mark_as_clear(request):
     if request.is_ajax():
