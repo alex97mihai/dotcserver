@@ -273,7 +273,29 @@ i, span {
 /* ---------------------------------------------------
     FORMS css
 ----------------------------------------------------- */
+.custom-btn{
+  width: 100%;
+}
+#id_username{
+  width: 100%;
+}
 
+#id_amount{
+  width: 100%;
+}
+
+#id_currency{
+  width: 100%;
+}
+#id_home_currency{
+  width: 100%;
+}
+#id_target_currency{
+  width: 100%;
+}
+#id_home_currency_amount{
+  width: 100%;
+}
 
 
 #id_c_currency{
@@ -576,6 +598,7 @@ a.bug, a.bug:hover {
   background-color: #eee;
   /* Add a hover effect to all links, except for headers */
 }
+
 
 
 .message-me{

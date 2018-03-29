@@ -4,7 +4,7 @@
 
 <div class=header-standard> <h1> Add money to your wallet below! </h1> </div>
 
-<div class="col-md-6">
+<div class="col-md-4">
   <div class="container-fluid" id="login-form">
     <form class="form-horizontal" method="post">{% csrf_token %}
       <fieldset>
@@ -19,7 +19,7 @@
         {% endfor %}
       </fieldset>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary btn-space">Topup</button>
+        <button type="submit" class="btn btn-primary btn-space custom-btn">Topup</button>
       </div>
     </form>
   </div>

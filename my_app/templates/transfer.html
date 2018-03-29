@@ -4,7 +4,7 @@
 
 <div class=header-standard> <h1> Transfer money to someone! </h1> </div>
 
-<div class="col-md-6">
+<div class="col-md-4">
   <div class="container-fluid" id="login-form">
     <form class="form-horizontal" method="post">{% csrf_token %}
       <fieldset>
@@ -19,7 +19,7 @@
         {% endfor %}
       </fieldset>
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary btn-space">Transfer</button>
+        <button type="submit" class="btn btn-primary btn-space custom-btn">Transfer</button>
       </div>
     </form>
   </div>
