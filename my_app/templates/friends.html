@@ -13,7 +13,7 @@
 <h1 class="header-standard"> Requests </h1>
 
     {% for request in request_list %}
-    <p>{{ request.creator.username }} <a href="/add-friend/?friend={{ request.creator.username }}&accepted=true"><i class="glyphicon glyphicon-ok-sign icon-green"></i></a> <a href=#><i class="glyphicon glyphicon-remove-sign icon-red"></i></a> </p>
+    <p>{{ request.creator.username }} <a href="/add-friend/?friend={{ request.creator.username }}&accepted=true"><i class="glyphicon glyphicon-ok-sign icon-green"></i></a> <a href="/add-friend/?friend={{ request.creator.username }}&accepted=false"><i class="glyphicon glyphicon-remove-sign icon-red"></i></a> </p>
     {% endfor %}
 
 {% endif %}

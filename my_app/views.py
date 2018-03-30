@@ -285,7 +285,11 @@ def historyView(request):
 def addFriend(request):
     creator = request.user
     friend_name = request.GET.get('friend', '')
+    action = request.GET.get('accepted', '')
     friend = dbUser.objects.get(username=friend_name)
+    if (action=='false'):
+        Friendship.objects.filter(creator=friend, friend=creator).delete()
+        return redirect('/friends/')
     if not Friendship.objects.filter(creator=creator, friend=friend):
         if Friendship.objects.filter(creator = friend, friend = creator).exists():
             friendship1 = Friendship.objects.get(creator=friend, friend=creator)

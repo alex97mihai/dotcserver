@@ -91,4 +91,18 @@ class Message(models.Model):
     status_back = models.CharField(max_length=10, default="sending")
     status_final = models.CharField(max_length=10, default="sending")
 
+class Product(models.Model):
+    user = models.ForeignKey(User, related_name="buyer")
+    name = models.CharField(max_length=140, null=True, blank=True)
+    p_id = models.CharField(max_length=30, null=True, blank=True)
+    p_type = models.CharField(max_length=30, null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    currency = models.CharField(max_length=30, null=True, blank=True)
+
+class Post(models.Model):
+    user = models.ForeignKey(User, related_name="poster")
+    text = models.TextField(null=True, blank=True)
+    date = models.DateField(null=True, blank=True) 
+    time = models.TimeField(null=True, blank=True)
+
 
