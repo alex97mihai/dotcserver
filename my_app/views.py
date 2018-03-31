@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship, Notification, Card, Message
+from models import Order, CompleteOrders, Friendship, Notification, Card, Message, Product
 from my_app.forms import *
 # Non-django imports
 import json
@@ -30,13 +30,16 @@ def HomeView(request):
         context_dict={'notifications':notifications}
         return render(request, 'profile.html', context_dict)
     else:
-	return render(request, 'companyProfile.html')
+	    return render(request, 'companyProfile.html')
 
 @login_required
 def walletView(request):
     user=request.user
-    context_dict={'user':user}
-    return render(request, 'wallet.html', context_dict)
+    if user.profile.corporate is False:
+        context_dict={'user':user}
+        return render(request, 'wallet.html', context_dict)
+    else:
+        return render(request, 'companyWallet.html')
 
 @login_required
 def profileView(request):
@@ -104,6 +107,28 @@ def topup(request):
     notifications=Notification.objects.filter(user=user)
     context_dict={'notifications':notifications, 'form': form}
     return render(request, 'topup.html', context_dict)
+
+@login_required
+def addProduct(request):
+    user = request.user    
+    if user.profile.corporate is True:
+        if request.method == 'POST':
+            form = AddProduct(request.POST)
+            if form.is_valid():
+                newProduct = Product()
+                newProduct.user = user
+                newProduct.name = form.cleaned_data.get('name')
+                newProduct.p_id = form.cleaned_data.get('p_id')
+                newProduct.p_type = form.cleaned_data.get('p_type')
+                newProduct.price = form.cleaned_data.get('price')
+                newProduct.currency = form.cleaned_data.get('currency')
+                newProduct.save()
+                return redirect('/products')
+        else:
+            form = AddProduct()
+            products = Product.objects.all().order_by('-id')[:15]
+            context_dict={'form': form, 'products': products}
+            return render(request, 'products.html', context_dict)
 
 @login_required
 def withdraw(request):

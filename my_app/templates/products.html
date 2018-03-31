@@ -1,0 +1,55 @@
+{% extends 'corporate-base.html' %}
+
+{% block content %}
+
+<div class=header-standard> <h1> Add a product! </h1> </div>
+
+<div class="col-md-4">
+  <div class="container-fluid" id="login-form">
+    <form class="form-horizontal" method="post">{% csrf_token %}
+      <fieldset>
+        {% for field in form %}
+        <div class="control-group">
+          <label class="control-label">{{ field.label }}</label>
+          <div class="controls">{{ field }} {% if field.help_text %}
+            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </fieldset>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-space custom-btn">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="col-md-4">
+
+  <table class="table">
+
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Type</th>
+    <th>Price</th>
+    <th>Currency</th>
+  </tr>
+
+  {% for product in products %}
+  <tr>
+    <th>{{ product.name }}</th>
+    <th>{{ product.p_id }}</th>
+    <th>{{ product.p_type }}</th>
+    <th>{{ product.price }}</th>
+    <th>{{ product.currency }}</th>
+  </tr>
+  {% endfor %}
+
+  </table>
+
+</div>
+
+{% endblock %}

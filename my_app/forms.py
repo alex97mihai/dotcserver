@@ -61,3 +61,14 @@ class AddCardForm(forms.Form):
 
 class SendMessageForm(forms.Form):
     message = forms.CharField(label='Message:', widget=forms.TextInput(attrs={'id': 'post-message'}))
+
+
+
+p_types = [('Food','Food'),('Clothing','Clothing'),('Gadgets','Gadgets'),]
+class AddProduct(forms.Form):
+    name = forms.CharField(label='Product Name: ', widget=forms.TextInput(attrs={'placeholder': 'Enter a name...'}))
+    p_id = forms.CharField(label='ID:  ', widget=forms.TextInput(attrs={'placeholder': '000000000'}), required=False)
+    p_type = forms.CharField(label='Type: ', widget=forms.Select(choices=p_types))
+    price = forms.DecimalField(label='Price: ')
+    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
+
