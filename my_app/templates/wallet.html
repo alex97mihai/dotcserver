@@ -4,19 +4,22 @@
 
   {% if user.is_authenticated %}
 
-  <div class="jumbotron" id="profile">
+<div class="col-md-4">
+  <div class="container-fluid">
+        <div class="jumbotron" id="profile">
 
-    <h1 class="header-standard"><small>Your Money</small></h1>
-    <hr>
-    <p>EUR: {{ user.profile.EUR }}</p>
-    <hr>
-    <p>USD: {{ user.profile.USD }}</p>
-    <hr>
-    <p>RON: {{ user.profile.RON }}</p>
+          <h1 class="header-standard"><small>Your Money</small></h1>
+          <hr>
+          <p>EUR: {{ user.profile.EUR }}</p>
+          <hr>
+          <p>USD: {{ user.profile.USD }}</p>
+          <hr>
+          <p>RON: {{ user.profile.RON }}</p>
 
-    <a href="/topup/" class="btn btn-info" role="button">Topup</a>
+        <a href="/topup/" class="btn btn-info custom-btn" role="button">Topup</a>
+        </div>
   </div>
-
+</div>
 
   {% endif %}
 

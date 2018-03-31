@@ -19,6 +19,8 @@ class Profile(models.Model):
     EUR = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     RON = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     default_payment = models.IntegerField(default = 0, blank=True)
+    corporate =  models.BooleanField(default=False)
+     
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:

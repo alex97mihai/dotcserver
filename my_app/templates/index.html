@@ -1,3 +1,7 @@
+{% if user.profile.corporate %}
+alalala
+
+{% else %}
 {% extends 'base.html' %}
 
 {% block content %}
@@ -18,3 +22,5 @@
   {% endif %}
 
 {% endblock %}
+
+{% endif %}

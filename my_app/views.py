@@ -25,9 +25,12 @@ from lib import converter
 @login_required
 def HomeView(request):
     user=request.user
-    notifications=Notification.objects.filter(user=user)
-    context_dict={'notifications':notifications}
-    return render(request, 'profile.html', context_dict)
+    if user.profile.corporate is False:
+        notifications=Notification.objects.filter(user=user)
+        context_dict={'notifications':notifications}
+        return render(request, 'profile.html', context_dict)
+    else:
+	return render(request, 'companyProfile.html')
 
 @login_required
 def walletView(request):
@@ -62,6 +65,22 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def corporateSignup(request):
+    if request.method == 'POST':
+	form = SignUpForm(request.POST)
+	if form.is_valid():
+	    user = form.save()
+            user.refresh_from_db()
+	    user.profile.corporate = True
+	    user.save()
+            raw_password = form.cleaned_data.get('password1')
+	    user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+	form = SignUpForm()
+    return render(request, 'CorporateSignup.html', {'form': form})
 
 @login_required
 def topup(request):

@@ -1,3 +1,4 @@
+{% if user.profile.corporate==False %}
 {% extends 'base.html' %}
 
 {% block content %}
@@ -16,3 +17,6 @@
   {% endif %}
 
 {% endblock %}
+
+
+{% endif %}

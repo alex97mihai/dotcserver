@@ -51,4 +51,5 @@ urlpatterns = [
     url(r'^messages/', SendMessage, name='message'),
     url(r'^send_message/', send_message, name='message AJAX'),
     url(r'^get_messages/', get_messages, name='get_messages'),
+    url(r'^corporate/', corporateSignup, name='Corporate Signup'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
