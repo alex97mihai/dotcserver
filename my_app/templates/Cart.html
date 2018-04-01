@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class=header-standard>Your sales</h1>
+  <table class="table">
+      <tr>
+          <th> Name </th>
+          <th> ID </th>
+          <th> Type </th>
+          <th> Price </th>
+          <th> Currency </th>
+      </tr>
+      {% for product in products %}
+      <tr>
+         <td>{{ Cart.product.name }}</td>
+         <td>{{ Cart.product.p_id }}</td>
+         <td>{{ Cart.product.p_type }}</td>
+         <td>{{ Cart.product.price }}</td>
+         <td>{{ Cart.product.currency }}</td>
+      </tr>
+      {% endfor %}
+  </table>
+
+{% endblock %}

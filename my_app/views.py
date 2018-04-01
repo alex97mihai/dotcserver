@@ -124,7 +124,7 @@ def addProduct(request):
                 newProduct.p_type = form.cleaned_data.get('p_type')
                 newProduct.price = form.cleaned_data.get('price')
                 newProduct.currency = form.cleaned_data.get('currency')
-                newProduct.date = datetime.date.today() 
+                newProduct.date = datetime.date.today()
                 newProduct.time = datetime.datetime.now().strftime('%H:%M:%S')
                 newProduct.save()
                 return redirect('/products')
@@ -154,7 +154,7 @@ def BuyProductView(request):
         return render(request, 'buy.html', context_dict)
 
     else:
-        return redirect('/')    
+        return redirect('/')
 
 @login_required
 def sales(request):
