@@ -26,6 +26,10 @@
   color: #ec7930;
 }
 
+.settings-link:visited{
+  color: #000;
+}
+
 .icon-green{
   color: #5CB85C;
 }

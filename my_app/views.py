@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship, Notification, Card, Message, Product
+from models import Order, CompleteOrders, Friendship, Notification, Card, Message, Product, PurchasedItem, Cart
 from my_app.forms import *
 from django.utils import timezone
 # Non-django imports
@@ -124,7 +124,8 @@ def addProduct(request):
                 newProduct.p_type = form.cleaned_data.get('p_type')
                 newProduct.price = form.cleaned_data.get('price')
                 newProduct.currency = form.cleaned_data.get('currency')
-                newProduct.date = time.strftime('%l:%M%p %Z on %b %d, %Y')
+                newProduct.date = datetime.date.today() 
+                newProduct.time = datetime.datetime.now().strftime('%H:%M:%S')
                 newProduct.save()
                 return redirect('/products')
         else:
@@ -136,34 +137,30 @@ def addProduct(request):
         return redirect ('/')
 
 @login_required
-def BuyProduct(request):
+def BuyProductView(request):
     user = request.user
     if user.profile.corporate is False:
-        if request.method == 'POST':
-            form = BuyProduct(request.POST)
-            if form.is_valid():
-                newItem = Item()
-                newItem.buyer = user
-                newItem.selller = form.cleaned_data.get('seller')
-                newItem.name = form.cleaned_data.get('name')
-                newItem.p_id = form.cleaned_data.get('p_id')
-                newItem.p_type = form.cleaned_data.get('p_type')
-                newItem.price = form.cleaned_data.get('price')
-                newItem.currency = form.cleaned_data.get('currency')
-                newItem.save()
-                return redirect('/buy')
-        else:
-            form = BuyProduct()
-            context_dict={'form': form, 'items': items}
-            return render(request, 'buy.html', context_dict)
+        category = request.GET.get('category', '')
+        products = Product.objects.filter(p_type=category)
+        context_dict = {'products': products}
+        if request.GET.get('add', ''):
+            django_id = request.GET.get('add', '')
+            if not Cart.objects.filter(user=user, product=Product.objects.filter(id=django_id)).exists():
+                cart = Cart(user=user, product=Product.objects.get(id=django_id), quantity=1)
+                cart.save()
+        full_cart = Cart.objects.filter(user=user).distinct()
+        context_dict['full_cart']=full_cart
+
+        return render(request, 'buy.html', context_dict)
+
     else:
-        return redirect('/')
+        return redirect('/')    
 
 @login_required
 def sales(request):
     user = request.user
     if user.profile.corporate is True:
-        products = Product.objects.filter(user = user).order_by('-id')
+        products = PurchasedItem.objects.filter(seller = user).order_by('-id')
         context_dict = {'products': products}
         return render(request, 'sales.html', context_dict)
     else:

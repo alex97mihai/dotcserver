@@ -26,6 +26,10 @@
   color: #ec7930;
 }
 
+.settings-link:visited{
+  color: #000;
+}
+
 .icon-green{
   color: #5CB85C;
 }
@@ -500,6 +504,12 @@ a.bug, a.bug:hover {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
+.category-button{
+  background-color: #57A3FFFF;
+  padding: 10px;
+  text-align: center;
+  font-size: 5em;
+}
 
 
 

@@ -75,12 +75,7 @@
       </div>
       <ul class="list-unstyled components">
         <li {% if request.get_full_path == "/" or request.get_full_path == "/profile/" %} class="active" {% endif %}>
-          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
-            <i class="glyphicon glyphicon-home"></i>Home</a>
-          <ul class="collapse list-unstyled" id="homeSubmenu">
-            <li><a href="/">Profile</a></li>
-            <li><a href="/settings">Settings</a></li>
-          </ul>
+          <a href="/"><i class="glyphicon glyphicon-home"></i>Home</a>
         </li>
         <li {% if request.get_full_path == "/wallet/" %} class="active" {% endif %}>
           <a href="/wallet"><i class="glyphicon glyphicon-usd"></i>Wallet</a>
@@ -92,13 +87,13 @@
           <a href="/sales"><i class="glyphicon glyphicon-shopping-cart"></i>Sales</a>
         </li>
         <li {% if request.get_full_path == "/rates/" %} class="active" {% endif %}>
-          <a href="/rates"><i class="glyphicon glyphicon-flash"></i>Campaigns</a>
+          <a href="/"><i class="glyphicon glyphicon-flash"></i>Campaigns</a>
         </li>
         <li {% if request.get_full_path == "/friends/" %} class="active" {% endif %}>
-          <a href="/friends"><i class="glyphicon glyphicon-user"></i>Friends</a>
+          <a href="/"><i class="glyphicon glyphicon-user"></i>Friends</a>
         </li>
         <li {% if request.get_full_path == "/rates/" %} class="active" {% endif %}>
-          <a href="/rates"><i class="glyphicon glyphicon-stats"></i>Data</a>
+          <a href="/"><i class="glyphicon glyphicon-stats"></i>Data</a>
         </li>
       </ul>
     </nav>

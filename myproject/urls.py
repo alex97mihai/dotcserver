@@ -1,3 +1,4 @@
+
 """myproject URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -54,5 +55,5 @@ urlpatterns = [
     url(r'^corporate/', corporateSignup, name='Corporate Signup'),
     url(r'^products/', addProduct, name='Add Product'),
     url(r'^sales/', sales, name='Your Sales'),
-#    url(r'^buy/', buy, name='Buy a Product'),
+    url(r'^buy/', BuyProductView, name='Buy a Product'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
