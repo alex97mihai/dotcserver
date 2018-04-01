@@ -1,0 +1,26 @@
+{% extends 'corporate-base.html' %}
+
+{% block content %}
+<h1 class=header-standard>Your sales</h1>
+  <table class="table">
+      <tr>
+          <th> Name </th>
+          <th> ID </th>
+          <th> Type </th>
+          <th> Price?(folosim alt cuvant?) </th>
+          <th> Currency </th>
+          <th> Date </th>
+      </tr>
+      {% for product in products %}
+      <tr>
+         <td>{{ product.name }}</td>
+         <td>{{ product.p_id }}</td>
+         <td>{{ product.p_type }}</td>
+         <td>{{ product.price }}</td>
+         <td>{{ product.currency }}</td>
+         <td>{{ product.date }}</td>
+      </tr>
+      {% endfor %}
+  </table>
+
+{% endblock %}

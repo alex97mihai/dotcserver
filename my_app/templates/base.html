@@ -85,6 +85,9 @@
         <li {% if request.get_full_path == "/wallet/" %} class="active" {% endif %}>
           <a href="/wallet"><i class="glyphicon glyphicon-usd"></i>Wallet</a>
         </li>
+        <li {% if request.get_full_path == "/buy/" %} class="active" {% endif %}>
+          <a href="/buy"><i class="glyphicon glyphicon-shopping-cart"></i>Buy</a>
+        </li>
         <li {% if request.get_full_path == "/topup/" %} class="active" {% endif %}>
           <a href="/topup"><i class="glyphicon glyphicon-chevron-up"></i>Topup</a>
         </li>

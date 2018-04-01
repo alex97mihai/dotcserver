@@ -1,0 +1,24 @@
+{
+  "logger": {
+    "title": "Remote Sync"
+  },
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "34.242.147.43",
+  "port": "22",
+  "target": "/home/ubuntu/myproject/",
+  "ignore": [
+    "myprojectenv/**",
+    "media/**",
+    "my_app/migrations/**",
+    ".gitignore/**",
+    "celerybeat-schedule",
+    "db.sqlite3",
+    "start-celery-command"
+  ],
+  "username": "ubuntu",
+  "keyfile": "/home/stefan/ssh/dotcom-aws-test1.pem",
+  "watch": [],
+  "transport": "scp"
+}

@@ -72,3 +72,11 @@ class AddProduct(forms.Form):
     price = forms.DecimalField(label='Price: ')
     currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
 
+s_types = [('Cismigiu','Cismigiu'),('company','company'),]
+class BuyProduct(forms.Form):
+    seller = forms.CharField(label='Seller: ', widget=forms.Select(choices=s_types))
+    name = forms.CharField(label='Product Name: ', widget=forms.TextInput(attrs={'placeholder': 'Enter a name...'}))
+    p_id = forms.CharField(label='ID:  ', widget=forms.TextInput(attrs={'placeholder': '000000000'}), required=False)
+    p_type = forms.CharField(label='Type: ', widget=forms.Select(choices=p_types))
+    price = forms.DecimalField(label='Price: ')
+    currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))

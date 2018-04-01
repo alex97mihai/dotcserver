@@ -12,11 +12,13 @@ from django.views.generic import TemplateView
 from models import Profile as DjProfile
 from models import Order, CompleteOrders, Friendship, Notification, Card, Message, Product
 from my_app.forms import *
+from django.utils import timezone
 # Non-django imports
 import json
 import os
 import datetime
 import decimal
+import time
 from .tasks import exchange_celery
 from lib import converter
 
@@ -30,7 +32,7 @@ def HomeView(request):
         context_dict={'notifications':notifications}
         return render(request, 'profile.html', context_dict)
     else:
-	    return render(request, 'companyProfile.html')
+        return render(request, 'companyProfile.html')
 
 @login_required
 def walletView(request):
@@ -110,7 +112,7 @@ def topup(request):
 
 @login_required
 def addProduct(request):
-    user = request.user    
+    user = request.user
     if user.profile.corporate is True:
         if request.method == 'POST':
             form = AddProduct(request.POST)
@@ -122,13 +124,51 @@ def addProduct(request):
                 newProduct.p_type = form.cleaned_data.get('p_type')
                 newProduct.price = form.cleaned_data.get('price')
                 newProduct.currency = form.cleaned_data.get('currency')
+                newProduct.date = time.strftime('%l:%M%p %Z on %b %d, %Y')
                 newProduct.save()
                 return redirect('/products')
         else:
             form = AddProduct()
-            products = Product.objects.all().order_by('-id')[:15]
+            products = Product.objects.filter(user=user).order_by('-id')[:15]
             context_dict={'form': form, 'products': products}
             return render(request, 'products.html', context_dict)
+    else:
+        return redirect ('/')
+
+@login_required
+def BuyProduct(request):
+    user = request.user
+    if user.profile.corporate is False:
+        if request.method == 'POST':
+            form = BuyProduct(request.POST)
+            if form.is_valid():
+                newItem = Item()
+                newItem.buyer = user
+                newItem.selller = form.cleaned_data.get('seller')
+                newItem.name = form.cleaned_data.get('name')
+                newItem.p_id = form.cleaned_data.get('p_id')
+                newItem.p_type = form.cleaned_data.get('p_type')
+                newItem.price = form.cleaned_data.get('price')
+                newItem.currency = form.cleaned_data.get('currency')
+                newItem.save()
+                return redirect('/buy')
+        else:
+            form = BuyProduct()
+            context_dict={'form': form, 'items': items}
+            return render(request, 'buy.html', context_dict)
+    else:
+        return redirect('/')
+
+@login_required
+def sales(request):
+    user = request.user
+    if user.profile.corporate is True:
+        products = Product.objects.filter(user = user).order_by('-id')
+        context_dict = {'products': products}
+        return render(request, 'sales.html', context_dict)
+    else:
+        return redirect ('/')
+
 
 @login_required
 def withdraw(request):
@@ -396,7 +436,10 @@ def uploadPic(request):
         form = ImageUploadForm()
         notifications=Notification.objects.filter(user=user)
         context_dict={'notifications':notifications, 'form':form}
-        return render(request, 'uploadPic.html', context_dict)
+        if user.profile.corporate is False:
+            return render(request, 'uploadPic.html', context_dict)
+        else:
+            return render(request, 'corporateuploadPic.html', context_dict)
 
 
 @login_required
@@ -446,9 +489,12 @@ def addCard(request):
 @login_required
 def Settings(request):
     user = request.user
-    notifications=Notification.objects.filter(user=user)
-    context_dict={'notifications':notifications}
-    return render(request, 'settings.html', context_dict)
+    if user.profile.corporate is False:
+        notifications=Notification.objects.filter(user=user)
+        context_dict={'notifications':notifications}
+        return render(request, 'settings.html', context_dict)
+    else:
+        return render(request, 'companysettings.html')
 
 
 @login_required
@@ -495,12 +541,15 @@ def SendMessage(request):
     else:
         form = SendMessageForm()
         notifications = Notification.objects.filter(user=user)
-        
+
         messages_from = Message.objects.filter(user_from=user)
         messages_to = Message.objects.filter(user_to=user)
         user_list = Friendship.objects.filter(creator=user)
         context_dict={'notifications':notifications, 'form':form, 'messages_from':messages_from, 'messages_to':messages_to, 'user_list':user_list}
-        return render(request, 'messages.html', context_dict)
+        if user.profile.corporate is False:
+            return render(request, 'messages.html', context_dict)
+        else:
+            return render(request, 'companymessages.html', context_dict)
 
 
 
@@ -546,7 +595,7 @@ def get_messages(request):
             else:
                 message.status_back = 'seen'
                 message.save()
-                
+
     return render(request, 'ajax/message_list.html', {'messages': messages})
 
 
@@ -584,5 +633,3 @@ def mark_as_clear(request):
             notification.save()
     else:
         return redirect ('/')
-
-

@@ -36,6 +36,7 @@
     <th>Type</th>
     <th>Price</th>
     <th>Currency</th>
+    <th>Date</th>
   </tr>
 
   {% for product in products %}
@@ -45,6 +46,7 @@
     <th>{{ product.p_type }}</th>
     <th>{{ product.price }}</th>
     <th>{{ product.currency }}</th>
+    <th>{{ product.date }}</th>
   </tr>
   {% endfor %}
 
