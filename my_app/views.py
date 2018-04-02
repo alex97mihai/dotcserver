@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, Friendship, Notification, Card, Message, Product, PurchasedItem, Cart
+from models import Order, CompleteOrders, OpHistory, Friendship, Notification, Card, Message, Product, PurchasedItem, Cart, TransferHistory
+from models import Document
 from my_app.forms import *
 from django.utils import timezone
 # Non-django imports
@@ -99,6 +100,8 @@ def topup(request):
             amount = form.cleaned_data.get('amount')
             if (amount > 0):
                 balance[currency]=balance[currency] + amount
+                HistoryItem = OpHistory(user = user, currency= currency, amount=amount, optype='topup', date=datetime.date.today(), time=datetime.datetime.now().strftime('%H:%M:%S'))
+                HistoryItem.save()
             user.profile.USD = balance['USD']
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
@@ -135,6 +138,8 @@ def addProduct(request):
             return render(request, 'products.html', context_dict)
     else:
         return redirect ('/')
+
+
 
 @login_required
 def BuyProductView(request):
@@ -206,8 +211,14 @@ def CheckoutView(request):
             user.save()
             # save the purchase in the database
             for item in products:
+                balance2 = {'EUR': item.product.user.profile.EUR, 'USD': item.product.user.profile.USD, 'RON': item.product.user.profile.RON}
                 purchased_item = PurchasedItem(name=item.product.name, user=user, seller=item.product.user, p_id=item.product.p_id, p_type=item.product.p_type, price=item.product.price, currency=item.product.currency, date=datetime.date.today(), time=datetime.datetime.now().strftime('%H:%M:%S'))
                 purchased_item.save()
+                balance2[item.product.currency] = balance2[item.product.currency] + item.product.price
+                item.product.user.profile.EUR = balance2['EUR']
+                item.product.user.profile.USD = balance2['USD']
+                item.product.user.profile.RON = balance2['RON']
+                item.product.user.save()
             # empty cart
             Cart.objects.filter(user = user).delete()
         context_dict = {'error': error}
@@ -240,8 +251,10 @@ def withdraw(request):
             balance = {'EUR': user.profile.EUR, 'RON': user.profile.RON, 'USD': user.profile.USD}
             currency = form.cleaned_data.get('currency')
             amount = form.cleaned_data.get('amount')
-            if (amount > 0 and amount < balance[currency]):
+            if (amount > 0 and amount <= balance[currency]):
                 balance[currency]=balance[currency] - amount
+                HistoryItem = OpHistory(user = user, currency= currency, amount=amount, optype='withdraw', date=datetime.date.today(), time=datetime.datetime.now().strftime('%H:%M:%S'))
+                HistoryItem.save()
             user.profile.USD = balance['USD']
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
@@ -270,6 +283,8 @@ def transfer(request):
             if amount >= 0 and balance[currency] >= amount:
                 balance2[currency] = balance2[currency] + amount
                 balance[currency] = balance[currency] - amount
+                HistoryList = TransferHistory(user = user, user2 = uid, currency = currency, amount = amount, date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S') )
+                HistoryList.save()
             # update profiles using values saved in dictionary
             user.profile.EUR = balance['EUR']
             user.profile.RON = balance['RON']
@@ -423,7 +438,11 @@ def historyView(request):
     orders = Order.objects.filter(user=user.username, status='pending')
     completed_orders = CompleteOrders.objects.filter(user=user.username)
     notifications=Notification.objects.filter(user=user)
-    context_dict = {'orders':orders, 'completed_orders':completed_orders, 'notifications':notifications}
+    HistoryList = OpHistory.objects.filter(user=user)
+    TransferList = TransferHistory.objects.filter(user=user) | TransferHistory.objects.filter(user2=user)
+    PaymentList = PurchasedItem.objects.filter(user=user)
+    context_dict = {'PaymentList':PaymentList, 'orders':orders, 'completed_orders':completed_orders, 'notifications':notifications, 'HistoryList': HistoryList, 'TransferList': TransferList}
+
     return render(request, 'history.html', context_dict)
 
 @login_required
@@ -612,6 +631,17 @@ def SendMessage(request):
         else:
             return render(request, 'companymessages.html', context_dict)
 
+@login_required
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = DocumentForm()
+    context_dict = {'form':form}
+    return render(request, 'companyupload.html', context_dict)
 
 
 ### AJAX VIEWS ###

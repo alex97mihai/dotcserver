@@ -1,3 +1,4 @@
+
 /*
     DEMO STYLE
 */
@@ -364,6 +365,10 @@ i, span {
   overflow: auto;
 }
 
+.marginfix {
+  margin-bottom: 200px;
+}
+
 #content {
   padding-top: 100px;
   padding-left: 100px;
@@ -380,7 +385,6 @@ i, span {
   max-width: 250px;
   background: #252552;
   color: #fff;
-  height: 100vh;
   transition: all 0.3s;
   font-family: 'Poppins';
 
@@ -448,7 +452,6 @@ i, span {
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid #47748b;
 }
 
 #sidebar ul li a {

@@ -163,7 +163,7 @@
 }
 
 #post-message{
-  display: block; 
+  display: block;
   width: 100%;
 }
 
@@ -450,7 +450,6 @@ i, span {
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid #d66712;
 }
 
 #sidebar ul li a {
@@ -492,7 +491,7 @@ i, span {
   right: 20px;
   font-family: 'Glyphicons Halflings';
   font-size: 0.6em;
-  color: 
+  color:
 }
 
 #sidebar a[aria-expanded="true"]::before {
@@ -736,7 +735,7 @@ a.bug, a.bug:hover {
   #bug-id{
     display: none;
   }
-} 
+}
 @media (max-width: 768px) {
 
   #content {

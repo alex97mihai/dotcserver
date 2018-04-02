@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="link-box">
+      <div class="settings-link" data-toggle="collapse" data-target="#add"> Exchanges</div>
+    </div>
+      <div id="add" class="collapse">
           <h1 class=header-standard>Active Orders</h1>
 
           <table class="table">
@@ -26,28 +30,108 @@
             {% endfor %}
           </table>
 
-
-
 <h1 class="header-standard">Completed Orders</h1>
-            <table class="table">
-              <tr>
-                <th> Name </th>
-                <th> From </th>
-                <th> To </th>
-                <th> Status </th>
-                <th> Date </th>
-                <th> Time </th>
-              </tr>
-              {% for order in completed_orders reversed %}
-              <tr>
-                <td>{{ order.user }}</td>
-                <td>{{ order.home_currency }} {{ order.home_currency_amount }}</td>
-                <td>{{ order.target_currency }} {{ order.target_currency_amount }}</td>
-                <td>{{ order.status }}</td>
-                <td>{{ order.date }}</td>
-                <td>{{ order.time }}</td>
-              </tr>
-              {% endfor %}
-            </table>
+      <table class="table">
+        <tr>
+          <th> Name </th>
+          <th> From </th>
+          <th> To </th>
+          <th> Status </th>
+          <th> Date </th>
+          <th> Time </th>
+        </tr>
+        {% for order in completed_orders reversed %}
+        <tr>
+          <td>{{ order.user }}</td>
+          <td>{{ order.home_currency }} {{ order.home_currency_amount }}</td>
+          <td>{{ order.target_currency }} {{ order.target_currency_amount }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.date }}</td>
+          <td>{{ order.time }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
 
+
+
+    <div class="link-box">
+      <div class="settings-link" data-toggle="collapse" data-target="#op">Operations</div>
+</div>
+  <div id="op" class="collapse">
+    <table class="table">
+      <tr>
+        <th> Name </th>
+        <th> Currency </th>
+        <th> Amount </th>
+        <th> Type of transaction </th>
+        <th> Date </th>
+        <th> Time </th>
+      </tr>
+      {% for order in HistoryList reversed %}
+      <tr>
+        <td>{{ order.user }}</td>
+        <td>{{ order.currency }}</td>
+        <td style="color:{% if order.optype == 'withdraw' %} red {% else %} green {% endif %}">{{ order.amount }}</td>
+        <td>{{ order.optype }}</td>
+        <td>{{ order.date }}</td>
+        <td>{{ order.time }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="link-box">
+    <div class="settings-link" data-toggle="collapse" data-target="#transf">Transfers</div>
+</div>
+<div id="transf" class="collapse">
+  <table class="table">
+    <tr>
+      <th> From </th>
+      <th> To </th>
+      <th> Currency </th>
+      <th> Amount </th>
+      <th> Date </th>
+      <th> Time </th>
+    </tr>
+    {% for order in TransferList reversed %}
+    <tr>
+      <td>{{ order.user }}</td>
+      <td>{{ order.user2 }}</td>
+      <td>{{ order.currency }}</td>
+      <td>{{ order.amount }}</td>
+      <td>{{ order.date }}</td>
+      <td>{{ order.time }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="marginfix">
+<div class="link-box">
+  <div class="settings-link" data-toggle="collapse" data-target="#pay">Payments</div>
+</div>
+<div id="pay" class="collapse">
+<table class="table">
+  <tr>
+    <th> Seller </th>
+    <th> product </th>
+    <th> Price </th>
+    <th> Currency </th>
+    <th> Date </th>
+    <th> Time </th>
+  </tr>
+  {% for order in PaymentList reversed %}
+  <tr>
+    <td>{{ order.seller }}</td>
+    <td>{{ order.name }}</td>
+    <td>{{ order.price }}</td>
+    <td>{{ order.currency }}</td>
+    <td>{{ order.date }}</td>
+    <td>{{ order.time }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+</div>
 {% endblock %}

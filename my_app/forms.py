@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from models import Profile, Order
+from models import Profile, Order, Document
 
 import datetime
 
@@ -80,3 +80,8 @@ class BuyProduct(forms.Form):
     p_type = forms.CharField(label='Type: ', widget=forms.Select(choices=p_types))
     price = forms.DecimalField(label='Price: ')
     currency = forms.CharField(label='Currency: ', widget=forms.Select(choices=currencies))
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ('description', 'document',)
