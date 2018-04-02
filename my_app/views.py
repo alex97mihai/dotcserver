@@ -159,20 +159,74 @@ def BuyProductView(request):
 @login_required
 def CartView(request):
     user = request.user
+    total = {'EUR': 0, 'USD': 0, 'RON': 0}
     if user.profile.corporate is False:
+        # if user is removing an item
+        if request.GET.get('rm', ''):
+            removedID = request.GET.get('rm', '')
+            product = Product.objects.filter(p_id = removedID)
+            Cart.objects.filter(product = product).delete()
         products = Cart.objects.filter(user = user).order_by('-id')
-        context_dict = {'products': products}
+        for item in products:
+            total[item.product.currency] = total[item.product.currency] + item.product.price
+        context_dict = {'products': products, 'total': total}
         return render(request, 'cart.html', context_dict)
     else:
         return redirect ('/')
 
 @login_required
+def CheckoutView(request):
+    error = 0
+    user = request.user
+    # dictionaries for balance, total cart value and result
+    result = {}
+    total = {'EUR': 0, 'USD': 0, 'RON': 0}
+    balance = {'EUR': user.profile.EUR, 'USD': user.profile.USD, 'RON': user.profile.RON}
+    if user.profile.corporate is False:
+        # get cart
+        products = Cart.objects.filter(user = user).order_by('-id')
+        # get cart value
+        for item in products:
+            total[item.product.currency] = total[item.product.currency] + item.product.price
+        # get remaining money after payment
+        for key in total:
+            result[key]=balance[key]-total[key]
+        # check if user has enough money and pop error if not
+        for key in result:
+            if result[key]<0:
+                error = 1
+                context_dict = {'error': error}
+                # stop here and show the error
+                return render(request, 'checkout.html', context_dict)
+        # if user has enough money
+        if not error:
+            user.profile.EUR = result['EUR']
+            user.profile.USD = result['USD']
+            user.profile.RON = result['RON']
+            user.save()
+            # save the purchase in the database
+            for item in products:
+                purchased_item = PurchasedItem(name=item.product.name, user=user, seller=item.product.user, p_id=item.product.p_id, p_type=item.product.p_type, price=item.product.price, currency=item.product.currency, date=datetime.date.today(), time=datetime.datetime.now().strftime('%H:%M:%S'))
+                purchased_item.save()
+            # empty cart
+            Cart.objects.filter(user = user).delete()
+        context_dict = {'error': error}
+        return render(request, 'checkout.html', context_dict)
+    # not for companies
+    else:
+        return redirect ('/')
+
+
+
+@login_required
 def sales(request):
     user = request.user
     if user.profile.corporate is True:
+        # get sales list
         products = PurchasedItem.objects.filter(seller = user).order_by('-id')
         context_dict = {'products': products}
         return render(request, 'sales.html', context_dict)
+    # not for users
     else:
         return redirect ('/')
 

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+{% if error %}
+<div class="checkout-failed"> You do not have enough funds. Please add money to your account. </div>
+
+{% else %}
+<div class="checkout-successful"> Thank you for shopping with us! Your receipt will be available shortly. </div>
+{% endif %}
+
+{% endblock %}

@@ -159,7 +159,7 @@
 }
 
 #post-message{
-  display: block; 
+  display: block;
   width: 100%;
 }
 
@@ -218,6 +218,14 @@ a, a:hover, a:focus {
     align-items: center;
 }
 
+#modalLabel {
+  color: #000;
+}
+
+#modalBody {
+  color: #000;
+}
+
 .navbar {
   padding: 3px 10px;
   background: #f7f7f6;
@@ -274,6 +282,15 @@ i, span {
   color: #000;
 }
 
+.checkout-successful {
+  font-size: 5em;
+  color: #000;
+}
+
+.checkout-failed {
+  font-size: 5em;
+  color: #FF5500FF;
+}
 /* ---------------------------------------------------
     FORMS css
 ----------------------------------------------------- */
@@ -365,6 +382,8 @@ i, span {
   color: #fff;
   height: 100vh;
   transition: all 0.3s;
+  font-family: 'Poppins';
+
 }
 
 #sidebar.active {
@@ -471,7 +490,7 @@ i, span {
   right: 20px;
   font-family: 'Glyphicons Halflings';
   font-size: 0.6em;
-  color: 
+  color:
 }
 
 #sidebar a[aria-expanded="true"]::before {
@@ -721,7 +740,7 @@ a.bug, a.bug:hover {
   #bug-id{
     display: none;
   }
-} 
+}
 @media (max-width: 768px) {
 
   #content {

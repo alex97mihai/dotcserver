@@ -107,6 +107,7 @@ class Product(models.Model):
 class PurchasedItem(models.Model):
     user = models.ForeignKey(User, related_name="item_buyer")
     seller = models.ForeignKey(User, related_name="seller")
+    name = models.CharField(max_length=140, null=True, blank=True)
     p_id = models.CharField(max_length=30, null=True, blank=True)
     p_type = models.CharField(max_length=30, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)

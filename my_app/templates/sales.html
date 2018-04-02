@@ -16,7 +16,7 @@
       {% for product in products %}
       <tr>
          <td>{{ product.name }}</td>
-         <td>{{ product.user }}</td>
+         <td>{{ product.user }}#{{ product.user.id }}</td>
          <td>{{ product.p_id }}</td>
          <td>{{ product.p_type }}</td>
          <td>{{ product.price }}</td>

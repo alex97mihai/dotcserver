@@ -1,7 +1,26 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h1 class=header-standard>Your sales</h1>
+<div class="modal fade" id="flipFlop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="modalLabel">Buy all</h4>
+      </div>
+      <div class="modal-body" id= "modalBody">
+        Are you sure you want to buy everything in your cart?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-space" data-dismiss="modal">Cancel</button>
+        <a href='/checkout' class="btn btn-primary btn-space">Checkout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1 class=header-standard>Your cart</h1>
   <table class="table">
       <tr>
           <th> Name </th>
@@ -10,15 +29,40 @@
           <th> Price </th>
           <th> Currency </th>
       </tr>
-      {% for Cart.product in products %}
+      {% for CartItem in products %}
       <tr>
-         <td>{{ Cart.product.name }}</td>
-         <td>{{ Cart.product.p_id }}</td>
-         <td>{{ Cart.product.p_type }}</td>
-         <td>{{ Cart.product.price }}</td>
-         <td>{{ Cart.product.currency }}</td>
+         <td>{{ CartItem.product.name }} &nbsp &nbsp<a href="/cart/?rm={{ CartItem.product.p_id }}"><i class="glyphicon glyphicon-remove"></i></a></td>
+         <td>{{ CartItem.product.p_id }}</td>
+         <td>{{ CartItem.product.p_type }}</td>
+         <td>{{ CartItem.product.price }}</td>
+         <td>{{ CartItem.product.currency }}</td>
       </tr>
       {% endfor %}
+      <tr>
+         <th style = 'border-top: 1px solid #000;'></th>
+            <th style = 'border-top: 1px solid #000;'></th>
+            <th style = 'border-top: 1px solid #000;'></th>
+            <th style = 'border-top: 1px solid #000;'></th>
+            <th style = 'border-top: 1px solid #000;'></th>
+          </tr>
+      {% for key, value in total.items %}
+      <tr style = 'border-top: 0px'>
+          <th style = 'border-top: 0px'>{% if key == 'USD' %} Total {% endif %}</th>
+          <th style = 'border-top: 0px'></th>
+          <th style = 'border-top: 0px'></th>
+          <th style = 'border-top: 0px'>{{ value }}</th>
+          <th style = 'border-top: 0px'>{{ key }}</th>
+      </tr>
+      {% endfor %}
+
+      <tr>
+        <th style = 'border-top: 1px solid #000;'></th>
+        <th style = 'border-top: 1px solid #000;'></th>
+        <th style = 'border-top: 1px solid #000;'></th>
+        <th style = 'border-top: 1px solid #000;'>   </th>
+        <th style = 'border-top: 1px solid #000;'></th>
+      </tr>
   </table>
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#flipFlop">Buy</button>
 
 {% endblock %}
