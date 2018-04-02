@@ -157,6 +157,16 @@ def BuyProductView(request):
         return redirect('/')
 
 @login_required
+def CartView(request):
+    user = request.user
+    if user.profile.corporate is False:
+        products = Cart.objects.filter(user = user).order_by('-id')
+        context_dict = {'products': products}
+        return render(request, 'cart.html', context_dict)
+    else:
+        return redirect ('/')
+
+@login_required
 def sales(request):
     user = request.user
     if user.profile.corporate is True:

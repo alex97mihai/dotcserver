@@ -56,4 +56,5 @@ urlpatterns = [
     url(r'^products/', addProduct, name='Add Product'),
     url(r'^sales/', sales, name='Your Sales'),
     url(r'^buy/', BuyProductView, name='Buy a Product'),
+    url(r'^cart/', CartView, name='Your cart'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
