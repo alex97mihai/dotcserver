@@ -648,7 +648,7 @@ def model_form_upload(request):
                     newProduct = Product(user=user, name=row[0], p_id=row[1], p_type=row[2], price=row[3], currency=row[4], date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'))
                     newProduct.save()
                 context_dict={'form': form}    
-                return render(request, 'companyupload.html', context_dict)
+                return redirect('/products/')
         else:
             form = DocumentForm()
         context_dict = {'form':form}
