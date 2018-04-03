@@ -156,8 +156,10 @@ def BuyProductView(request):
                 cart = Cart(user=user, product=Product.objects.get(id=django_id), quantity=1)
                 cart.save()
         full_cart = Cart.objects.filter(user=user).distinct()
+        categories = Product.objects.order_by().values_list('p_type').distinct()
+        categories_string = [x[0] for x in categories]
         context_dict['full_cart']=full_cart
-
+        context_dict['categories_string']=categories_string
         return render(request, 'buy.html', context_dict)
 
     else:
@@ -176,7 +178,7 @@ def CartView(request):
         products = Cart.objects.filter(user = user).order_by('-id')
         for item in products:
             total[item.product.currency] = total[item.product.currency] + item.product.price
-        context_dict = {'products': products, 'total': total}
+        context_dict = {'products': products, 'total': total, 'user': user}
         return render(request, 'cart.html', context_dict)
     else:
         return redirect ('/')
@@ -656,6 +658,11 @@ def model_form_upload(request):
     else:
         return redirect('/')
 
+
+# MONITOR VIEWS
+
+def monitor_base_view(request):
+    return render(request, 'monitor-base.html')
 
 ### AJAX VIEWS ###
 

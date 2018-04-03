@@ -362,13 +362,36 @@ i, span {
 ----------------------------------------------------- */
 
 .wrapper {
-  display: flex;
-  align-items: stretch;
-  background-color: #fff ;
-  margin-bottom: -56px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: none;
+  color: #000;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
+.tabs {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 100px;
+}
+
+.tab-item{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.data-display{
+  text-align: center;
+}
+
+.data-col{
+  background-color: blue;
+  padding: 10px 10px 10px 10px;
+}
+
+#active{
+  color: #d66712 !important;
+}
 .marginfix {
   margin-bottom: 200px;
 }

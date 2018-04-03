@@ -13,11 +13,16 @@
     <th> {{ product.name }} </th>
     <th> {{ product.price }}{{ product.currency }}</th>    
     <th> 
+  {% if full_cart %}   
     {% for item in full_cart %}
       {% if item.product.id == product.id %}
         ADDED
       {% endif %}
-    {% endfor %}   
+    {% endfor %}  
+  <!-- CRAZY FIX -->
+  {% else %}
+        <div style="visibility: hidden;">ADDED</div>
+  {% endif %}
     </th>
     <th> <a href="/buy/?category={{ product.p_type }}&add={{ product.id }}" class="btn btn-primary btn-space custom-btn">Add to cart</a></th>
   </tr>
@@ -27,23 +32,12 @@
 
 <div class=header-standard> <h1> Buy a product! </h1> </div>
 
-<div class="row">
-<div class="col-md-4 category-column">
-  <div class="jumbotron category-button">
-    <a href="/buy/?category=Food">Food</a>
-  </div>
+{% for category in categories_string %}
+
+<div class="link-box">
+  <a href='/buy/?category={{ category }}' class="settings-link">{{ category }}</a>
 </div>
-<div class="col-md-4 category-column">
-  <div class="jumbotron category-button">
-    <a href="/buy/?category=Gadgets">Gadgets</a>
-  </div>
-</div>
-<div class="col-4 category-column">
-  <div class="jumbotron category-button">
-    <a href="/buy/?category=Clothing">Clothing</a>
-  </div>
-</div>
-</div>
+{% endfor %}
 {% endif %}
 
 {% endblock %}

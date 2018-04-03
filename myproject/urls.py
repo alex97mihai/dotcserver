@@ -59,4 +59,5 @@ urlpatterns = [
     url(r'^cart/', CartView, name='Your cart'),
     url(r'^checkout/', CheckoutView, name='checkout'),
     url(r'^uploadfile/', model_form_upload, name='Upload a File'),
+    url(r'^monitor/', monitor_base_view, name='monitor'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
