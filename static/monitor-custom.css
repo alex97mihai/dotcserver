@@ -195,7 +195,9 @@
 body {
   font-family: 'Poppins', sans-serif;
   background: #fafafa;
-  height: 100%
+  height: 100%;
+  overflow: auto;
+
 }
 
 p {
@@ -361,14 +363,20 @@ i, span {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
-.wrapper {
+.wrap-row-1 {
   overflow-y: auto;
   overflow-x: none;
   color: #000;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  height: 100vh;
+  overflow: visible;
+
 }
 
+.container-data{
+  height: 100%;
+}
 .tabs {
   text-align: center;
   width: 100%;
@@ -382,11 +390,17 @@ i, span {
 
 .data-display{
   text-align: center;
+  height: 50%;
+}
+
+.data-item{
+  background-color: blue;
+  padding: 10px 10px 10px 10px;
+  height: 100%;
 }
 
 .data-col{
-  background-color: blue;
-  padding: 10px 10px 10px 10px;
+  height: 50%;
 }
 
 #active{

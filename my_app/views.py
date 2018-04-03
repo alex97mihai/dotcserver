@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
+# Django imports ------------------------------------------------------------
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -9,23 +10,19 @@ from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from models import Profile as DjProfile
-from models import Order, CompleteOrders, OpHistory, Friendship, Notification, Card, Message, Product, PurchasedItem, Cart, TransferHistory
-from models import Document
-from my_app.forms import *
 from django.utils import timezone
-# Non-django imports
-import json
-import os
-import datetime
-import decimal
-import time
-import csv, codecs
+# Models and Forms ----------------------------------------------------------
+from models import Profile as DjProfile
+from models import Order, CompleteOrders, OpHistory, Friendship, Notification, Card, Message, 
+from models import Document, Product, PurchasedItem, Cart, TransferHistory
+from my_app.forms import *
+# Non-django imports --------------------------------------------------------
+import os, json, datetime, decimal, time, csv, codecs
 from .tasks import exchange_celery
 from lib import converter
 
 
-# Views start here
+# Views start here ----------------------------------------------------------
 
 @login_required
 def HomeView(request):
@@ -92,7 +89,6 @@ def corporateSignup(request):
 
 @login_required
 def topup(request):
-
     user = request.user
     if request.method == 'POST':
         form = TopUpForm(request.POST)
@@ -659,7 +655,7 @@ def model_form_upload(request):
         return redirect('/')
 
 
-# MONITOR VIEWS
+# MONITOR Views ----------------------------------------------------------
 
 def monitor_base_view(request):
     return render(request, 'monitor-base.html')
