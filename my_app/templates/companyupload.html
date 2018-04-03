@@ -1,11 +1,29 @@
 {% extends 'corporate-base.html' %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-  </form>
+<div class=header-standard> <h1> Upload a product list below! </h1> </div>
 
-  <p><a href='/'>Return to home</a></p>
+<div class="col-md-4">
+  <div class="container-fluid" id="login-form">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+      <fieldset>
+        {% for field in form %}
+        <div class="control-group">
+          <label class="control-label">{{ field.label }}</label>
+          <div class="controls">{{ field }} {% if field.help_text %}
+            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </fieldset>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-space custom-btn">Upload</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
 {% endblock %}

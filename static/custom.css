@@ -298,6 +298,11 @@ i, span {
 .custom-btn{
   width: 100%;
 }
+
+#id_description{
+  width: 100%;
+}
+
 #id_username{
   width: 100%;
 }
@@ -318,7 +323,6 @@ i, span {
 #id_home_currency_amount{
   width: 100%;
 }
-
 
 #id_c_currency{
   min-width: 53%;

@@ -20,8 +20,10 @@ import os
 import datetime
 import decimal
 import time
+import csv, codecs
 from .tasks import exchange_celery
 from lib import converter
+
 
 # Views start here
 
@@ -633,15 +635,26 @@ def SendMessage(request):
 
 @login_required
 def model_form_upload(request):
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+    user = request.user
+    if user.profile.corporate is True:
+        if request.method == 'POST':
+            form = DocumentForm(request.POST, request.FILES)
+            if form.is_valid():
+                csvfile = request.FILES['document']
+                dialect = csv.Sniffer().sniff(codecs.EncodedFile(csvfile, "utf-8").read(1024))
+                csvfile.open()
+                csvcontent = csv.reader(codecs.EncodedFile(csvfile, "utf-8"), delimiter=str(u';'), dialect=dialect)   
+                for row in csvcontent:
+                    newProduct = Product(user=user, name=row[0], p_id=row[1], p_type=row[2], price=row[3], currency=row[4], date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'))
+                    newProduct.save()
+                context_dict={'form': form}    
+                return render(request, 'companyupload.html', context_dict)
+        else:
+            form = DocumentForm()
+        context_dict = {'form':form}
+        return render(request, 'companyupload.html', context_dict)
     else:
-        form = DocumentForm()
-    context_dict = {'form':form}
-    return render(request, 'companyupload.html', context_dict)
+        return redirect('/')
 
 
 ### AJAX VIEWS ###
