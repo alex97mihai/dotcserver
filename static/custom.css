@@ -373,6 +373,34 @@ i, span {
   margin-bottom: 200px;
 }
 
+.tabs {
+  position: absolute;
+  left: 0;
+  top: 100px;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 100px;
+}
+
+.tab-item{
+  color: #000;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.tabs a:visited{
+  color: #000;
+}
+
+.tabs a:hover{
+  color: #d66712;
+}
+
+#tab-id .active {
+  color: #d66712;
+}
+
+
 #content {
   padding-top: 100px;
   padding-left: 100px;

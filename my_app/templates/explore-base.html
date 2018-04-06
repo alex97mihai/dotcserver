@@ -78,12 +78,12 @@
       <div class="row">
 
         <div class="col-xs-1">
-          <img src="/media/media/avatar.jpg" height="45" width="45" id="avatar">
+          <img src="{{ user.profile.avatar.url }}" height="45" width="45" id="avatar">
         </div>
         <div class="col-xs-11">
           <div class="row">
             <div class="col-xs-12">
-              <div class="details">username | date | time </div>
+              <div class="details">{{ user.username }} </div>
             </div>
           </div>
           <div class="row">

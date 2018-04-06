@@ -698,7 +698,8 @@ def exploreView(request):
             newpost.save()
         return redirect('/explore/')
     else:
-        request.session['explore_last'] = datetime.datetime.now().strftime('%H:%M:%S')
+        request.session['explore_last_time'] = datetime.datetime.now().strftime('%H:%M:%S')
+        request.session['explore_last_date'] = str(datetime.date.today())
         form = addPost()
 
         userfriends = Friendship.objects.filter(creator = user)
@@ -716,14 +717,16 @@ def get_posts(request):
     user=request.user    
     userfriends = Friendship.objects.filter(creator = user)
     friendlist = [x.friend for x in userfriends]
-    friendlist.append(user)
     posts = Post.objects.filter(user__in = friendlist).order_by('id')
     new = False
-    time = request.session['explore_last']
+    time = request.session['explore_last_time']
+    date = request.session['explore_last_date']
+    date_obj = datetime.datetime.strptime(date,'%Y-%m-%d').date()
     time_obj = datetime.datetime.strptime(time, '%H:%M:%S').time()
     for post in posts:
-        if post.time > time_obj:
+        if post.time > time_obj and post.date>=date_obj:
             new = True
+            time2=post.time
     context_dict = {'new': new}
     return render(request, 'ajax/get_posts.html', context_dict)
 

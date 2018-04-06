@@ -106,11 +106,17 @@
         </li>
       </ul>
     </nav>
-
+    
+  <div class="row tabs" id='tab-id'>
+    <a href="/" class="tab-item active">Home</a>
+    <a href="/monitor/" class="tab-item">Monitor</a>
+    <a href="/explore/" class="tab-item">Explore</a>
+  </div>
 
     <!-- Page Content Holder -->
 
     <div id="content">
+
     {% block content %}
     {% endblock %}
     </div>
