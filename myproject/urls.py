@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-# import all views in my_app
+#import all views in my_app
 from my_app.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -59,5 +59,7 @@ urlpatterns = [
     url(r'^cart/', CartView, name='Your cart'),
     url(r'^checkout/', CheckoutView, name='checkout'),
     url(r'^uploadfile/', model_form_upload, name='Upload a File'),
-    url(r'^monitor/', monitor_base_view, name='monitor'),
+    url(r'^monitor/', SpentPerMonth, name='monitor'),
+    url(r'^explore/', exploreView, name='explore'),
+    url(r'^get-posts/', get_posts, name='ajax posts'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

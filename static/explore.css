@@ -192,11 +192,16 @@
 
 /* END NOTIFICATION */
 
+html {
+  height: 100%;
+}
 body {
   font-family: 'Poppins', sans-serif;
   background: #fafafa;
-  height: 100%;
+  min-height: 100%;
   overflow: auto;
+  background-color: #00AAFFFF;
+
 
 }
 
@@ -362,21 +367,48 @@ i, span {
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-
-.wrap-row-1 {
-  overflow-y: auto;
-  overflow-x: none;
-  color: #000;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  height: 100vh;
-  overflow: visible;
-
+#post-form{
+  margin-left: -15px;
+  margin-top: 5px;
 }
 
-.container-data{
+#id_text{
+  width: 100% !important;
+}
+
+.post-btn{
+  width: 15%;
+  float: right;
+}
+
+.explore-container{
   height: 100%;
+  text-align: center;
 }
+
+.explore-wrapper{
+  margin: 0px 300px 0px 300px;
+  background-color: #fff;
+  height: 100%;
+  text-align: center;
+  padding: 100px 100px 150px 100px;
+}
+
+.post{
+  background-color: #fff;
+  border: 1px dashed #B6B6B6FF;
+  padding-left: 10px !important;
+  padding-top:10px;
+  margin-bottom: 30px;
+}
+
+.details{
+  color: #000;
+  white-space: nowrap;
+  float: left;
+  font-weight: 900;
+}
+
 .tabs {
   text-align: center;
   width: 100%;
@@ -388,17 +420,41 @@ i, span {
   margin-right: 10px;
 }
 
-.data-display{
+
+.post-image{
+  object-fit: cover;
+  margin-left: 25px;
+  margin-top: 20px;
+}
+
+.post-text{
+  color: #000;
+  float: left;
+  text-align: left;
+}
+
+.wordwrap { 
+  white-space: -moz-pre-wrap; /* Mozilla */
+  white-space: -hp-pre-wrap; /* HP printers */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: pre-wrap; /* CSS 2.1 */
+  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word; /* IE */
+  word-break: break-all; 
+}
+
+.new-post-popup{
+  position: fixed;
+  left: 50%;
+  bottom: 56px;
+  -webkit-transform: translate(-50%, 0); 
+  padding: 10px 30px 10px 30px;
+  width: 110%;
   text-align: center;
-  height: 50%;
-}
-
-.data-item{
-  padding: 10px 10px 10px 10px;
-}
-
-.data-col{
-  height: 50%;
+  background-color: #FF557FFF;
+  font-weight: 900;
+  color: #fff;
 }
 
 #active{
@@ -573,12 +629,9 @@ a.bug, a.bug:hover {
   font-size: 5em;
 }
 
-
-
 .default-card{
   font-weight: 600;
   border: 3px dashed #157ffb;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -779,7 +832,9 @@ a.bug, a.bug:hover {
 ----------------------------------------------------- */
 @media (max-width: 1400px){
 
-
+.explore-wrapper{
+  margin: 0px 30px 0px 30px;
+}
   #bug-id{
     display: none;
   }

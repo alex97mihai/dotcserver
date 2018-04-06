@@ -85,3 +85,8 @@ class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ('description', 'document',)
+
+class addPost(forms.Form):
+    text = forms.CharField(label='New Post: ', widget=forms.Textarea(attrs={'rows':4,
+                                            'cols':22,
+                                            'style':'resize:none;'}))

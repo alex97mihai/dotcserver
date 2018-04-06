@@ -44,6 +44,7 @@ class Friendship(models.Model):
     creator = models.ForeignKey(User, related_name="friendship_creator_set")
     friend = models.ForeignKey(User, related_name="friend_set")
     status = models.CharField(max_length=30, blank=True, default='sent')
+    
 class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
@@ -123,6 +124,7 @@ class Post(models.Model):
     text = models.TextField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
+    link = models.CharField(max_length=100, null=True, blank=True)
 
 
 class Cart(models.Model):

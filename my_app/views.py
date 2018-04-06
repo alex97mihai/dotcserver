@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-# Django imports ------------------------------------------------------------
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -10,19 +9,19 @@ from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from django.utils import timezone
-# Models and Forms ----------------------------------------------------------
 from models import Profile as DjProfile
-from models import Order, CompleteOrders, OpHistory, Friendship, Notification, Card, Message, 
-from models import Document, Product, PurchasedItem, Cart, TransferHistory
+from models import Order, CompleteOrders, OpHistory, Friendship, Notification, Card, Message, Product, PurchasedItem, Cart, TransferHistory
+from models import Document, Post
 from my_app.forms import *
-# Non-django imports --------------------------------------------------------
-import os, json, datetime, decimal, time, csv, codecs
+from django.utils import timezone
+# Non-django imports
+import json, os, datetime, decimal, time, csv, codecs
+import _strptime
 from .tasks import exchange_celery
 from lib import converter
 
 
-# Views start here ----------------------------------------------------------
+# Views start here
 
 @login_required
 def HomeView(request):
@@ -86,6 +85,7 @@ def corporateSignup(request):
     else:
 	form = SignUpForm()
     return render(request, 'CorporateSignup.html', {'form': form})
+
 
 @login_required
 def topup(request):
@@ -641,11 +641,11 @@ def model_form_upload(request):
                 csvfile = request.FILES['document']
                 dialect = csv.Sniffer().sniff(codecs.EncodedFile(csvfile, "utf-8").read(1024))
                 csvfile.open()
-                csvcontent = csv.reader(codecs.EncodedFile(csvfile, "utf-8"), delimiter=str(u';'), dialect=dialect)   
+                csvcontent = csv.reader(codecs.EncodedFile(csvfile, "utf-8"), delimiter=str(u';'), dialect=dialect)
                 for row in csvcontent:
                     newProduct = Product(user=user, name=row[0], p_id=row[1], p_type=row[2], price=row[3], currency=row[4], date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'))
                     newProduct.save()
-                context_dict={'form': form}    
+                context_dict={'form': form}
                 return redirect('/products/')
         else:
             form = DocumentForm()
@@ -655,12 +655,77 @@ def model_form_upload(request):
         return redirect('/')
 
 
-# MONITOR Views ----------------------------------------------------------
+# MONITOR VIEWS
 
-def monitor_base_view(request):
-    return render(request, 'monitor-base.html')
+@login_required
+def SpentPerMonth(request):
+    user = request.user
+    c = converter.CurrencyRates()
+    if user.profile.corporate is False:
+        categories = Product.objects.order_by().values_list('p_type').distinct()
+        categories_string = [x[0] for x in categories]
+        total = {}
+        total_global = {}
+        for category in categories_string:
+            total[str(category)] = 0
+            total_global[str(category)] = 0
+        today = datetime.date.today()
+        first_of_month = datetime.date(today.year, today.month, 1)
+        PurchaseList = PurchasedItem.objects.filter(user=user)
+        for item in PurchaseList:
+            if item.date >= first_of_month:
+                rate = c.get_rate(str(item.currency), 'EUR')
+                total[str(item.p_type)] = total[str(item.p_type)] + decimal.Decimal(rate) * item.price
+        GlobalList = PurchasedItem.objects.all().exclude(user= user)
+        for item in GlobalList:
+            if item.date >= first_of_month:
+                rate = c.get_rate(str(item.currency), 'EUR')
+                total_global[str(item.p_type)] = total_global[str(item.p_type)] + decimal.Decimal(rate) * item.price
+        FinalTotal = {'total': total, 'total_global': total_global}
+        return render (request, 'monitor-base.html', FinalTotal)
+    else:
+        return redirect ('/')
+
+
+
+def exploreView(request):
+    user=request.user
+    if request.method == 'POST':
+        form = addPost(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data.get('text')
+            newpost = Post(user=user, text=text, date = datetime.date.today(), time = datetime.datetime.now().strftime('%H:%M:%S'))
+            newpost.save()
+        return redirect('/explore/')
+    else:
+        request.session['explore_last'] = datetime.datetime.now().strftime('%H:%M:%S')
+        form = addPost()
+
+        userfriends = Friendship.objects.filter(creator = user)
+        friendlist = [x.friend for x in userfriends]
+        friendlist.append(user)
+        posts = Post.objects.filter(user__in = friendlist).order_by('id')
+        
+        context_dict={'form': form, 'posts': posts}
+        return render(request, 'explore-base.html', context_dict)
+
 
 ### AJAX VIEWS ###
+
+def get_posts(request):
+    user=request.user    
+    userfriends = Friendship.objects.filter(creator = user)
+    friendlist = [x.friend for x in userfriends]
+    friendlist.append(user)
+    posts = Post.objects.filter(user__in = friendlist).order_by('id')
+    new = False
+    time = request.session['explore_last']
+    time_obj = datetime.datetime.strptime(time, '%H:%M:%S').time()
+    for post in posts:
+        if post.time > time_obj:
+            new = True
+    context_dict = {'new': new}
+    return render(request, 'ajax/get_posts.html', context_dict)
 
 def send_message(request):
     if request.method == 'POST':
