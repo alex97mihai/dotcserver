@@ -13,6 +13,7 @@
   <!-- Our Custom CSS -->
   <link rel="stylesheet" href="/static/corporate-style.css">
   <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 </head>
 
@@ -93,7 +94,7 @@
           <a href="/"><i class="glyphicon glyphicon-user"></i>Friends</a>
         </li>
         <li {% if request.get_full_path == "/data/" %} class="active" {% endif %}>
-          <a href="/"><i class="glyphicon glyphicon-stats"></i>Data</a>
+          <a href="/data"><i class="glyphicon glyphicon-stats"></i>Data</a>
         </li>
       </ul>
     </nav>

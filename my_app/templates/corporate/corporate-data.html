@@ -10,7 +10,7 @@
 <ul class="company-category-list col-xs-4">
 {% for category in categories %}
 <li>
-    <a class ="company-category-item" href="">     
+    <a class ="company-category-item" href="">
         {% if category == 'book' %}<i class="glyphicon glyphicon-book company-category-icon"></i>
         {% elif category == 'tool' %}<i class="glyphicon glyphicon-wrench company-category-icon"></i>
         {% elif category == 'healthcare' %}<i class="glyphicon glyphicon-plus-sign company-category-icon"></i>
@@ -21,9 +21,11 @@
         {% elif category == 'food' %}<i class="glyphicon glyphicon-apple company-category-icon"></i>
         {% elif category == 'auto' %}<i class="glyphicon glyphicon-road company-category-icon"></i>
         {% elif category == 'games' %}<i class="glyphicon glyphicon-knight company-category-icon"></i>
+        {% elif category == 'pet' %}<i class="glyphicon glyphicon-piggy-bank company-category-icon"></i>
+        {% elif category == 'All' %}<i class="glyphicon glyphicon-th-large company-category-icon"></i>
         {% endif %}
     {{ category }}
-    </a> 
+    </a>
 </li>
 {% endfor %}
 </ul>

@@ -1,6 +1,4 @@
-
 """myproject URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
 Examples:
@@ -24,44 +22,66 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    url(r'^$', HomeView, name='home'),
-    url(r'^wallet/', walletView, name='wallet'),
-    url(r'^signup/$', signup, name='signup'),
+    # DJANGO
     url(r'^login/', auth_views.login, name='login'),
-    url(r'^logout/', logoutView, name='logout'),
     url(r'^admin/', admin.site.urls),
-    url(r'^topup/', topup, name='topup'),
-    url(r'^withdraw/', withdraw, name='withdraw'),
-    url(r'^transfer/', transfer, name='transfer'),
-    url(r'^rates/', viewRates, name='viewRates'),
-    url(r'^exchange/', exchange, name='exchange'),
-    url(r'^history/', historyView, name='history'),
-    url(r'^search-friends/', users, name='users'),
-    url(r'^add-friend/', addFriend, name='add-friend'),
-    url(r'^friends/', friends, name='friends'),
-    url(r'^notifications/', viewNotifications, name='notifications'),
-    url(r'^get_notifications/', get_notifications, name='get_notifications'),
-    url(r'^notiflength/', notiflength, name='notiflength'),
-    url(r'^messlength/', messlength, name='messlength'),
-    url(r'^mark_as_clear/', mark_as_clear, name='mark_as_clear'),
+    # END OF DJANGO
+    #
+    # REGISTRATION
+    url(r'^signup/$', signupView, name='signup'),
+    url(r'^corporate/', corporateSignupView, name='Corporate Signup'),
+    # END OF REGISTRATION
+    #
+    # PROFILE + WALLET
+    url(r'^$', homeView, name='home'),
+    url(r'^wallet/', walletView, name='wallet'),
+    url(r'^cards/', addCardView, name='addCard'),
+    url(r'^topup/', topupView, name='topup'),
+    url(r'^withdraw/', withdrawView, name='withdraw'),
+    url(r'^transfer/', transferView, name='transfer'),
+    url(r'^exchange/', exchangeView, name='exchange'),
     url(r'^profile/', profileView, name='profile'),
-    url(r'^uploadpic/', uploadPic, name='uploadPic'),
-    url(r'^cards/', addCard, name='addCard'),
-    url(r'^settings/', Settings, name='settings'),
-    url(r'^terms/', terms, name='terms'),
-    url(r'^messages/', SendMessage, name='message'),
-    url(r'^send_message/', send_message, name='message AJAX'),
-    url(r'^get_messages/', get_messages, name='get_messages'),
-    url(r'^corporate/', corporateSignup, name='Corporate Signup'),
-    url(r'^products/', addProduct, name='Add Product'),
-    url(r'^sales/', sales, name='Your Sales'),
-    url(r'^buy/', BuyProductView, name='Buy a Product'),
-    url(r'^cart/', CartView, name='Your cart'),
-    url(r'^checkout/', CheckoutView, name='checkout'),
-    url(r'^uploadfile/', model_form_upload, name='Upload a File'),
-    url(r'^monitor/', SpentPerMonth, name='monitor'),
+    url(r'^uploadpic/', uploadPicView, name='uploadPic'),
+    # END OF PROFILE + WALLET
+    #
+    # MESSAGES + NOTIFICATIONS + FRIENDS
+    url(r'^search-friends/', usersView, name='users'),
+    url(r'^add-friend/', addFriendView, name='add-friend'),
+    url(r'^friends/', friendsView, name='friends'),
+    url(r'^messages/', sendMessageView, name='message'),
+    # END OF MESSAGES + NOTIFICATIONS + FRIENDS
+    #
+    # USER STORE + CART + STATS
+    url(r'^buy/', buyProductView, name='Buy a Product'),
+    url(r'^cart/', cartView, name='Your cart'),
+    url(r'^checkout/', checkoutView, name='checkout'),
+    url(r'^history/', historyView, name='history'),
+    url(r'^monitor/', monthlyStatsView, name='monitor'),
     url(r'^explore/', exploreView, name='explore'),
-    url(r'^get-posts/', get_posts, name='ajax posts'),
-    url(r'^data/', company_data_view, name='data'),
-    url(r'^get-company-data/', get_company_data, name="ajax company data"),
+    # END OF USER STORE + CART + STATS
+    #
+    # CORPORATE PRODUCTS AND STATS
+    url(r'^sales/', salesView, name='Your Sales'),
+    url(r'^products/', addProductView, name='Add Product'),
+    url(r'^data/', corporateDataView, name='data'),
+    url(r'^uploadfile/', uploadProductsView, name='Upload a File'),
+    # END OF CORPORATE PRODUCTS AND status
+    #
+    # ETC.
+    url(r'^logout/', logoutView, name='logout'),
+    url(r'^rates/', viewRatesView, name='viewRates'),
+    url(r'^settings/', settingsView, name='settings'),
+    url(r'^terms/', termsView, name='terms'),
+    # END OF ETC.
+    #
+    # JAVASCRIPT
+    url(r'^get_notifications/', get_notifications_AJAX, name='get_notifications'),
+    url(r'^notiflength/', get_notifications_length_AJAX, name='notiflength'),
+    url(r'^messlength/', get_messages_length_AJAX, name='messlength'),
+    url(r'^mark_as_clear/', mark_as_read_AJAX, name='mark_as_clear'),
+    url(r'^send_message/', send_message_AJAX, name='message AJAX'),
+    url(r'^get_messages/', get_messages_AJAX, name='get_messages'),
+    url(r'^get-posts/', get_posts_AJAX, name='ajax posts'),
+    url(r'^get-company-data/', get_company_data_AJAX, name="ajax company data"),
+    # END OF JAVASCRIPT
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

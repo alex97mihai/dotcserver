@@ -281,6 +281,24 @@ i, span {
 /* ---------------------------------------------------
     FORMS css
 ----------------------------------------------------- */
+
+.stats{
+  text-align: center;
+}
+
+.pie1{
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+}
+
+.pie2{
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+}
+
 .custom-btn{
   width: 100%;
 }

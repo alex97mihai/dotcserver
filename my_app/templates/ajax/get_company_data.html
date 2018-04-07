@@ -1,4 +1,56 @@
-{% for product in product_list %}
-<span style="color: #000">{{ product.name }}</span>
-{% endfor %}
 
+<!-- Google Charts CDN and scripts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('42', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+
+  {% if category == 'All' %}
+
+
+  function drawChart() {
+    var piedata = google.visualization.arrayToDataTable([
+      ['Category', 'Total'],
+      {% for key, value in total.items %}
+      ['{{ key }}',   {{ value }}],
+      {% endfor %}
+    ]);
+
+    var pieoptions = {
+      title: 'Categories of sold items',
+      legend: {position: 'labeled'},
+      chartArea: {width: 400, height: 300},
+    };
+
+    var piechart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    piechart.draw(piedata, pieoptions);
+
+
+    var piedata2 = google.visualization.arrayToDataTable([
+      ['Category', 'Total'],
+      {% for key, value in total_per_currency.items %}
+      ['{{ key }}',   {{ value }}],
+      {% endfor %}
+    ]);
+
+    var pie2options = {
+      title: 'Categories of sold items',
+      legend: {position: 'labeled'},
+      chartArea: {width: 400, height: 300},
+    };
+
+    var piechart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+    piechart2.draw(piedata2, pie2options);
+
+
+
+{% endif %}
+  }
+</script>
+<!-- Google Charts end -->
+
+<div id="piechart" class="pie1"></div>
+<div id="piechart2" class="pie2"></div>
