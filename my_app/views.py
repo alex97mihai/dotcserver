@@ -9,6 +9,7 @@ from django.contrib.auth.models import User as dbUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.generic import TemplateView
+from django.db.models import Count
 from models import Profile as DjProfile
 from models import Order, CompleteOrders, Message, Product, PurchasedItem, Cart, TransferHistory
 from models import Document, Post, OpHistory, Friendship, Notification, Card
@@ -221,6 +222,7 @@ def checkoutView(request):
                                                user=user,
                                                seller=item.product.user,
                                                p_id=item.product.p_id,
+                                               dj_id=item.product.id,
                                                p_type=item.product.p_type,
                                                price=item.product.price,
                                                currency=item.product.currency,
@@ -844,9 +846,23 @@ def get_company_data_AJAX(request):
 
             context_dict = {'total': total, 'product_list': product_list, 'category': category, 'total_per_currency': total_per_currency, 'total_EUR': total_EUR}
             return render(request, 'ajax/get_company_data.html', context_dict)
-        product_list = PurchasedItem.objects.filter(seller=user, p_type=category)
-        context_dict={'product_list': product_list}
-        return render(request, 'ajax/get_company_data.html', context_dict)
+
+        else:
+            product_list = PurchasedItem.objects.filter(seller=user, p_type=category)
+            today = datetime.date.today()
+            first_of_month = datetime.date(today.year, today.month, 1)
+            top_list = {}
+            for item in product_list:
+                if item.date < first_of_month:
+                    product_list = product_list.exclude(item)
+            id_list = product_list.values('dj_id').annotate(dj_count=Count('dj_id'))
+            top = id_list.order_by('-dj_count')[:5] # top 5 most sold ids
+            for item in top:
+                name = Product.objects.get(id = item['dj_id']).name
+                top_list[name] = item['dj_count']
+            top_objects = Product.objects.filter(id__in = [item['dj_id'] for item in top]).distinct()
+            context_dict={'category': category, 'product_list': product_list, 'top_objects': top_objects, 'top_list': top_list}
+            return render(request, 'ajax/get_company_data.html', context_dict)
     else:
         return redirect('/')
 

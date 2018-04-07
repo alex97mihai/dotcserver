@@ -44,7 +44,7 @@ class Friendship(models.Model):
     creator = models.ForeignKey(User, related_name="friendship_creator_set")
     friend = models.ForeignKey(User, related_name="friend_set")
     status = models.CharField(max_length=30, blank=True, default='sent')
-    
+
 class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
@@ -114,6 +114,7 @@ class PurchasedItem(models.Model):
     name = models.CharField(max_length=140, null=True, blank=True)
     p_id = models.CharField(max_length=30, null=True, blank=True)
     p_type = models.CharField(max_length=30, null=True, blank=True)
+    dj_id = models.CharField(max_length=30, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     currency = models.CharField(max_length=30, null=True, blank=True)
     date = models.DateField(null=True, blank=True)

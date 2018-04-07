@@ -2,14 +2,12 @@
 <!-- Google Charts CDN and scripts -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-  google.charts.load('42', {'packages':['corechart']});
+  google.charts.load('42', {'packages':['corechart', 'bar']});
   google.charts.setOnLoadCallback(drawChart);
 
-
+function drawChart() {
   {% if category == 'All' %}
 
-
-  function drawChart() {
     var piedata = google.visualization.arrayToDataTable([
       ['Category', 'Total'],
       {% for key, value in total.items %}
@@ -41,16 +39,45 @@
       chartArea: {width: 400, height: 300},
     };
 
+
+
     var piechart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+
 
     piechart2.draw(piedata2, pie2options);
 
+    {% else %}
+
+    var columndata = google.visualization.arrayToDataTable([
+      ['Category', 'Total'],
+      {% for key, value in top_list.items %}
+      ['{{ key }}',  {{ value }}],
+      {% endfor %}
+    ]);
+
+    var columnoptions = {
+      title: 'Penis',
+      width: 700,
+      height: 400,
+      legend: {position: 'none'},
+    };
+
+    var columnchart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
+
+    columnchart.draw(columndata, columnoptions);
 
 
 {% endif %}
   }
+
 </script>
 <!-- Google Charts end -->
 
-<div id="piechart" class="pie1"></div>
-<div id="piechart2" class="pie2"></div>
+{% if category == 'All' %}
+  <div id="piechart" class="pie1"></div>
+  <div id="piechart2" class="pie2"></div>
+{% else %}
+  <div id='columnchart' class="stats-info">
+  </div>
+
+{% endif %}

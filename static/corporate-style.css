@@ -299,6 +299,12 @@ i, span {
   -webkit-transform: translateX(-50%);
 }
 
+.stats-info{
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+}
+
 .custom-btn{
   width: 100%;
 }
