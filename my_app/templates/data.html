@@ -22,7 +22,7 @@
         {% elif category == 'auto' %}<i class="glyphicon glyphicon-road company-category-icon"></i>
         {% elif category == 'games' %}<i class="glyphicon glyphicon-knight company-category-icon"></i>
         {% endif %}
-    <span class="cat-name">{{ category }}</span> 
+    {{ category }}
     </a> 
 </li>
 {% endfor %}
@@ -38,7 +38,7 @@ $(document).ready(function(){
   $('.company-category-item').click(function(event) {
       event.preventDefault();
       var target = $(event.target)
-      var target_div = target.find('.cat-name').html()
+      var target_div = target.text().replace(/\s/g, '');
       var targetpath = '/get-company-data/?category=' + target_div
       console.log(targetpath)
       $.ajax({
