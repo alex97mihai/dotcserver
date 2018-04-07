@@ -106,7 +106,7 @@ class Product(models.Model):
     currency = models.CharField(max_length=30, null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
-
+    url = models.CharField(max_length=300, blank=True, null=True)
 
 class PurchasedItem(models.Model):
     user = models.ForeignKey(User, related_name="item_buyer")
@@ -118,6 +118,8 @@ class PurchasedItem(models.Model):
     currency = models.CharField(max_length=30, null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
+    url = models.CharField(max_length=300, blank=True, null=True)
+
 
 class Post(models.Model):
     user = models.ForeignKey(User, related_name="poster")

@@ -634,6 +634,7 @@ a.bug, a.bug:hover {
   /* Add a grey border */
   margin-bottom: 12px;
   /* Add some space below the input */
+  margin-top: 100px;
   color: #000;
 }
 #myUL {

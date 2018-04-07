@@ -655,6 +655,18 @@ def model_form_upload(request):
         return redirect('/')
 
 
+@login_required
+def company_data_view(request):
+    user = request.user
+    categories = PurchasedItem.objects.filter(seller=user).order_by().values_list('p_type').distinct()
+    categories_string = [x[0] for x in categories]
+    context_dict = {'categories': categories_string}
+    return render(request, 'data.html', context_dict)
+
+
+
+
+
 # MONITOR VIEWS
 
 @login_required
@@ -712,6 +724,16 @@ def exploreView(request):
 
 
 ### AJAX VIEWS ###
+
+def get_company_data(request):
+    user=request.user
+    category = request.GET.get('category')
+    product_list = PurchasedItem.objects.filter(seller=user, p_type=category)
+    context_dict={'product_list': product_list}    
+    return render(request, 'ajax/get_company_data.html', context_dict)
+
+
+
 
 def get_posts(request):
     user=request.user    

@@ -62,4 +62,6 @@ urlpatterns = [
     url(r'^monitor/', SpentPerMonth, name='monitor'),
     url(r'^explore/', exploreView, name='explore'),
     url(r'^get-posts/', get_posts, name='ajax posts'),
+    url(r'^data/', company_data_view, name='data'),
+    url(r'^get-company-data/', get_company_data, name="ajax company data"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

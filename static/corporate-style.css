@@ -527,6 +527,42 @@ a.bug, a.bug:hover {
 
 
 
+
+.company-category-list{
+
+  padding-left :0;
+  padding-right :0;
+  background-color: #FFF;
+  color: #333;
+  list-style: none;
+  text-align: left;
+}
+
+
+.company-category-item{
+  padding: 10px 5px 10px 5px;
+  display: block;
+  border-top: 1px #888 solid;
+
+}
+
+.company-category-item:hover{
+  background-color: #FFAA00FF;
+  color: #fff;
+}
+
+.company-category-icon{
+  margin-right: 5px;
+}
+
+
+
+
+
+
+
+
+
 .default-card{
   font-weight: 600;
   border: 3px dashed #157ffb;

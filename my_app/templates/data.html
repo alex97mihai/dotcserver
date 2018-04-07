@@ -1,0 +1,59 @@
+{% extends 'corporate-base.html' %}
+
+{% block content %}
+
+
+<div class='container-fluid company-category-container'>
+
+
+
+<ul class="company-category-list col-xs-4">
+{% for category in categories %}
+<li>
+    <a class ="company-category-item" href="">     
+        {% if category == 'book' %}<i class="glyphicon glyphicon-book company-category-icon"></i>
+        {% elif category == 'tool' %}<i class="glyphicon glyphicon-wrench company-category-icon"></i>
+        {% elif category == 'healthcare' %}<i class="glyphicon glyphicon-plus-sign company-category-icon"></i>
+        {% elif category == 'garden' %}<i class="glyphicon glyphicon-grain company-category-icon"></i>
+        {% elif category == 'gadget' %}<i class="glyphicon glyphicon-phone company-category-icon"></i>
+        {% elif category == 'toy' %}<i class="glyphicon glyphicon-knight company-category-icon"></i>
+        {% elif category == 'fashion' %}<i class="glyphicon glyphicon-star company-category-icon"></i>
+        {% elif category == 'food' %}<i class="glyphicon glyphicon-apple company-category-icon"></i>
+        {% elif category == 'auto' %}<i class="glyphicon glyphicon-road company-category-icon"></i>
+        {% elif category == 'games' %}<i class="glyphicon glyphicon-knight company-category-icon"></i>
+        {% endif %}
+    <span class="cat-name">{{ category }}</span> 
+    </a> 
+</li>
+{% endfor %}
+</ul>
+
+<div class="col-xs-8" id="stats">
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  $('.company-category-item').click(function(event) {
+      event.preventDefault();
+      var target = $(event.target)
+      var target_div = target.find('.cat-name').html()
+      var targetpath = '/get-company-data/?category=' + target_div
+      console.log(targetpath)
+      $.ajax({
+          type: "GET",
+          url: targetpath,  // URL to your view that serves new info
+      }).done(function(response) {
+        $('#stats').empty().append(response);
+    });
+  });
+});
+</script>
+
+</div>
+
+
+
+
+{% endblock %}
