@@ -87,6 +87,11 @@ class DocumentForm(forms.ModelForm):
         fields = ('description', 'document',)
 
 class addPost(forms.Form):
-    text = forms.CharField(label='New Post: ', widget=forms.Textarea(attrs={'rows':4,
-                                            'cols':22,
-                                            'style':'resize:none;'}))
+    text = forms.CharField(label='New Post: ', widget=forms.Textarea(attrs={'rows':4, 'cols':22, 'style':'resize:none;'}))
+
+class CampaignAdd(forms.Form):
+    product_id = forms.CharField(label='ID:')
+    price = forms.DecimalField(label='Price:')
+    currency = forms.CharField(label='Currency:', widget=forms.Select(choices=currencies))
+    text = forms.CharField(label='Campaign Text:')
+    

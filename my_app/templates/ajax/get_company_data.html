@@ -18,7 +18,7 @@ function drawChart() {
     var pieoptions = {
       title: 'Categories of sold items',
       legend: {position: 'labeled'},
-      chartArea: {width: 400, height: 300},
+      theme: 'maximized',
     };
 
     var piechart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -36,7 +36,7 @@ function drawChart() {
     var pie2options = {
       title: 'Categories of sold items',
       legend: {position: 'labeled'},
-      chartArea: {width: 400, height: 300},
+      theme: 'maximized',
     };
 
 
@@ -57,8 +57,7 @@ function drawChart() {
 
     var columnoptions = {
       title: 'Penis',
-      width: 700,
-      height: 400,
+      theme: 'maximized',
       legend: {position: 'none'},
     };
 
@@ -77,7 +76,25 @@ function drawChart() {
   <div id="piechart" class="pie1"></div>
   <div id="piechart2" class="pie2"></div>
 {% else %}
-  <div id='columnchart' class="stats-info">
-  </div>
+
+  <div id='columnchart' class="stats-info"></div>
+  <div class="row total-table">
+  <table class="table">
+    <tr>
+      <th> Currency </th>
+      <th> Value </th>
+    </tr>
+  {% for key, value in total_per_currency.items %}
+    <tr>
+      <th>{{ key }}</th>
+      <td>{{ value }}</td>
+    </tr>
+  {% endfor %}
+    <tr>
+      <th> Total (EUR) </th>
+      <td> {{ total_EUR }} </td>
+    </tr>
+  </table>
+
 
 {% endif %}

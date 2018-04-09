@@ -12,7 +12,7 @@ from django.views.generic import TemplateView
 from django.db.models import Count
 from models import Profile as DjProfile
 from models import Order, CompleteOrders, Message, Product, PurchasedItem, Cart, TransferHistory
-from models import Document, Post, OpHistory, Friendship, Notification, Card
+from models import Document, Post, OpHistory, Friendship, Notification, Card, CampaignItem
 from my_app.forms import *
 from django.utils import timezone
 # Non-django imports
@@ -538,16 +538,6 @@ def friendsView(request):
     context_dict = {'friend_list':friend_list, 'request_list':request_list, 'pending_list':pending_list, 'notifications':notifications}
     return render(request, 'users/chat/friends.html', context_dict)
 
-#@login_required
-#def viewNotificationsView(request):
-#    user = request.user
-#    notifications = Notification.objects.filter(user = user)
-#    context_dict = {'notifications':notifications}
-#    response = render(request, 'notifications.html', context_dict)
-#    Notification.objects.filter(user = user).delete()
-#    return render(request, 'notifications.html', context_dict)
-
-
 @login_required
 def uploadPicView(request):
     user = request.user
@@ -734,6 +724,30 @@ def corporateDataView(request):
     else:
         return redirect('/')
 
+@login_required
+def corporateCampaignView(request):
+    user = request.user
+    if user.profile.corporate is True:
+        if request.method == 'POST':
+            form = CampaignAdd(request.POST)
+            if form.is_valid():
+                item = CampaignItem(user= user,
+                                    product = Product.objects.get(p_id= form.cleaned_data.get('product_id')),
+                                    price = form.cleaned_data.get('price'),
+                                    text = form.cleaned_data.get('text'),
+                                    currency = form.cleaned_data.get('currency'),
+                                    date = datetime.date.today(),
+                                    time = datetime.datetime.now().strftime('%H:%M:%S'))
+                item.save()
+                return redirect('/campaign')
+        else:
+            form = CampaignAdd()
+            items = CampaignItem.objects.filter(user= user)
+            context_dict={'form': form, 'items': items}
+            return render(request, 'corporate/corporate-campaign.html', context_dict)
+    else:
+        return redirect ('/')
+
 # MONITOR VIEWS
 
 @login_required
@@ -803,7 +817,15 @@ def exploreView(request):
             friendlist.append(user)
             # get all posts by Users in friend list
             posts = Post.objects.filter(user__in = friendlist).order_by('id')
-            context_dict={'form': form, 'posts': posts}
+            purchased_items = PurchasedItem.objects.filter(user=user)
+            ad_companies = []
+            ad_types = []
+            for item in purchased_items:
+                ad_companies.append(item.seller)
+                ad_types.append(item.p_type)
+            product_query = Product.objects.filter(p_type__in = ad_types )
+            ads = CampaignItem.objects.filter(user__in = ad_companies, product__in = product_query)
+            context_dict={'form': form, 'posts': posts, 'ads': ads}
             return render(request, 'users/explore/explore-home.html', context_dict)
     else:
         return redirect('/')
@@ -849,19 +871,28 @@ def get_company_data_AJAX(request):
 
         else:
             product_list = PurchasedItem.objects.filter(seller=user, p_type=category)
+            total_per_currency = {'EUR': 0, 'USD': 0, 'RON': 0}
+            total_EUR = 0
             today = datetime.date.today()
             first_of_month = datetime.date(today.year, today.month, 1)
             top_list = {}
             for item in product_list:
                 if item.date < first_of_month:
                     product_list = product_list.exclude(item)
+            # get totals per currency
+            for item in product_list:
+                total_per_currency[item.currency] = total_per_currency[item.currency] + item.price
+                rate = c.get_rate(str(item.currency), 'EUR')
+                # convert price to EUR and add to the total
+                total_EUR = total_EUR + decimal.Decimal(rate) * item.price
+            total_EUR = decimal.Decimal(total_EUR).quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_DOWN)
             id_list = product_list.values('dj_id').annotate(dj_count=Count('dj_id'))
             top = id_list.order_by('-dj_count')[:5] # top 5 most sold ids
             for item in top:
                 name = Product.objects.get(id = item['dj_id']).name
                 top_list[name] = item['dj_count']
             top_objects = Product.objects.filter(id__in = [item['dj_id'] for item in top]).distinct()
-            context_dict={'category': category, 'product_list': product_list, 'top_objects': top_objects, 'top_list': top_list}
+            context_dict={'category': category, 'product_list': product_list, 'top_objects': top_objects, 'top_list': top_list, 'total_per_currency': total_per_currency, 'total_EUR': total_EUR}
             return render(request, 'ajax/get_company_data.html', context_dict)
     else:
         return redirect('/')

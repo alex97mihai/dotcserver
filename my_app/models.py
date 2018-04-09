@@ -156,3 +156,13 @@ class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+
+class CampaignItem(models.Model):
+    user = models.ForeignKey(User, related_name='campaign_seller')
+    product = models.ForeignKey(Product, related_name='campaign_item')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    currency = models.CharField(max_length=30, null=True, blank=True)
+    text = models.TextField(null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)

@@ -65,6 +65,7 @@ urlpatterns = [
     url(r'^products/', addProductView, name='Add Product'),
     url(r'^data/', corporateDataView, name='data'),
     url(r'^uploadfile/', uploadProductsView, name='Upload a File'),
+    url(r'^campaign/', corporateCampaignView, name='Make a Campaign'),
     # END OF CORPORATE PRODUCTS AND status
     #
     # ETC.
